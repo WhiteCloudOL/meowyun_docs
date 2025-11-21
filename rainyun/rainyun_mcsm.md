@@ -155,11 +155,13 @@ MCSM 面板**仅支持**压缩和解压 `.zip` 格式的压缩包
 中国大陆（文件内含中文）：`GBK`  
 中国香港/澳门/台湾：`BIG5`  
 海外地区（文件内无中文）：`UTF-8`  
+
 ::: tip  
 如果你右键没有出现解压按键，请检查你上传的文件是否是 `.zip` 格式的压缩包！！！  
 :::  
 
 ### 5. 编辑启动脚本
+
 ::: tip
 如果你上方安装的是 **基础端**  
 此步骤一般可直接跳过  
@@ -180,10 +182,13 @@ MCSM 面板**仅支持**压缩和解压 `.zip` 格式的压缩包
     ```
     
 ### 6. 初次启动
+
 此时进入`MCSM面板`，在主界面终端的右上角即可启动服务器，如果出现报错如  
+
 ```
 You need to agree to the EULA in order to run the server. Go to eula.txt for more info.
 ```
+
 此时，你需要前往 `MCSM面板` -> `文件管理` -> `eula.txt`  
 设置 `eula = true` (注意*true*不要打错)  
 
@@ -193,10 +198,11 @@ You need to agree to the EULA in order to run the server. Go to eula.txt for mor
 
 ### 8. 配置修改
 `MCSM面板` -> `文件管理` -> `server.properties`   
-以下内容中
-`server-port`和`online-mode` 请务必修改
-服务器端口：**雨云面板**->**NAT端口映射管理**->**对外地址:端口** 对应的**端口**（数字）
-在线模式：如果有离线玩家请改为`false`，否则离线玩家无法进入服务器
+以下内容中：  
+`server-port`和`online-mode` 请务必修改  
+服务器端口：**雨云面板**->**NAT端口映射管理**->**对外地址:端口** 对应的**端口**（数字）  
+在线模式：如果有离线玩家请改为`false`，否则离线玩家无法进入服务器  
+
 ::: details 服务器配置`server.properties`  
 ```properties{3,4,10,11,12,13,21,22,24,25,34,35,39,40,44,45,47,48,53,54,65-68,77-80}
 #Minecraft server properties
@@ -290,11 +296,10 @@ white-list=false
 ## 进阶
 ### 1. 更换地图  
 
-::: caution
-:::
   进入`MCSM面板`->`文件管理`  
-  启动一次服务器后，可以看到此目录形式:
-  ::: details 文件分布
+  启动一次服务器后，可以看到此目录形式:  
+
+::: details 文件分布
 ```bash{8-20}  
 Minecraft-Server/
 ├── server.properties      # 服务器配置文件
@@ -329,19 +334,24 @@ Minecraft-Server/
 └── 启动脚本(可修改).sh     # 启动脚本
 ```
 :::
+
 其中`world/`文件夹就是我们需要进行替换的文件夹  
 我们自己的存档一般也是这种格式，因此我们只需压缩一下存档，并上传到服务器替换即可    
+
 ::: warning  
+
 注意，我们需要将`world`文件夹内的所有东西进行替换  
 可以先执行`删除`，后将我们**存档内的所有文件**`复制`过来  
 **1.不是将存档文件夹放在这里！！！**  
 **2.不要修改world文件夹名称，除非你在`server.properties`里修改了`level-name`**  
+
 :::
 ---
 ### 2. 控制台命令  
 
 请进入`MCSM面板`->`终端` (第一次进入MCSM面板的界面)  
 可以在**黑色框框**或**下方白条**内输入命令，**命令无需添加`/`**  
+
 ::: details 查看图片  
 ![MCSM终端](../resources/images/rainyun/rainyun_mcsm_mcsmconsole.webp)  
 :::  
@@ -350,11 +360,14 @@ Minecraft-Server/
 
 请进入`MCSM面板`->`终端` (第一次进入MCSM面板的界面)  
 在控制台内输入`op <玩家名称>`，将玩家添加为OP  
+
 ---
 ### 4.开启白名单
 
-请进入`MCSM面板`->`终端` (第一次进入MCSM面板的界面)  
-在控制台内输入`whitelist on`即可打开白名单  
+请进入`MCSM面板`->`终端` (第一次进入MCSM面板的界面)    
+在控制台内输入`whitelist on`即可打开白名单   
+
+
 ::: details 白名单命令
 ```bash
 whitelist on / off          # 打开/关闭白名单
@@ -365,7 +378,9 @@ whitelist reload            # 重载白名单
 ```
 :::
 ::: warning  
-白名单要求必须打开**正版验证**，否则白名单将会给所有人拦在外面！   
+
+白名单要求必须打开**正版验证**，否则白名单将会给所有人拦在外面！ 
+
 :::
 ## Q&A
 ### 1. 安装服务端完成，在MCSM终端输入命令有反应，但客户端法找到服务器？（报错`Connection refused: no further Infornatlon`）  
@@ -384,7 +399,7 @@ whitelist reload            # 重载白名单
    (1) 你使用的是离线登录（即所谓盗版），而服务器开启了正版验证，请关闭`online-mode`  
    (2) 你启动器登录的身份已经过期，尝试重新登录启动器  
 ### 6. 无法进入服务器：用户名错误
- - 答：
+ - 答：  
    (1)用户名过长，请缩短用户名`Internal Exception: io.netty.handler.codec.DecoderException: The received string length is longer than Maximum allowed (XX > 16)`  
    (2)用户名不合法，请使用英文、数字、下划线`A-Za-z0-9_`: `Invalid characters in usernare`
    
