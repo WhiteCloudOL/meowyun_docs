@@ -23,17 +23,8 @@ jobs:
       - name: Build VitePress
         run: npm run docs:build
 
-      - name: Install zip tool
-        run: sudo apt-get update && sudo apt-get install -y zip
-
-      - name: Create ZIP package
-        run: |
-          cd docs/.vitepress/dist
-          zip -r ../../../dist.zip .
-          echo "Zip created successfully"
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: vitepress-dist
-          path: dist.zip
+          path: docs/.vitepress/dist/
