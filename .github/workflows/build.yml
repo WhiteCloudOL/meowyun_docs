@@ -1,0 +1,37 @@
+name: Build VitePress to ZIP
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build VitePress
+        run: npx vitepress build docs
+
+      - name: Create ZIP package
+        run: |
+          cd docs/.vitepress/dist
+          zip -r ../../../dist.zip .
+          
+          echo "Zip created successfully"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitepress-dist
+          path: dist.zip
