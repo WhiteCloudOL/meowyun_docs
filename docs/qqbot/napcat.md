@@ -2,7 +2,7 @@
 
 > 用于连接QQ与各Bot端 
 > By 清蒸云鸭   
-> 2025/12/17  
+> 2025/12/21  
 
 ::: info  
 **官方文档**: https://napneko.github.io/  
