@@ -1,5 +1,4 @@
 # MaiBot麦麦 
-
 > 文档 By 清蒸云鸭  
 > 2025/12/23 基于bot版本<Badge type="tip" text="0.11.6" />  
 

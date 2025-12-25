@@ -6,6 +6,9 @@ hero:
   name: "清蒸云鸭の文档"
   text: "以云为翼，栖无界之地，以码为砖，筑万相世界"
   tagline: —— 为QBot和Minecraft服务器而生
+  image:
+    src: /logo.webp
+    alt: 清蒸云鸭文档
   actions:
     - theme: brand
       text: 文档

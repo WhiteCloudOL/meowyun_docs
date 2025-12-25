@@ -1,5 +1,12 @@
 # 清蒸云鸭 - 文档  <Badge type="tip" text="v1.0.5" /> 
 
+<div align="center">
+
+![counter](https://count.getloli.com/@meowyun_doc?name=meowyun_doc&theme=miku&padding=8&offset=0&align=top&scale=1&pixelated=1&darkmode=auto)
+*文档访问量*
+
+</div>
+
 ## 文档用于做什么？
 本文档的目的在于分享 `MC/QBot/雨云` 有关知识与软件搭建方式~
 
