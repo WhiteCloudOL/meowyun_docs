@@ -71,16 +71,29 @@ MCSM 面板**仅支持**压缩和解压 `.zip` 格式的压缩包
 此步骤一般可**直接跳过**  
 :::
 
-1. 找到服务端自带启动脚本：`.sh`(一般为run.sh/start.sh)  
-2. \[ **如果是Forge/NeoForge** \] 复制 `@libraries/xxxx` 这一块到 启动脚本(可修改).sh  
-   可得到如下的启动脚本，如果没有找到启动脚本，可直接到 `libraries/net/minecraftforge/forge` (NeoForge 为 `libraries\net\neoforged\neoforge` ) 目录下查看，复制`unix_args.txt`对应的文件路径即可！  
-   此脚本已经包含内存设置(使用95%的内存)，无需进行调整  
-   ```bash
-   # 下方编写启动语句，此配置需要自行调整请勿直接复制
-   java -Xms128M -XX:MaxRAMPercentage=95.0 @libraries/net/minecraftforge/forge/1.20.1-47.4.4/unix_args.txt
-   ```
-   \[ **如果是Fabric/老版本Forge/混合端/插件端** \] 一般服务端根目录存在一个核心JAR文件，直接使用 `-jar 核心名.jar` 即可运行
-   ```bash
-   # 下方编写启动语句，此配置需要自行调整请勿直接复制
-   java -Xms128M -XX:MaxRAMPercentage=95.0 -jar fabric-server-mc.1.21.3-loader.0.16.14.jar
-   ```
+### 第一步：找到服务端自带启动脚本：`.sh`(一般为run.sh/start.sh)  
+
+### 根据不同核心填写脚本
+#### (1.17版本以上)新版Forge/Neoforge
+复制 `@libraries/xxxx` 这一块到 启动脚本(可修改).sh  
+可得到如下的启动脚本，此默认脚本已经包含内存设置(使用95%的内存)，无需进行调整  
+```bash
+# 下方编写启动语句，此配置需要自行调整请勿直接复制
+java -Xms128M -XX:MaxRAMPercentage=95.0 @libraries/net/minecraftforge/forge/1.20.1-47.4.4/unix_args.txt
+```
+
+::: tip  
+如果没有找到启动脚本，可直接到 `libraries/net/minecraftforge/forge` (NeoForge 为 `libraries\net\neoforged\neoforge` ) 目录下查看，复制`unix_args.txt`对应的文件路径即可！  
+:::  
+
+#### Fabric/老版本Forge/混合端/插件端  
+一般服务端根目录存在一个**核心JAR**文件，直接使用 `-jar 核心名.jar` 即可运行  
+```bash
+# 下方编写启动语句，此配置需要自行调整请勿直接复制
+java -Xms128M -XX:MaxRAMPercentage=95.0 -jar fabric-server-mc.1.21.3-loader.0.16.14.jar
+```
+
+::: tip 没有找到核心也没有看到libraries？  
+方式一：`雨云面板`->`重装/更新游戏`->选择相应的核心->`安装`  
+方式二：参照[视频教程](https://www.bilibili.com/video/BV1GTUhBfETs/)，手动安装核心  
+:::  

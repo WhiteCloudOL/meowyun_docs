@@ -1,7 +1,6 @@
 # 雨云MCSM面板  
 
-最后更新：清蒸云鸭. 2025.12.22  
-雨云MCSM面板文档  
+雨云MCSM面板使用文档  
 雨云注册链接：https://www.rainyun.com/qzyy_   
 
 ::: warning  

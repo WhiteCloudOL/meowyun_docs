@@ -21,7 +21,7 @@ Minecraft-Server/
 ├── ops.json               # 管理员列表
 ├── banned-ips.json        # 封禁IP列表
 ├── banned-players.json    # 封禁玩家列表
-├── worlds/                # 世界文件夹
+├── world/                 # 世界文件夹
     ├── data/
     ├── datapacks/         # 地图数据包文件
     ├── DIM1/              # 末地
@@ -37,10 +37,6 @@ Minecraft-Server/
 ├── plugins/               # Bukkit/Spigot插件
 ├── mods/                  # Forge/Fabric模组
 ├── config/                # 模组和插件配置
-│   ├── bukkit.yml
-│   ├── spigot.yml
-│   ├── paper.yml
-│   └── ...
 ├── logs/                  # 日志文件
 │   ├── latest.log
 │   └── ...
@@ -77,7 +73,7 @@ Minecraft-Server/
 大部分命令都可以由`控制台`或`玩家执行`，控制台输入无需添加`/`  
 玩家输入命令则需要在聊天栏内输入`/`  
 
-## 给予权限  
+## 给予权限/添加管理员  
 
 请进入`MCSM面板`->`终端` (第一次进入MCSM面板的界面)  
 在控制台内输入`op <玩家名称>`，将玩家添加为OP  

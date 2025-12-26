@@ -1,6 +1,6 @@
 # MaiBot麦麦 
 > 文档 By 清蒸云鸭  
-> 2025/12/23 基于bot版本<Badge type="tip" text="0.11.6" />  
+> 基于bot版本<Badge type="tip" text="0.11.6" />  
 
 ::: info  
 **官方文档:** https://docs.mai-mai.org/  
