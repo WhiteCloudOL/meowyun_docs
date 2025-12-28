@@ -66,7 +66,7 @@ Minecraft-Server/
 请进入`MCSM面板`->`终端` (第一次进入MCSM面板的界面)  
 可以在**黑色框框**或**下方白条**内输入命令，**命令无需添加`/`**   
 
-![MCSM终端](../../resources/images/rainyun/rainyun_mcsm_mcsmconsole.webp)  
+![](../../resources/images/rainyun/rainyun_mcsm_mcsmconsole.webp){data-zoomable}  
 
 ## 常用命令  
 前往对应页面[查看](../../mcs/command.md)  

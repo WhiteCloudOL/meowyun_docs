@@ -1,11 +1,16 @@
 import { defineConfig } from 'vitepress'
+import vitepressBackToTop from 'vitepress-plugin-back-to-top'
+import lightbox from 'vitepress-plugin-lightbox';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   base: "/",
   title: "清蒸云鸭-文档",
   description: "以云为翼，栖无界之地，以码为砖，筑万相世界",
-  head: [['link', { rel: 'icon', href: './favicon.ico' }]],
+  head: [
+    ['link', { rel: 'icon', href: './favicon.ico' }],
+    ['script', { src: '/live2d.js' }],
+  ],
   themeConfig: {
     logo: '/favicon.ico',
     // https://vitepress.dev/reference/default-theme-config
@@ -116,8 +121,12 @@ export default defineConfig({
           }
         }
       }
-
-    }
-
-  }
+    },
+  },
+  markdown: {
+    config: (md) => {
+      // Use lightbox plugin
+      md.use(lightbox, {});
+    },
+  },
 })

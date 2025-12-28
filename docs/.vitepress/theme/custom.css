@@ -1,4 +1,380 @@
+/* =================================================================
+   🍭 VitePress 全站美化：极简·微甜 (精简版)
+   ================================================================= */
+
+/* --- 1. 全局变量与配色 (支持深浅模式) --- */
 :root {
+  /* 覆盖 VitePress 默认品牌色 -> 薰衣草紫 */
+  --vp-c-brand-1: #a18cd1; 
+  --vp-c-brand-2: #fbc2eb; 
+  --vp-c-brand-3: #8fd3f4;
+
+  /* 主页大标题流光渐变 */
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(135deg, #6e8efb 0%, #a777e3 50%, #ff7bac 100%);
+  --vp-home-hero-name-background: linear-gradient(135deg, #a18cd1 10%, #fbc2eb 60%, #8fd3f4 100%);
+  
+  /* 自定义可爱色板 */
+  --cute-accent: #a18cd1;
+  --cute-highlight: #fbc2eb;
+  
+  /* 代码块专用变量 */
+  --cute-code-bg: #fffbf7;       /* 浅色模式：暖米白背景 */
+  --cute-code-fg: #383a42;       /* 浅色模式：深灰字 */
+  --cute-border: #efe6ea;
+  --cute-shadow: 0 8px 20px rgba(161, 140, 209, 0.15);
+  
+  /* 侧边栏颜色 */
+  --cute-sidebar-active-bg: rgba(161, 140, 209, 0.1);
+  --cute-sidebar-hover-bg: rgba(0, 0, 0, 0.02);
+}
+
+.dark {
+  /* 深色模式品牌色 */
+  --vp-c-brand-1: #c4b5fd;
+  --vp-c-brand-2: #fbc2eb;
+  
+  /* 深色模式主页标题渐变 */
+  --vp-home-hero-name-background: linear-gradient(135deg, #c4b5fd 30%, #fbc2eb 100%);
+
+  --cute-accent: #c4b5fd;
+  --cute-highlight: #d75084;
+  
+  /* 深色模式代码块 */
+  --cute-code-bg: #1e1e24;       /* 深色模式：深空灰 */
+  --cute-code-fg: #e1e4e8;
+  --cute-border: #2e2e32;
+  --cute-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  
+  /* 深色模式侧边栏 */
+  --cute-sidebar-active-bg: rgba(196, 181, 253, 0.1);
+  --cute-sidebar-hover-bg: rgba(255, 255, 255, 0.03);
+}
+
+
+/* --- 2. 字体与排版优化 --- */
+
+/* H1 左侧渐变装饰条 */
+.vp-doc h1 {
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 30px;
+  line-height: 1.4;
+}
+.vp-doc h1::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10%;
+  height: 80%;
+  width: 6px;
+  background: linear-gradient(to bottom, var(--cute-accent) 0%, var(--cute-highlight) 100%);
+  border-radius: 10px;
+  box-shadow: 2px 2px 8px var(--cute-shadow);
+}
+
+/* H2 底部彩虹短线 */
+.vp-doc h2 {
+  border-bottom: 1px solid var(--cute-border);
+  padding-bottom: 10px;
+  margin-top: 3rem;
+  font-weight: 700;
+  position: relative;
+}
+.vp-doc h2::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(to right, var(--cute-accent), var(--cute-highlight));
+  border-radius: 2px;
+}
+
+/* H3 空心圆点 */
+.vp-doc h3 {
+  margin-top: 2rem;
+  padding-left: 18px;
+  position: relative;
+  font-weight: 600;
+}
+.vp-doc h3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  border: 2px solid var(--cute-accent);
+  background: var(--vp-c-bg);
+  border-radius: 50%;
+}
+
+/* 链接样式 */
+.vp-doc a {
+  text-decoration: none;
+  color: var(--cute-accent);
+  font-weight: 500;
+  border-bottom: 1px dashed var(--cute-accent);
+  transition: all 0.2s;
+}
+.vp-doc a:hover {
+  color: var(--cute-highlight);
+  border-bottom-style: solid;
+}
+
+
+/* --- 3. Mac 窗口代码块系统 --- */
+
+/* 基础容器样式 */
+.vp-doc div[class*='language-'] {
+  background-color: var(--cute-code-bg) !important;
+  color: var(--cute-code-fg) !important;
+  border: 1px solid var(--cute-border);
+  border-radius: 12px;
+  box-shadow: var(--cute-shadow);
+  margin: 24px 0;
+  position: relative;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Mac 三色圆点：只加给最外层容器 */
+.vp-doc div[class*='language-']::before,
+.vp-code-group .tabs::before,
+.vp-code-block-title::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f56;
+  box-shadow: 22px 0 0 #ffbd2e, 44px 0 0 #27c93f;
+  z-index: 5;
+  opacity: 0.9;
+}
+
+/* 普通代码块特殊处理：无标题栏，内容需避让圆点 */
+.vp-doc div[class*='language-']:not(.vp-code-group div):not(.vp-code-block-title div) {
+  padding-top: 20px; 
+}
+.vp-doc div[class*='language-']:not(.vp-code-group div):not(.vp-code-block-title div) pre {
+  padding-top: 24px !important;
+}
+
+
+/* --- 4. 复杂容器适配 (代码组 & 带标题块) --- */
+
+/* 代码组外层容器 */
+.vp-code-group {
+  margin: 24px 0;
+  border-radius: 12px;
+  border: 1px solid var(--cute-border);
+  box-shadow: var(--cute-shadow);
+  background-color: var(--cute-code-bg);
+}
+.vp-code-group .tabs {
+  padding: 12px 10px 0 75px; /* 左侧留白给圆点 */
+  background-color: rgba(0,0,0,0.02);
+  border-bottom: 1px solid var(--cute-border);
+  position: relative;
+  min-height: 46px;
+}
+
+/* 带标题块外层容器 */
+.vp-code-block-title {
+  margin: 24px 0;
+  border-radius: 12px;
+  border: 1px solid var(--cute-border);
+  box-shadow: var(--cute-shadow);
+  background-color: var(--cute-code-bg);
+  overflow: hidden;
+  position: relative;
+}
+.vp-code-block-title .vp-code-block-title-bar {
+  padding: 12px 16px 12px 75px; /* 左侧留白给圆点 */
+  background-color: rgba(0,0,0,0.02);
+  border-bottom: 1px solid var(--cute-border);
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--cute-code-fg);
+  font-size: 13px;
+}
+
+/* 内部嵌套代码块重置：透明背景，去除装饰 */
+.vp-code-group div[class*='language-'],
+.vp-code-block-title div[class*='language-'] {
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding-top: 0 !important;
+  background-color: transparent !important;
+}
+/* 隐藏内部圆点 */
+.vp-code-group div[class*='language-']::before,
+.vp-code-block-title div[class*='language-']::before {
+  display: none !important;
+}
+.vp-code-group div[class*='language-'] pre,
+.vp-code-block-title div[class*='language-'] pre {
+  padding-top: 16px !important;
+}
+
+
+/* --- 5. 行号系统修正 --- */
+
+.vp-doc .line-numbers-wrapper {
+  color: rgba(128, 128, 128, 0.4) !important;
+  background: transparent !important;
+  border-right: none !important;
+  padding-top: 16px !important;
+}
+.vp-doc .line-numbers-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  border-right: 1px solid var(--cute-border);
+}
+/* 普通代码块行号下移 */
+.vp-doc div[class*='language-']:not(.vp-code-group div):not(.vp-code-block-title div) .line-numbers-wrapper {
+  padding-top: 44px !important;
+}
+.vp-doc div[class*='language-']:not(.vp-code-group div):not(.vp-code-block-title div) .line-numbers-wrapper::after {
+  top: 44px;
+}
+
+
+/* --- 6. 侧边栏紧凑版 (无图标) --- */
+
+/* 压缩高度 & 调整字体 */
+.VPSidebarItem .item {
+  padding: 5px 12px !important; 
+  min-height: auto !important; 
+  line-height: 1.5 !important;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+.VPSidebarItem .text {
+  font-size: 13.5px !important;
+  font-weight: 500;
+}
+
+/* 悬停状态 */
+.VPSidebarItem .item:hover {
+  background-color: var(--cute-sidebar-hover-bg) !important;
+  color: var(--cute-accent) !important;
+}
+
+/* 选中状态：左侧加指示条 */
+.VPSidebarItem.is-active > .item {
+  background-color: var(--cute-sidebar-active-bg) !important;
+  color: var(--cute-accent) !important;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--cute-accent); 
+  padding-left: 16px !important;
+}
+
+/* 压缩一级标题间距 */
+.VPSidebarItem.level-0 {
+  padding-bottom: 8px !important;
+}
+.VPSidebarItem.level-0 > .item {
+  font-weight: 700 !important;
+  color: var(--vp-c-text-1) !important;
+  padding-top: 12px !important;
+}
+
+
+/* --- 7. 其他细节 (表格/滚动条/提示框) --- */
+
+/* 行内代码 */
+.vp-doc :not(pre) > code {
+  color: #d75084;
+  background-color: rgba(251, 194, 235, 0.25);
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-size: 0.9em;
+}
+
+/* 引用块 */
+.vp-doc blockquote {
+  border: none;
+  background-color: rgba(161, 140, 209, 0.08);
+  padding: 16px 20px;
+  border-radius: 8px;
+  color: var(--vp-c-text-2);
+  margin: 1.5rem 0;
+  position: relative;
+}
+.vp-doc blockquote::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10%;
+  bottom: 10%;
+  width: 4px;
+  background: var(--cute-accent);
+  border-radius: 0 4px 4px 0;
+}
+
+/* 提示框 (Admonitions) */
+.vp-doc .custom-block {
+  border-radius: 12px;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+.vp-doc .custom-block.tip {
+  background-color: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.15);
+}
+.vp-doc .custom-block.warning {
+  background-color: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.15);
+}
+.vp-doc .custom-block.danger {
+  background-color: rgba(244, 63, 94, 0.08);
+  border-color: rgba(244, 63, 94, 0.15);
+}
+
+/* 表格圆角化 */
+.vp-doc table {
+  display: block;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  border: 1px solid var(--cute-border);
+  overflow: hidden;
+  margin: 20px 0;
+}
+.vp-doc table th {
+  background-color: rgba(251, 194, 235, 0.2);
+  border-bottom: 1px solid var(--cute-border);
+  color: var(--vp-c-text-1);
+}
+.vp-doc table td {
+  border-bottom: 1px solid var(--cute-border);
+}
+.vp-doc table tr:nth-child(2n) {
+  background-color: rgba(0,0,0,0.015);
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4ccee;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cute-accent);
 }
