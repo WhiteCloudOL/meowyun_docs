@@ -62,7 +62,6 @@ source venv/bin/activate
 pip config set global.index-url https://mirrors.aliyun.com/pypi/simple  
 pip config set install.trusted-host mirrors.aliyun.com
 ```
-
 :::
 
 ```bash
@@ -71,7 +70,7 @@ pip config set install.trusted-host mirrors.aliyun.com
 # 安装本体依赖
 pip install -r MaiBot/requirements.txt
 #安装Adapter依赖
-pip install -r MaiBot-Napcat-Adapters/requirements.txt
+pip install -r MaiBot-Napcat-Adapter/requirements.txt
 ```
 
 6. 部署完成，请转到[配置与启动](conf.md)

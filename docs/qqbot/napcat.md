@@ -1,8 +1,7 @@
 # NapcatQQ  
 
-> 用于连接QQ与各Bot端 
-> By 清蒸云鸭   
-> 2025/12/21  
+> 用于连接QQ与各Bot端  
+> By 清蒸云鸭  
 
 ::: info  
 **官方文档**: https://napneko.github.io/  
@@ -11,11 +10,14 @@
 ## Docker一键安装
 
 ::: tip
+推荐使用香港/日本 或其他海外服务器  
 如果你系统中不存在docker，请使用以下命令安装  
 **安装Docker：** 使用LinuxMirros脚本一键安装~  
 ```bash
 bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 ```
+**无法连接到linux-mirrors?**   
+* 手动前往 https://linuxmirrors.cn/docker.sh 下载（如果看到的是网页，可右键网页，另存为文件），再上传到服务器执行 `bash docker.sh`  
 :::
 
 在Bot文件夹（例如AstrBot）内新建Compose文件  

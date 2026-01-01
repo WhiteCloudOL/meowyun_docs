@@ -1,7 +1,6 @@
 # Astrbot
 > AI聊天 与 插件娱乐 机器人  
 > 功能较为完善！！  
-> 2025/11/24  
 
 ::: info  
 **官方文档:** https://docs.astrbot.app/  

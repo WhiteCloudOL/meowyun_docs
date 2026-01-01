@@ -309,3 +309,22 @@ apt install -y jq
 jq -r '.access_token' webui.json
 ```
 直接得到`access_token`
+
+## 配置NapCat协议端  
+
+::: tip 安装Napcat  
+按照[此步骤](../napcat.md#docker一键安装)安装  
+如提示未找到docker请执行步骤内上文的脚本安装docker  
+:::  
+
+安装完成NapCat后进入Napcat控制台  
+
+* 选择`网络配置`  
+* `新建`->`WebSocket客户端`  
+* URL填入`ws://localhost:8095`  
+* Token改为你在`MaiBot-Napcat-Adapter/config.toml`里设置的`napcat_server`->`token`，两者需要一直，可以都为空（token如果为空不建议开放在`0.0.0.0`，有被入侵风险）  
+* 勾选启用，并确定  
+
+![](../../resources/images/qbot/mai-napcat.webp)  
+
+现在你就完成了Napcat的配置了！不出意外，你的Bot已经能够正确接收消息~  
