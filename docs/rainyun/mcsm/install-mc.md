@@ -98,3 +98,17 @@ java -Xms128M -XX:MaxRAMPercentage=95.0 -jar fabric-server-mc.1.21.3-loader.0.16
 方式一：`雨云面板`->`重装/更新游戏`->选择相应的核心->`安装`  
 方式二：参照[视频教程](https://www.bilibili.com/video/BV1GTUhBfETs/)，手动安装核心  
 :::  
+
+## 仍不知道怎么写脚本？
+
+### 利用AI助力生成脚本
+
+打开任意**AI应用**: [DeepSeek](https://chat.deepseek.com/)、[豆包](https://www.doubao.com/chat/)、[通义千问](https://www.qianwen.com/)
+
+复制以下内容并填入你的原有脚本，即可得到启动脚本
+```
+下面我将给出一个Minecraft服务器的启动脚本，可能是任意版本的，有@win_args.txt/unix_args.txt，如果是win_args.txt请改为unix_args.txt，也有是-jar xxx.jar，请忽略其他文本（不要忽略优化参数），添加`java -Xms128M -XX:MaxRAMPercentage=95.0`，使用95%内存，系统java路径为`java`，生成形如：`java -Xms128M -XX:MaxRAMPercentage=95.0 -jar fabric-server-mc.1.21.3-loader.0.16.14.jar`或`java -Xms128M -XX:MaxRAMPercentage=95.0 @libraries/net/minecraftforge/forge/1.20.1-47.4.4/unix_args.txt`的单行启动命令，不要添加其他无关内容
+
+脚本：
+<在这里直接粘贴你的原有start.sh/start.bat/run.sh/run.bat的所有内容>
+```
