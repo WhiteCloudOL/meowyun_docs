@@ -16,6 +16,8 @@
 可在 Github 提交 **Issue/PR**  
 GitHub仓库：https://github.com/WhiteCloudOL/meowyun_docs  
 
+## 关于本站  
+文档部署于[雨云](https://www.rainyun.com/qzyy_),采用 EdgeOne CDN加速  
 
 ## Links  
 1. [Meowyun导航页](https://index.meowyun.cn/)  

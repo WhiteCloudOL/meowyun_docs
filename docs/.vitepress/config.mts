@@ -95,7 +95,7 @@ export default defineConfig({
     ],
     footer: {
       message: '以云为翼，栖无界之地，以码为砖，筑万相世界',
-      copyright: 'Copyright © 2025-清蒸云鸭',
+      copyright: 'Copyright © 2026-清蒸云鸭',
     },
 
     socialLinks: [
