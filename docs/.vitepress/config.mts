@@ -8,6 +8,7 @@ export default defineConfig({
   title: "清蒸云鸭-文档",
   description: "以云为翼，栖无界之地，以码为砖，筑万相世界",
   head: [
+    
     ['link', { rel: 'icon', href: './favicon.ico' }],
     ['script', { src: '/live2d.js' }],
   ],
@@ -94,7 +95,7 @@ export default defineConfig({
       }
     ],
     footer: {
-      message: '以云为翼，栖无界之地，以码为砖，筑万相世界',
+      message: '以云为翼，栖无界之地，以码为砖，筑万相世界<br>本站部署于<a href="https://www.rainyun.com/qzyy_" target="_blank" rel="noopener noreferrer">雨云</a>',
       copyright: 'Copyright © 2026-清蒸云鸭',
     },
 

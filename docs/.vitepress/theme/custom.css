@@ -1,102 +1,155 @@
 /* =================================================================
-   🍭 VitePress 全站美化：极简·微甜 (精简版)
+   🍭 VitePress 全站美化：极简·微甜 (统一增强版 + 布局修复)
    ================================================================= */
+
+/* --- 0. 布局修复 (消除大白边核心代码) --- */
+
+/* 强制应用容器占满全屏高度 */
+html, body, #app {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* 让内容区域自动撑开，将 Footer 挤到最底部 */
+.Layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 针对文档页面的容器修复 */
+.VPContent {
+  flex-grow: 1; /* 关键：占满剩余空间 */
+}
+
+/* 针对主页的容器修复 */
+.VPHome {
+  min-height: calc(100vh - 64px); /* 减去导航栏高度，确保背景铺满 */
+  padding-bottom: 0 !important;
+}
+
+/* 隐藏或美化 Footer (避免底部突兀的一条线) */
+.VPFooter {
+  border-top: none !important;
+  background-color: transparent !important; /* 透明背景，透出云朵 */
+}
+.VPFooter .message, .VPFooter .copyright {
+  color: var(--vp-c-text-3); /* 调淡文字颜色 */
+  font-size: 12px;
+}
+
 
 /* --- 1. 全局变量与配色 (支持深浅模式) --- */
 :root {
-  /* 覆盖 VitePress 默认品牌色 -> 薰衣草紫 */
+  /* 核心品牌色 - 薰衣草紫/樱花粉/天空蓝 */
   --vp-c-brand-1: #a18cd1; 
   --vp-c-brand-2: #fbc2eb; 
   --vp-c-brand-3: #8fd3f4;
 
   /* 主页大标题流光渐变 */
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(135deg, #a18cd1 10%, #fbc2eb 60%, #8fd3f4 100%);
+  --vp-home-hero-name-background: linear-gradient(135deg, #a18cd1 10%, #fbc2eb 50%, #8fd3f4 90%);
   
   /* 自定义可爱色板 */
   --cute-accent: #a18cd1;
   --cute-highlight: #fbc2eb;
   
-  /* 代码块专用变量 */
-  --cute-code-bg: #fffbf7;       /* 浅色模式：暖米白背景 */
-  --cute-code-fg: #383a42;       /* 浅色模式：深灰字 */
-  --cute-border: #efe6ea;
-  --cute-shadow: 0 8px 20px rgba(161, 140, 209, 0.15);
+  /* 加粗字体专用深色渐变 (高可视性，像果酱一样深沉) */
+  --cute-strong-gradient: linear-gradient(120deg, #8e6ad3, #e95f95);
+
+  /* UI 元素变量 */
+  --cute-radius-lg: 20px; /* 大容器圆角 */
+  --cute-radius-md: 12px; /* 小元素圆角 */
+  --cute-shadow-color: rgba(161, 140, 209, 0.2); /* 带有颜色的柔和阴影 */
+  --cute-shadow-sm: 0 4px 12px var(--cute-shadow-color);
+  --cute-shadow-hover: 0 10px 30px rgba(161, 140, 209, 0.3);
   
   /* 侧边栏颜色 */
-  --cute-sidebar-active-bg: rgba(161, 140, 209, 0.1);
-  --cute-sidebar-hover-bg: rgba(0, 0, 0, 0.02);
+  --cute-sidebar-bg: rgba(251, 194, 235, 0.15);
+  --cute-sidebar-active-gradient: linear-gradient(90deg, rgba(161, 140, 209, 0.2) 0%, rgba(251, 194, 235, 0.1) 100%);
+  
+  /* 动画曲线 - Q弹感 */
+  --cute-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .dark {
-  /* 深色模式品牌色 */
-  --vp-c-brand-1: #c4b5fd;
+  /* 深色模式品牌色 - 提高亮度 */
+  --vp-c-brand-1: #bba9f7;
   --vp-c-brand-2: #fbc2eb;
   
   /* 深色模式主页标题渐变 */
-  --vp-home-hero-name-background: linear-gradient(135deg, #c4b5fd 30%, #fbc2eb 100%);
+  --vp-home-hero-name-background: linear-gradient(135deg, #bba9f7 30%, #fbc2eb 100%);
 
-  --cute-accent: #c4b5fd;
-  --cute-highlight: #d75084;
+  --cute-accent: #bba9f7;
+  --cute-highlight: #f472b6;
   
-  /* 深色模式代码块 */
-  --cute-code-bg: #1e1e24;       /* 深色模式：深空灰 */
-  --cute-code-fg: #e1e4e8;
-  --cute-border: #2e2e32;
-  --cute-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  /* 深色模式下加粗字体渐变 (荧光感) */
+  --cute-strong-gradient: linear-gradient(120deg, #a78bfa, #f472b6);
   
-  /* 深色模式侧边栏 */
-  --cute-sidebar-active-bg: rgba(196, 181, 253, 0.1);
-  --cute-sidebar-hover-bg: rgba(255, 255, 255, 0.03);
+  --cute-shadow-color: rgba(0, 0, 0, 0.4);
+  --cute-sidebar-bg: rgba(255, 255, 255, 0.08);
+  --cute-sidebar-active-gradient: linear-gradient(90deg, rgba(187, 169, 247, 0.25) 0%, transparent 100%);
+}
+
+/* 全局选中文本 - 粉色高亮 */
+::selection {
+  background: rgba(251, 194, 235, 0.6);
+  color: inherit;
 }
 
 
-/* --- 2. 字体与排版优化 --- */
+/* --- 2. 字体与排版优化 (统一装饰风格) --- */
 
-/* H1 左侧渐变装饰条 */
+/* 基础字体设置 */
+.vp-doc {
+    letter-spacing: 0.2px;
+}
+
+/* H1: 左侧大渐变条 */
 .vp-doc h1 {
   font-weight: 800;
   letter-spacing: -0.5px;
   position: relative;
-  padding-left: 24px;
-  margin-bottom: 30px;
-  line-height: 1.4;
+  padding-left: 28px;
+  margin-bottom: 36px;
 }
 .vp-doc h1::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 10%;
-  height: 80%;
-  width: 6px;
-  background: linear-gradient(to bottom, var(--cute-accent) 0%, var(--cute-highlight) 100%);
+  top: 5%;
+  height: 90%;
+  width: 8px;
+  background: linear-gradient(to bottom, var(--cute-accent), var(--cute-highlight));
   border-radius: 10px;
-  box-shadow: 2px 2px 8px var(--cute-shadow);
+  box-shadow: 2px 2px 10px var(--cute-shadow-color);
 }
 
-/* H2 底部彩虹短线 */
+/* H2: 底部渐变短条 (取代虚线，更统一) */
 .vp-doc h2 {
-  border-bottom: 1px solid var(--cute-border);
-  padding-bottom: 10px;
-  margin-top: 3rem;
+  border-bottom: none;
+  padding-bottom: 12px;
+  margin-top: 4rem;
   font-weight: 700;
   position: relative;
 }
 .vp-doc h2::after {
   content: '';
   position: absolute;
-  bottom: -1px;
+  bottom: -4px;
   left: 0;
-  width: 50px;
-  height: 4px;
+  width: 64px;
+  height: 6px;
   background: linear-gradient(to right, var(--cute-accent), var(--cute-highlight));
-  border-radius: 2px;
+  border-radius: 6px;
+  opacity: 0.8;
 }
 
-/* H3 空心圆点 */
+/* H3: 实心渐变圆点 (更可爱) */
 .vp-doc h3 {
-  margin-top: 2rem;
-  padding-left: 18px;
+  margin-top: 2.5rem;
+  padding-left: 22px;
   position: relative;
   font-weight: 600;
 }
@@ -106,275 +159,461 @@
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 7px;
-  height: 7px;
-  border: 2px solid var(--cute-accent);
-  background: var(--vp-c-bg);
+  width: 10px;
+  height: 10px;
+  /* 从空心改为实心渐变 */
+  background: linear-gradient(135deg, var(--cute-accent), var(--cute-highlight));
   border-radius: 50%;
-}
-
-/* 链接样式 */
-.vp-doc a {
-  text-decoration: none;
-  color: var(--cute-accent);
-  font-weight: 500;
-  border-bottom: 1px dashed var(--cute-accent);
-  transition: all 0.2s;
-}
-.vp-doc a:hover {
-  color: var(--cute-highlight);
-  border-bottom-style: solid;
+  box-shadow: 0 2px 6px var(--cute-shadow-color);
 }
 
 
-/* --- 3. Mac 窗口代码块系统 --- */
+/* --- 3. 代码块系统美化 (统一大圆角) --- */
 
-/* 基础容器样式 */
+/* 基础容器 */
 .vp-doc div[class*='language-'] {
-  background-color: var(--cute-code-bg) !important;
-  color: var(--cute-code-fg) !important;
-  border: 1px solid var(--cute-border);
-  border-radius: 12px;
-  box-shadow: var(--cute-shadow);
-  margin: 24px 0;
-  position: relative;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  border-radius: var(--cute-radius-lg); /* 统一使用大圆角 */
+  border: 1px solid rgba(161, 140, 209, 0.15);
+  box-shadow: var(--cute-shadow-sm);
+  margin: 28px 0;
+  transition: all 0.3s var(--cute-ease);
+}
+/* 悬停时微微浮起 */
+.vp-doc div[class*='language-']:hover {
+    box-shadow: var(--cute-shadow-hover);
+    transform: translateY(-2px);
 }
 
-/* Mac 三色圆点：只加给最外层容器 */
+/* Mac 三色圆点优化 */
 .vp-doc div[class*='language-']::before,
 .vp-code-group .tabs::before,
 .vp-code-block-title::before {
-  content: '';
-  position: absolute;
-  top: 15px;
-  left: 16px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #ff5f56;
-  box-shadow: 22px 0 0 #ffbd2e, 44px 0 0 #27c93f;
-  z-index: 5;
-  opacity: 0.9;
+  top: 16px;
+  left: 18px;
+  /* 稍微调大一点点，颜色更鲜艳 */
+  width: 13px;
+  height: 13px;
+  background: #ff5f56; /* 红 */
+  box-shadow: 24px 0 0 #ffbd2e, 48px 0 0 #27c93f; /* 黄, 绿 */
+  opacity: 1;
 }
 
-/* 普通代码块特殊处理：无标题栏，内容需避让圆点 */
-.vp-doc div[class*='language-']:not(.vp-code-group div):not(.vp-code-block-title div) {
-  padding-top: 20px; 
-}
-.vp-doc div[class*='language-']:not(.vp-code-group div):not(.vp-code-block-title div) pre {
-  padding-top: 24px !important;
-}
-
-
-/* --- 4. 复杂容器适配 (代码组 & 带标题块) --- */
-
-/* 代码组外层容器 */
+/* 代码块组(Tabs)样式统一 */
 .vp-code-group {
-  margin: 24px 0;
-  border-radius: 12px;
-  border: 1px solid var(--cute-border);
-  box-shadow: var(--cute-shadow);
-  background-color: var(--cute-code-bg);
+    border-radius: var(--cute-radius-lg);
+    box-shadow: var(--cute-shadow-sm);
+    border-color: rgba(161, 140, 209, 0.15);
 }
 .vp-code-group .tabs {
-  padding: 12px 10px 0 75px; /* 左侧留白给圆点 */
-  background-color: rgba(0,0,0,0.02);
-  border-bottom: 1px solid var(--cute-border);
-  position: relative;
-  min-height: 46px;
+    border-top-left-radius: var(--cute-radius-lg);
+    border-top-right-radius: var(--cute-radius-lg);
+    border-bottom-color: rgba(161, 140, 209, 0.1);
+    background-color: rgba(250, 250, 250, 0.5);
+}
+.vp-code-group .tabs label {
+    border-radius: var(--cute-radius-md) var(--cute-radius-md) 0 0;
+    transition: color 0.2s, background-color 0.2s;
+}
+/* 选中的 Tab */
+.vp-code-group input:checked + label {
+    color: var(--cute-accent);
+    border-bottom-color: transparent;
+    background-color: transparent;
+    box-shadow: inset 0 3px 0 var(--cute-accent); /* 顶部高亮条 */
 }
 
-/* 带标题块外层容器 */
-.vp-code-block-title {
-  margin: 24px 0;
-  border-radius: 12px;
-  border: 1px solid var(--cute-border);
-  box-shadow: var(--cute-shadow);
-  background-color: var(--cute-code-bg);
-  overflow: hidden;
-  position: relative;
-}
-.vp-code-block-title .vp-code-block-title-bar {
-  padding: 12px 16px 12px 75px; /* 左侧留白给圆点 */
-  background-color: rgba(0,0,0,0.02);
-  border-bottom: 1px solid var(--cute-border);
-  font-family: monospace;
-  font-weight: 700;
-  color: var(--cute-code-fg);
-  font-size: 13px;
-}
+/* --- 4. 侧边栏 (药丸风格) --- */
 
-/* 内部嵌套代码块重置：透明背景，去除装饰 */
-.vp-code-group div[class*='language-'],
-.vp-code-block-title div[class*='language-'] {
-  margin: 0 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  padding-top: 0 !important;
-  background-color: transparent !important;
-}
-/* 隐藏内部圆点 */
-.vp-code-group div[class*='language-']::before,
-.vp-code-block-title div[class*='language-']::before {
-  display: none !important;
-}
-.vp-code-group div[class*='language-'] pre,
-.vp-code-block-title div[class*='language-'] pre {
-  padding-top: 16px !important;
-}
-
-
-/* --- 5. 行号系统修正 --- */
-
-.vp-doc .line-numbers-wrapper {
-  color: rgba(128, 128, 128, 0.4) !important;
-  background: transparent !important;
-  border-right: none !important;
-  padding-top: 16px !important;
-}
-.vp-doc .line-numbers-wrapper::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  border-right: 1px solid var(--cute-border);
-}
-/* 普通代码块行号下移 */
-.vp-doc div[class*='language-']:not(.vp-code-group div):not(.vp-code-block-title div) .line-numbers-wrapper {
-  padding-top: 44px !important;
-}
-.vp-doc div[class*='language-']:not(.vp-code-group div):not(.vp-code-block-title div) .line-numbers-wrapper::after {
-  top: 44px;
-}
-
-
-/* --- 6. 侧边栏紧凑版 (无图标) --- */
-
-/* 压缩高度 & 调整字体 */
+/* 链接项 - 变为全圆角药丸 */
 .VPSidebarItem .item {
-  padding: 5px 12px !important; 
+  padding: 8px 16px !important; 
   min-height: auto !important; 
-  line-height: 1.5 !important;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-.VPSidebarItem .text {
-  font-size: 13.5px !important;
-  font-weight: 500;
+  border-radius: 50px; /* 完全圆角 */
+  transition: all 0.25s var(--cute-ease);
+  margin: 2px 0;
 }
 
 /* 悬停状态 */
 .VPSidebarItem .item:hover {
-  background-color: var(--cute-sidebar-hover-bg) !important;
+  background-color: var(--cute-sidebar-bg) !important;
   color: var(--cute-accent) !important;
+  transform: translateX(4px); /* 弹性滑动 */
 }
 
-/* 选中状态：左侧加指示条 */
+/* 选中状态 - 渐变背景 + 小圆点指示 */
 .VPSidebarItem.is-active > .item {
-  background-color: var(--cute-sidebar-active-bg) !important;
+  background: var(--cute-sidebar-active-gradient) !important;
   color: var(--cute-accent) !important;
-  font-weight: 600;
-  box-shadow: inset 3px 0 0 var(--cute-accent); 
-  padding-left: 16px !important;
+  font-weight: 700;
+  box-shadow: none; /* 移除原来的边框阴影 */
+  padding-left: 24px !important; /* 为小圆点留位置 */
+  position: relative;
 }
 
-/* 压缩一级标题间距 */
-.VPSidebarItem.level-0 {
-  padding-bottom: 8px !important;
+/* 选中时左侧的小圆点 */
+.VPSidebarItem.is-active > .item::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--cute-accent);
+    box-shadow: 0 0 6px var(--cute-accent);
 }
+
+/* 一级标题调整 */
 .VPSidebarItem.level-0 > .item {
-  font-weight: 700 !important;
-  color: var(--vp-c-text-1) !important;
-  padding-top: 12px !important;
+  border-radius: var(--cute-radius-md); /* 一级标题不用药丸，用小圆角 */
+}
+.VPSidebarItem.level-0.is-active > .item {
+    background: transparent !important; /* 一级标题选中无需背景色 */
+    color: var(--vp-c-text-1) !important;
 }
 
 
-/* --- 7. 其他细节 (表格/滚动条/提示框) --- */
+/* --- 5. 文档内容元素美化 (统一风格) --- */
 
-/* 行内代码 */
+/* 引用块 (Blockquote) - 右侧大圆角 */
+.vp-doc blockquote {
+  border: none;
+  border-left: 6px solid var(--cute-accent);
+  padding: 18px 26px;
+  margin: 2rem 0;
+  /* 仅右侧圆角 */
+  border-radius: 0 var(--cute-radius-lg) var(--cute-radius-lg) 0;
+  background: linear-gradient(135deg, rgba(161, 140, 209, 0.08), rgba(251, 194, 235, 0.04));
+  color: var(--vp-c-text-2);
+  box-shadow: var(--cute-shadow-sm);
+  transition: all 0.3s var(--cute-ease);
+}
+.vp-doc blockquote:hover {
+  transform: translateX(6px) scale(1.01);
+  box-shadow: var(--cute-shadow-hover);
+}
+
+/* 强调文本 (Strong) - 深色果酱渐变 */
+.vp-doc strong {
+  font-weight: 700;
+  background: var(--cute-strong-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 0 2px;
+}
+
+/* 行内代码 (Inline Code) */
 .vp-doc :not(pre) > code {
-  color: #d75084;
-  background-color: rgba(251, 194, 235, 0.25);
+  color: #d94f7d; /* 深粉色 */
+  background-color: rgba(251, 194, 235, 0.3);
   padding: 3px 6px;
   border-radius: 6px;
   font-size: 0.9em;
+  font-weight: 600;
+  border: 1px solid rgba(251, 194, 235, 0.4);
+  box-shadow: 0 2px 4px rgba(251, 194, 235, 0.1);
 }
 
-/* 引用块 */
-.vp-doc blockquote {
-  border: none;
-  background-color: rgba(161, 140, 209, 0.08);
-  padding: 16px 20px;
-  border-radius: 8px;
-  color: var(--vp-c-text-2);
-  margin: 1.5rem 0;
-  position: relative;
-}
-.vp-doc blockquote::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 10%;
-  bottom: 10%;
-  width: 4px;
-  background: var(--cute-accent);
-  border-radius: 0 4px 4px 0;
+/* 提示框内的代码样式 - 需要更高优先级 */
+.vp-doc .custom-block :not(pre) > code {
+  color: #d94f7d !important;
+  background-color: rgba(251, 194, 235, 0.35) !important;
+  padding: 3px 6px !important;
+  border-radius: 6px !important;
+  font-size: 0.9em !important;
+  font-weight: 600 !important;
+  border: 1px solid rgba(251, 194, 235, 0.5) !important;
+  box-shadow: 0 2px 4px rgba(251, 194, 235, 0.15) !important;
 }
 
-/* 提示框 (Admonitions) */
-.vp-doc .custom-block {
-  border-radius: 12px;
-  border: 1px solid transparent;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-}
-.vp-doc .custom-block.tip {
-  background-color: rgba(16, 185, 129, 0.08);
-  border-color: rgba(16, 185, 129, 0.15);
-}
-.vp-doc .custom-block.warning {
-  background-color: rgba(245, 158, 11, 0.08);
-  border-color: rgba(245, 158, 11, 0.15);
-}
-.vp-doc .custom-block.danger {
-  background-color: rgba(244, 63, 94, 0.08);
-  border-color: rgba(244, 63, 94, 0.15);
+.dark .vp-doc .custom-block :not(pre) > code {
+  color: #f472b6 !important;
+  background-color: rgba(251, 194, 235, 0.2) !important;
+  border-color: rgba(251, 194, 235, 0.3) !important;
 }
 
-/* 表格圆角化 */
+/* 列表 - 使用可爱 Emoji 作为标记 */
+.vp-doc ul { padding-left: 1.5rem; }
+.vp-doc ul li::marker {
+  content: '✨ '; /* 闪烁 */
+  font-size: 1em;
+}
+.vp-doc ul ul li::marker {
+  content: '🌸 '; /* 花朵 */
+  font-size: 0.9em;
+}
+/* 有序列表使用可爱字体 */
+.vp-doc ol li::marker {
+  color: var(--cute-accent);
+  font-weight: 800;
+  font-family: 'Comic Sans MS', '幼圆', cursive, sans-serif;
+}
+
+/* 链接 - 虚线变实线动画 */
+.vp-doc a {
+  text-decoration: none;
+  color: var(--cute-accent);
+  font-weight: 600;
+  border-bottom: 2px dashed rgba(161, 140, 209, 0.5);
+  transition: all 0.3s var(--cute-ease);
+  padding: 0 2px;
+  border-radius: 4px;
+}
+.vp-doc a:hover {
+  color: var(--cute-highlight);
+  background-color: rgba(161, 140, 209, 0.12);
+  border-bottom: 2px solid var(--cute-highlight);
+}
+
+/* 表格美化 - 大圆角与柔和斑马纹 */
 .vp-doc table {
   display: block;
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  border-radius: 10px;
-  border: 1px solid var(--cute-border);
+  border-radius: var(--cute-radius-lg); /* 统一大圆角 */
   overflow: hidden;
-  margin: 20px 0;
+  box-shadow: var(--cute-shadow-sm);
+  margin: 2.5rem 0;
+  border: 1px solid rgba(161, 140, 209, 0.1);
+  transition: all 0.3s var(--cute-ease);
 }
+.vp-doc table:hover { box-shadow: var(--cute-shadow-hover); }
 .vp-doc table th {
-  background-color: rgba(251, 194, 235, 0.2);
-  border-bottom: 1px solid var(--cute-border);
+  background: linear-gradient(to right, rgba(161, 140, 209, 0.15), rgba(251, 194, 235, 0.15));
   color: var(--vp-c-text-1);
+  padding: 14px 18px;
+  border-bottom: 2px solid #fff;
+  font-weight: 700;
 }
 .vp-doc table td {
-  border-bottom: 1px solid var(--cute-border);
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(161, 140, 209, 0.1);
 }
-.vp-doc table tr:nth-child(2n) {
-  background-color: rgba(0,0,0,0.015);
+/* 极柔和的斑马纹 */
+.vp-doc table tr:nth-child(2n) td {
+    background-color: rgba(251, 194, 235, 0.04);
+}
+.dark .vp-doc table tr:nth-child(2n) td {
+    background-color: rgba(255, 255, 255, 0.03);
 }
 
-/* 滚动条美化 */
-::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+/* 图片美化 */
+.vp-doc img {
+  border-radius: var(--cute-radius-lg);
+  box-shadow: var(--cute-shadow-sm);
+  transition: transform 0.3s var(--cute-ease), box-shadow 0.3s var(--cute-ease);
+  border: 3px solid transparent;
 }
+.vp-doc img:hover {
+  transform: scale(1.02) rotate(0.5deg); /* 微小旋转增加俏皮感 */
+  border-color: rgba(251, 194, 235, 0.4);
+  box-shadow: var(--cute-shadow-hover);
+}
+
+/* 提示框 (Admonitions) - 统一圆角和阴影 */
+.vp-doc .custom-block {
+    border-radius: var(--cute-radius-lg);
+    box-shadow: var(--cute-shadow-sm);
+    transition: transform 0.3s var(--cute-ease);
+    border: 1px solid transparent;
+}
+.vp-doc .custom-block:hover { transform: translateY(-3px); }
+
+/* 提示框标题增加小图标 */
+.vp-doc .custom-block.tip .custom-block-title::before { content: '💡 '; }
+.vp-doc .custom-block.info .custom-block-title::before { content: 'ℹ️ '; }
+.vp-doc .custom-block.warning .custom-block-title::before { content: '⚠️ '; }
+.vp-doc .custom-block.danger .custom-block-title::before { content: '🔥 '; }
+
+
+/* --- 6. 主页与滚动条 --- */
+
+/* 滚动条美化 - 细长圆润 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #d4ccee;
-  border-radius: 4px;
+  background: rgba(161, 140, 209, 0.4);
+  border-radius: 10px;
+  border: 3px solid var(--vp-c-bg); /* 制造悬浮感 */
+  background-clip: padding-box;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--cute-accent);
+::-webkit-scrollbar-thumb:hover { background: var(--cute-accent); }
+
+
+/* =================================================================
+   ☁️ 主页特化：清蒸云鸭的云端梦境
+   ================================================================= */
+
+/* --- 1. 动态云雾背景 (优化版) --- */
+.VPHome {
+  /* 基础背景色 */
+  background-color: #fdfcfd;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  /* 关键修复：确保主页容器至少撑满屏幕 */
+  min-height: 100vh;
+}
+
+/* 使用伪元素制作流动的云彩光斑 */
+.VPHome::before, .VPHome::after {
+  content: '';
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+  border-radius: 50%;
+  filter: blur(80px); /* 强模糊产生雾气感 */
+  opacity: 0.4;
+  animation: floatCloud 25s infinite alternate ease-in-out;
+  z-index: -1;
+}
+
+/* 紫色云团 */
+.VPHome::before {
+  background: radial-gradient(circle, #a18cd1 0%, transparent 70%);
+  top: -20%;
+  left: -10%;
+}
+
+/* 粉色云团 */
+.VPHome::after {
+  background: radial-gradient(circle, #fbc2eb 0%, transparent 70%);
+  bottom: -10%;
+  right: -10%;
+  animation-delay: -10s; /* 错开动画时间 */
+}
+
+@keyframes floatCloud {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, 40px) scale(1.1); }
+  100% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* --- 2. Hero 区域 (鸭鸭与标题) --- */
+
+/* 标题 - 增加一点点间距和渐变 */
+.VPHomeHero .name {
+  background: linear-gradient(135deg, #a18cd1 10%, #fbc2eb 60%, #8fd3f4 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 12px rgba(161, 140, 209, 0.2)); /* 文字柔光投影 */
+  padding-bottom: 10px; /* 防止投影被切 */
+}
+
+/* Slogan (以云为翼...) - 加深颜色提高可读性 */
+.VPHomeHero .text {
+  color: #5c5c66;
+  font-weight: 500;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+}
+
+/* Tagline (—— 为QBot...) - 手写体感觉 */
+.VPHomeHero .tagline {
+  color: #999;
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-top: 8px;
+}
+
+/* Logo 图片 (鸭鸭) - 悬浮呼吸动画 */
+.VPHomeHero .image {
+  animation: floatDuck 6s ease-in-out infinite;
+  filter: drop-shadow(0 20px 30px rgba(161, 140, 209, 0.25)); /* 鸭鸭的影子 */
+}
+
+@keyframes floatDuck {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(2deg); } /* 轻轻上浮并微侧身 */
+}
+
+/* 按钮组 */
+.VPHomeHero .actions .VPButton {
+  border-radius: 50px; /* 药丸形状 */
+  box-shadow: 0 8px 20px rgba(161, 140, 209, 0.15);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.VPHomeHero .actions .VPButton:hover {
+  transform: translateY(-4px) scale(1.05); /* 悬停回弹 */
+  box-shadow: 0 12px 25px rgba(161, 140, 209, 0.3);
+}
+
+
+/* --- 3. Features 卡片 (服务器/机器人/雨云) --- */
+
+.VPHomeFeatures {
+  padding-top: 3rem !important;
+}
+
+.VPHome .VPFeature {
+  background: rgba(255, 255, 255, 0.55); /* 极高透明度 */
+  backdrop-filter: blur(12px); /* 磨砂玻璃 */
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+/* 悬停卡片 */
+.VPHome .VPFeature:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-10px);
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 20px 40px rgba(161, 140, 209, 0.2);
+}
+
+/* 图标 (🎮 🤖 ☁️) - 放大并增加背景 */
+.VPHome .VPFeature .icon {
+  background: linear-gradient(135deg, rgba(161, 140, 209, 0.1), rgba(251, 194, 235, 0.1));
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  font-size: 32px;
+  margin-bottom: 16px;
+  transition: transform 0.4s ease;
+}
+
+.VPHome .VPFeature:hover .icon {
+  transform: scale(1.1) rotate(10deg); /* 悬停时图标晃动 */
+  background: linear-gradient(135deg, rgba(161, 140, 209, 0.2), rgba(251, 194, 235, 0.2));
+}
+
+/* 卡片标题 */
+.VPHome .VPFeature .title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+}
+
+/* 卡片详情文字 */
+.VPHome .VPFeature .details {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+/* --- 4. 深色模式适配 --- */
+.dark .VPHome {
+  background-color: #121214;
+}
+.dark .VPHome::before { background: radial-gradient(circle, #5b4a85 0%, transparent 70%); }
+.dark .VPHome::after { background: radial-gradient(circle, #854a6b 0%, transparent 70%); }
+
+.dark .VPHomeHero .text { color: #cfcfcf; }
+
+.dark .VPHome .VPFeature {
+  background: rgba(30, 30, 35, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.dark .VPHome .VPFeature:hover {
+  background: rgba(40, 40, 45, 0.9);
+  border-color: var(--vp-c-brand-1);
 }
