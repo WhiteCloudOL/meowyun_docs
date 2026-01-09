@@ -1,9 +1,8 @@
 /* =================================================================
-   🍭 VitePress 全站美化：极简·微甜 (修复最终版)
-   包含：布局修复 + 样式增强 + 表格/图片核心Bug修复
+   🍭 VitePress Theme: Minimalist & Sweet (Merged Final)
    ================================================================= */
 
-/* --- 0. 布局修复 (消除大白边核心代码) --- */
+/* --- 0. 布局核心修复 --- */
 html, body, #app {
   min-height: 100vh;
   margin: 0;
@@ -17,7 +16,7 @@ html, body, #app {
 }
 
 .VPContent {
-  flex-grow: 1; 
+  flex-grow: 1;
 }
 
 .VPHome {
@@ -29,21 +28,20 @@ html, body, #app {
   border-top: none !important;
   background-color: transparent !important;
 }
+
 .VPFooter .message, .VPFooter .copyright {
   color: var(--vp-c-text-3);
   font-size: 12px;
 }
 
-/* --- 1. 全局变量与配色 --- */
+/* --- 1. 全局变量 --- */
 :root {
-  /* 品牌色 */
-  --vp-c-brand-1: #a18cd1; 
-  --vp-c-brand-2: #fbc2eb; 
+  --vp-c-brand-1: #a18cd1;
+  --vp-c-brand-2: #fbc2eb;
   --vp-c-brand-3: #8fd3f4;
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: linear-gradient(135deg, #a18cd1 10%, #fbc2eb 50%, #8fd3f4 90%);
   
-  /* 自定义变量 */
   --cute-accent: #a18cd1;
   --cute-highlight: #fbc2eb;
   --cute-strong-gradient: linear-gradient(120deg, #8e6ad3, #e95f95);
@@ -74,10 +72,9 @@ html, body, #app {
   color: inherit;
 }
 
-/* --- 2. 字体与排版优化 --- */
+/* --- 2. 字体排版 --- */
 .vp-doc { letter-spacing: 0.2px; }
 
-/* H1 */
 .vp-doc h1 {
   font-weight: 800;
   letter-spacing: -0.5px;
@@ -97,7 +94,6 @@ html, body, #app {
   box-shadow: 2px 2px 10px var(--cute-shadow-color);
 }
 
-/* H2 */
 .vp-doc h2 {
   border-bottom: none;
   padding-bottom: 12px;
@@ -117,7 +113,6 @@ html, body, #app {
   opacity: 0.8;
 }
 
-/* H3 */
 .vp-doc h3 {
   margin-top: 2.5rem;
   padding-left: 22px;
@@ -137,7 +132,7 @@ html, body, #app {
   box-shadow: 0 2px 6px var(--cute-shadow-color);
 }
 
-/* --- 3. 代码块系统美化 --- */
+/* --- 3. 代码块 --- */
 .vp-doc div[class*='language-'] {
   border-radius: var(--cute-radius-lg);
   border: 1px solid rgba(161, 140, 209, 0.15);
@@ -146,8 +141,8 @@ html, body, #app {
   transition: all 0.3s var(--cute-ease);
 }
 .vp-doc div[class*='language-']:hover {
-    box-shadow: var(--cute-shadow-hover);
-    transform: translateY(-2px);
+  box-shadow: var(--cute-shadow-hover);
+  transform: translateY(-2px);
 }
 .vp-doc div[class*='language-']::before,
 .vp-code-group .tabs::before,
@@ -160,33 +155,34 @@ html, body, #app {
   box-shadow: 24px 0 0 #ffbd2e, 48px 0 0 #27c93f;
   opacity: 1;
 }
+
 .vp-code-group {
-    border-radius: var(--cute-radius-lg);
-    box-shadow: var(--cute-shadow-sm);
-    border-color: rgba(161, 140, 209, 0.15);
+  border-radius: var(--cute-radius-lg);
+  box-shadow: var(--cute-shadow-sm);
+  border-color: rgba(161, 140, 209, 0.15);
 }
 .vp-code-group .tabs {
-    border-top-left-radius: var(--cute-radius-lg);
-    border-top-right-radius: var(--cute-radius-lg);
-    border-bottom-color: rgba(161, 140, 209, 0.1);
-    background-color: rgba(250, 250, 250, 0.5);
+  border-top-left-radius: var(--cute-radius-lg);
+  border-top-right-radius: var(--cute-radius-lg);
+  border-bottom-color: rgba(161, 140, 209, 0.1);
+  background-color: rgba(250, 250, 250, 0.5);
 }
 .vp-code-group .tabs label {
-    border-radius: var(--cute-radius-md) var(--cute-radius-md) 0 0;
-    transition: color 0.2s, background-color 0.2s;
+  border-radius: var(--cute-radius-md) var(--cute-radius-md) 0 0;
+  transition: color 0.2s, background-color 0.2s;
 }
 .vp-code-group input:checked + label {
-    color: var(--cute-accent);
-    border-bottom-color: transparent;
-    background-color: transparent;
-    box-shadow: inset 0 3px 0 var(--cute-accent);
+  color: var(--cute-accent);
+  border-bottom-color: transparent;
+  background-color: transparent;
+  box-shadow: inset 0 3px 0 var(--cute-accent);
 }
 
-/* --- 4. 侧边栏 (药丸风格) --- */
+/* --- 4. 侧边栏 --- */
 .VPSidebarItem .item {
-  padding: 8px 16px !important; 
-  min-height: auto !important; 
-  border-radius: 50px; 
+  padding: 8px 16px !important;
+  min-height: auto !important;
+  border-radius: 50px;
   transition: all 0.25s var(--cute-ease);
   margin: 2px 0;
 }
@@ -199,33 +195,31 @@ html, body, #app {
   background: var(--cute-sidebar-active-gradient) !important;
   color: var(--cute-accent) !important;
   font-weight: 700;
-  box-shadow: none; 
-  padding-left: 24px !important; 
+  box-shadow: none;
+  padding-left: 24px !important;
   position: relative;
 }
 .VPSidebarItem.is-active > .item::before {
-    content: '';
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: var(--cute-accent);
-    box-shadow: 0 0 6px var(--cute-accent);
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--cute-accent);
+  box-shadow: 0 0 6px var(--cute-accent);
 }
 .VPSidebarItem.level-0 > .item {
   border-radius: var(--cute-radius-md);
 }
 .VPSidebarItem.level-0.is-active > .item {
-    background: transparent !important;
-    color: var(--vp-c-text-1) !important;
+  background: transparent !important;
+  color: var(--vp-c-text-1) !important;
 }
 
-/* --- 5. 文档内容元素美化 (重点修复区域) --- */
-
-/* 引用块 */
+/* --- 5. 内容元素 --- */
 .vp-doc blockquote {
   border: none;
   border-left: 6px solid var(--cute-accent);
@@ -242,7 +236,6 @@ html, body, #app {
   box-shadow: var(--cute-shadow-hover);
 }
 
-/* 强调与代码 */
 .vp-doc strong {
   font-weight: 700;
   background: var(--cute-strong-gradient);
@@ -262,7 +255,6 @@ html, body, #app {
   box-shadow: 0 2px 4px rgba(251, 194, 235, 0.1);
 }
 
-/* 列表 */
 .vp-doc ul { padding-left: 1.5rem; }
 .vp-doc ul li::marker { content: '✨ '; font-size: 1em; }
 .vp-doc ul ul li::marker { content: '🌸 '; font-size: 0.9em; }
@@ -272,7 +264,6 @@ html, body, #app {
   font-family: 'Comic Sans MS', '幼圆', cursive, sans-serif;
 }
 
-/* 链接 */
 .vp-doc a {
   text-decoration: none;
   color: var(--cute-accent);
@@ -288,27 +279,22 @@ html, body, #app {
   border-bottom: 2px solid var(--cute-highlight);
 }
 
-/* 🔥🔥🔥 表格样式修复 (Fixed Table Styles) 🔥🔥🔥 
-   原来的样式使用了 separate，这会导致白块。
-   现在改为 collapse 并强制指定背景色。
-*/
+/* --- 表格样式 (修复版) --- */
 .vp-doc table {
-  display: table; /* 修复: 确保是表格布局 */
+  display: table;
   width: 100%;
-  border-collapse: collapse; /* 修复: 合并边框消除白缝 */
+  border-collapse: collapse;
   border-spacing: 0;
   border-radius: var(--cute-radius-lg);
-  overflow: hidden; /* 修复: 确保圆角不被直角背景遮挡 */
+  overflow: hidden;
   box-shadow: var(--cute-shadow-sm);
   margin: 2.5rem 0;
-  /* 修复: 给表格整体一个背景，防止透出页面背景 */
-  background-color: rgba(255, 255, 255, 0.5); 
+  background-color: rgba(255, 255, 255, 0.5);
   transition: all 0.3s var(--cute-ease);
 }
 .dark .vp-doc table {
-  background-color: #1e1e1e; /* 深色模式背景 */
+  background-color: #1e1e1e;
 }
-
 .vp-doc table:hover { box-shadow: var(--cute-shadow-hover); }
 
 .vp-doc table th {
@@ -316,63 +302,78 @@ html, body, #app {
   color: var(--vp-c-text-1);
   padding: 14px 18px;
   font-weight: 700;
-  border: none; /* 移除默认边框干扰 */
+  border: none;
   text-align: left;
 }
-
 .vp-doc table td {
   padding: 12px 18px;
-  border: none; /* 移除默认边框 */
-  border-bottom: 1px solid rgba(161, 140, 209, 0.15); /* 自定义柔和边框 */
-  background-color: transparent; /* 默认透明，依靠 tr 背景 */
+  border: none;
+  border-bottom: 1px solid rgba(161, 140, 209, 0.15);
 }
-
-/* 修复: 显式设置 tr 背景，防止继承白色 */
 .vp-doc table tr {
-  background-color: rgba(255, 255, 255, 0.0); 
+  background-color: transparent;
   transition: background-color 0.2s;
 }
-
-/* 斑马纹样式 - 修复白块的关键 */
 .vp-doc table tr:nth-child(2n) {
-    background-color: rgba(251, 194, 235, 0.08); /* 浅色模式偶数行 */
+  background-color: rgba(251, 194, 235, 0.08);
 }
 .dark .vp-doc table tr:nth-child(2n) {
-    background-color: rgba(255, 255, 255, 0.04); /* 深色模式偶数行 */
+  background-color: rgba(255, 255, 255, 0.04);
 }
-
-/* 鼠标悬停高亮 */
 .vp-doc table tr:hover {
-    background-color: rgba(161, 140, 209, 0.15) !important;
+  background-color: rgba(161, 140, 209, 0.15) !important;
 }
 
-/* 🔥🔥🔥 图片样式修复 (Fixed Image Styles) 🔥🔥🔥 
-*/
+/* 🔥🔥🔥 图片与缩放 (完美修复版) 🔥🔥🔥 */
+
+/* 1. 默认状态 (无 transition，防卡死) */
 .vp-doc img {
   border-radius: var(--cute-radius-lg);
   box-shadow: var(--cute-shadow-sm);
-  transition: transform 0.3s var(--cute-ease), box-shadow 0.3s var(--cute-ease);
-  /* 修复: 移除 solid transparent 边框，改为 outline 或直接去掉，避免布局问题 */
-  border: none; 
-  /* 修复: 确保图片不贴边，且居中显示 */
-  margin: 1.5rem auto; 
-  display: block; 
   max-width: 100%;
+  height: auto;
+  border: none;
 }
-.vp-doc img:hover {
-  transform: scale(1.02) rotate(0.5deg); 
+
+/* 2. 悬停状态 (仅未缩放时生效) */
+.vp-doc img:not(.medium-zoom-image--opened) {
+  transition: transform 0.3s var(--cute-ease), box-shadow 0.3s var(--cute-ease);
+  cursor: zoom-in;
+}
+.vp-doc img:not(.medium-zoom-image--opened):hover {
+  transform: scale(1.02) rotate(0.5deg);
   box-shadow: var(--cute-shadow-hover);
-  /* 仅在悬停时添加装饰性边框 */
   outline: 3px solid rgba(251, 194, 235, 0.4);
   outline-offset: 2px;
 }
 
-/* 提示框 */
+/* 3. 缩放打开状态 (JS 接管，层级最高) */
+.medium-zoom-image--opened {
+  z-index: 2147483647 !important;
+  transition: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  cursor: zoom-out;
+  outline: none !important;
+}
+
+/* 4. 遮罩层 (毛玻璃) */
+.medium-zoom-overlay {
+  z-index: 2147483646 !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+.dark .medium-zoom-overlay {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+/* 自定义块 */
 .vp-doc .custom-block {
-    border-radius: var(--cute-radius-lg);
-    box-shadow: var(--cute-shadow-sm);
-    transition: transform 0.3s var(--cute-ease);
-    border: 1px solid transparent;
+  border-radius: var(--cute-radius-lg);
+  box-shadow: var(--cute-shadow-sm);
+  transition: transform 0.3s var(--cute-ease);
+  border: 1px solid transparent;
 }
 .vp-doc .custom-block:hover { transform: translateY(-3px); }
 .vp-doc .custom-block.tip .custom-block-title::before { content: '💡 '; }
@@ -380,19 +381,17 @@ html, body, #app {
 .vp-doc .custom-block.warning .custom-block-title::before { content: '⚠️ '; }
 .vp-doc .custom-block.danger .custom-block-title::before { content: '🔥 '; }
 
-
 /* --- 6. 主页与滚动条 --- */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
   background: rgba(161, 140, 209, 0.4);
   border-radius: 10px;
-  border: 3px solid var(--vp-c-bg); 
+  border: 3px solid var(--vp-c-bg);
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover { background: var(--cute-accent); }
 
-/* 主页特化 */
 .VPHome {
   background-color: #fdfcfd;
   position: relative;
@@ -406,7 +405,7 @@ html, body, #app {
   width: 1000px;
   height: 1000px;
   border-radius: 50%;
-  filter: blur(80px); 
+  filter: blur(80px);
   opacity: 0.4;
   animation: floatCloud 25s infinite alternate ease-in-out;
   z-index: -1;
@@ -428,7 +427,6 @@ html, body, #app {
   100% { transform: translate(-20px, 20px) scale(0.95); }
 }
 
-/* Hero */
 .VPHomeHero .name {
   background: linear-gradient(135deg, #a18cd1 10%, #fbc2eb 60%, #8fd3f4 100%);
   background-clip: text;
@@ -468,7 +466,6 @@ html, body, #app {
   box-shadow: 0 12px 25px rgba(161, 140, 209, 0.3);
 }
 
-/* Features */
 .VPHomeFeatures { padding-top: 3rem !important; }
 .VPHome .VPFeature {
   background: rgba(255, 255, 255, 0.55);
@@ -503,7 +500,6 @@ html, body, #app {
 .VPHome .VPFeature .title { font-size: 1.25rem; font-weight: 700; color: #333; }
 .VPHome .VPFeature .details { font-size: 0.95rem; line-height: 1.6; color: #666; }
 
-/* Dark Mode 适配 */
 .dark .VPHome { background-color: #121214; }
 .dark .VPHome::before { background: radial-gradient(circle, #5b4a85 0%, transparent 70%); }
 .dark .VPHome::after { background: radial-gradient(circle, #854a6b 0%, transparent 70%); }

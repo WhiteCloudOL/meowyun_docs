@@ -266,6 +266,10 @@ bash start.sh # 执行启动脚本
 
 2. 接入QQ：消息平台->新增适配器->接入QQ个人号（aiocqhttp）  
 选项保持默认，勾选启用  
+::: warning  
+如果你需要在公网使用（即绑定到0.0.0.0）  
+建议在Token中填入 **强密码** ，与此同时Napcat端也需要填入相应的Token  
+:::  
 
 3. 前往[Astrbot官方文档](https://docs.astrbot.app/deploy/platform/aiocqhttp/napcat.html) 查看如何接入平台适配器  
 
