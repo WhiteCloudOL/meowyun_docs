@@ -2,7 +2,6 @@
    🍭 VitePress Theme: Minimalist & Sweet (Merged Final)
    ================================================================= */
 
-/* --- 0. 布局核心修复 --- */
 html, body, #app {
   min-height: 100vh;
   margin: 0;

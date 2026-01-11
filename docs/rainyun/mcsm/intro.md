@@ -1,5 +1,6 @@
 # 雨云MCSM面板  
 
+## 简要介绍  
 雨云MCSM面板使用文档  
 雨云注册链接：https://www.rainyun.com/qzyy_   
 
@@ -14,3 +15,8 @@
 :::
 
 一键自动开服，全程网页操作，支持可视化管理/SFTP，友好度高，适合新手服主和单端场景。  
+雨云面板与MCSM操作类似，只是不需要前往MCSM面板  
+
+## 视频教程  
+新雨云面板视频教程：https://www.bilibili.com/video/BV1rSrTB4EUn/  
+MCSM面板视频教程：https://www.bilibili.com/video/BV15u15BkEbY/  
