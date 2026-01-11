@@ -1,4 +1,4 @@
-name: Build and Deploy VitePress to Cloudflare Pages
+name: Deploy VitePress to Cloudflare Pages and Cloud Server
 
 on:
   push:
@@ -6,25 +6,22 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_NAME: 'docs'
+  PROJECT_NAME: 'meowyundocs'
   NODE_VERSION: '24'
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Setup Node.js 24
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      
-      - name: Verify Node version
-        run: node --version
       
       - name: Install dependencies
         run: npm ci
@@ -32,31 +29,75 @@ jobs:
       - name: Build VitePress
         run: npm run docs:build
       
-      - name: Verify build output
+      - name: Install latest Wrangler
         run: |
-          echo "📁 Build output check:"
-          if [ -d "docs/.vitepress/dist" ]; then
-            echo "✅ Build directory exists"
-            ls -la docs/.vitepress/dist/ | head -10
-            echo "Total files: $(find docs/.vitepress/dist -type f | wc -l)"
-          else
-            echo "❌ Build directory not found!"
-            exit 1
-          fi
-
-      - name: Upload artifact to GitHub
+          npm install -g wrangler@latest
+          echo "Wrangler version: $(wrangler --version)"
+      
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        run: |
+          echo "🚀 Deploying to Cloudflare Pages..."
+          npx wrangler pages deploy docs/.vitepress/dist \
+            --project-name="${{ env.PROJECT_NAME }}" \
+            --branch=main \
+            --commit-hash="${{ github.sha }}" \
+            --commit-message="自动部署: ${{ github.event.head_commit.message || github.sha }}"
+          
+          echo "✅ Deployment submitted successfully!"
+          echo "production_url=https://${{ env.PROJECT_NAME }}.pages.dev" >> $GITHUB_OUTPUT
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+      
+      - name: Clean target directory on Cloud Server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            DEPLOY_PATH="${{ secrets.SERVER_DEPLOY_PATH }}"
+            echo "清理目录: $DEPLOY_PATH"
+            rm -rf "$DEPLOY_PATH"/*
+      
+      - name: Deploy to Cloud Server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          source: "docs/.vitepress/dist/*"
+          target: "${{ secrets.SERVER_DEPLOY_PATH }}/"
+          strip_components: 0
+          overwrite: true
+      
+      - name: Verify deployment
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            DEPLOY_PATH="${{ secrets.SERVER_DEPLOY_PATH }}"
+            echo "验证部署: $DEPLOY_PATH"
+            
+            if [ -f "$DEPLOY_PATH/index.html" ]; then
+              echo "✅ index.html 存在"
+            else
+              echo "❌ index.html 不存在"
+              exit 1
+            fi
+            
+            echo "文件数量: $(find "$DEPLOY_PATH" -type f | wc -l)"
+            echo "✅ 部署验证完成"
+      
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: vitepress-dist
+          name: vitepress-build-${{ github.sha }}
           path: docs/.vitepress/dist/
-          retention-days: 7
-
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@1
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          projectName: ${{ env.PROJECT_NAME }}
-          directory: docs/.vitepress/dist
-          branch: main
-          workingDirectory: .
+          retention-days: 30
