@@ -13,7 +13,16 @@
 本文档支持部署的系统：`Ubuntu22.04/24.04`、`Debian12/13`  
 :::
 
-1. 从麦麦仓库下载文件
+
+1. 下载系统依赖(支持Debian12/13+，Ubuntu22/24+)
+```bash
+# 更新软件源
+apt update
+# 下载所需软件包
+apt install -y python3-dev python3-venv python3-pip build-essential git nano vim
+```
+
+2. 从麦麦仓库下载文件
 
 ```bash
 # 创建文件夹
@@ -30,13 +39,6 @@ git clone https://gh-proxy.org/https://github.com/MaiM-with-u/MaiBot.git
 git clone https://gh-proxy.org/https://github.com/MaiM-with-u/MaiBot-Napcat-Adapter.git
 ```
 
-2. 下载系统依赖(支持Debian12/13+，Ubuntu22/24+)
-```bash
-# 更新软件源
-apt update
-# 下载所需软件包
-apt install -y python3-dev python3-venv python3-pip build-essential git nano vim
-```
 
 3. 创建python虚拟环境  
 ```bash  

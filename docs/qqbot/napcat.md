@@ -22,8 +22,8 @@ bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 
 在Bot文件夹（例如AstrBot）内新建Compose文件  
 此编排使用`host`网络，可直接访问本机项目/端口  
-如果是AstrBot建议放在AstrBot data文件夹下，并取消``# - ./data:/AstrBot/data`的注释（删除#，并对齐）  
-::: details Napcat Docker `napcat.yml`  
+如果是AstrBot建议放在AstrBot data同级目录下，并取消``# - ./data:/AstrBot/data`的注释（删除#，并对齐）  
+::: details Napcat Docker Compose `napcat.yml`  
 ```yml
 services:
   napcat:
