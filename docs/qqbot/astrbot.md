@@ -116,16 +116,16 @@ docker compose up -d
 ```
 此时，docker会自动拉取镜像，等待拉取完成后即部署完成~  
 
-::: info  
-**打开AstrBot控制台**：`http://\[你的服务器IP\]:\[端口\]`  
+::: info 进入控制台  
+**打开AstrBot控制台**：`http://[你的服务器IP\]:[端口]`  
 *你的服务器IP*：填服务器公网IP或域名  
 *端口*：独立IP机型填`6185`，Nat机型需要映射6185到相应端口  
 *默认用户名密码均为`astrbot`*  
-**打开NapCat控制台**：`http://\[你的服务器IP\]:\[端口\]`  
+**打开NapCat控制台**：`http://[你的服务器IP]:[端口]`  
 *你的服务器IP*：填服务器公网IP或域名  
 *端口*：独立IP机型填`6099`，Nat机型需要**映射**6099到相应端口   
-*默认token见下方获取Napcat登录密钥*
-:::
+*默认token见下方获取Napcat登录密钥*  
+:::  
 
 ::: details 获取Napcat登录密钥 `./napcat/config/webui.json` 
 

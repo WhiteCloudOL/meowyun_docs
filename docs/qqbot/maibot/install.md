@@ -5,6 +5,14 @@
 在此推荐使用linux来部署，有利于云服务器部署bot  
 :::  
 
+## Linux自动部署  
+
+使用自动脚本一键部署与管理MaiBot，支持`Debian12/13`,`Ubuntu22.04/24.04+`  
+
+```bash  
+bash <(curl -s https://meowyun.cn/download/maibot.sh)
+```  
+
 ## Linux原生部署  
 
 ::: tip  

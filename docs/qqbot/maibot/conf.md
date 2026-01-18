@@ -71,17 +71,15 @@ Ctrl+X: 退出
 新版本MaiBot WebUI主机默认绑定在`127.0.0.1`即本机，无法通过外部访问  
 如果你无法访问MaiBot-WebUI，请将以下`WEBUI_HOST`改为`0.0.0.0`  
 
-::: details 1. 本体环境配置`MaiM-with-u/MaiBot/.env`
+::: details 1. 本体环境配置`maimai/MaiBot/.env`
 ```toml
 # 麦麦主程序配置
 HOST=127.0.0.1
-PORT=8000
+PORT=6200
 
-# WebUI 独立服务器配置
-WEBUI_ENABLED=true
-WEBUI_MODE=production
-WEBUI_HOST=0.0.0.0      # WebUI 服务器监听地址，这就是我们要改的
-WEBUI_PORT=8001         # WebUI 服务器端口
+# WebUI 服务器配置
+WEBUI_HOST=0.0.0.0  # 这里本来是127.0.0.1，改为0.0.0.0
+WEBUI_PORT=8001
 ```  
 :::
 
@@ -157,6 +155,7 @@ retry_interval = 5
 
 下面跟着我配置吧！  
 首先，需要处于`maimai/`目录下，如果你在`MaiBot`目录，使用`cd ..`返回上级目录  
+
 ```bash
 # 如果你在`MaiBot`目录下请执行：
 cd ..

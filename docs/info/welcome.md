@@ -1,4 +1,4 @@
-# 清蒸云鸭 - 文档  <Badge type="tip" text="v1.0.5" /> 
+# 清蒸云鸭 - 文档  <Badge type="tip" text="v1.1.0" /> 
 
 <div align="center">
 
@@ -18,6 +18,11 @@ GitHub仓库：https://github.com/WhiteCloudOL/meowyun_docs
 
 ## 关于本站  
 文档部署于[雨云](https://www.rainyun.com/qzyy_),采用 EdgeOne CDN加速  
+
+## 最新文档页  
+最新版跟随Github提交同步发布，但因为部署在CloudFlare可能连接比较缓慢，如无法访问请使用国内地址  
+**最新文档:** https://docs.catyun.cyou/  
+**国内稳定版:** https://docs.meowyun.cn/  
 
 ## Links  
 1. [Meowyun导航页](https://index.meowyun.cn/)  
