@@ -8,9 +8,10 @@
 ## Linux自动部署  
 
 使用自动脚本一键部署与管理MaiBot，支持`Debian12/13`,`Ubuntu22.04/24.04+`  
+脚本功能**完善**，可一站式管理～
 
 ```bash  
-bash <(curl -s https://meowyun.cn/download/maibot.sh)
+curl -s https://dl.meowyun.cn/bot/bash/maibot.sh > maibot.sh && bash maibot.sh
 ```  
 
 ## Linux原生部署  
