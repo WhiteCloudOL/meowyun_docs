@@ -85,13 +85,6 @@ export default defineConfig({
           },
           
         ]
-      },
-      {
-        text: '星眠海屿',
-        collapsed: false,
-        items: [
-          { text: '服务器指令', link: '/xmhy/command' },
-        ]
       }
     ],
     footer: {
