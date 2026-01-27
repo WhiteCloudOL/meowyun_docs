@@ -1,5 +1,5 @@
 # 远程管理服务器  
-> 分为`Windows`、`Linux`、`面板`三部分   
+> 分为`Windows`、`Linux`两部分   
 > By 清蒸云鸭    
 
 ## Windows 管理  

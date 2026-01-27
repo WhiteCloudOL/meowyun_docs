@@ -7,7 +7,7 @@
 **官方文档**: https://napneko.github.io/  
 :::  
 
-## Docker一键安装
+## Docker一键安装  
 
 ::: tip
 推荐使用香港/日本 或其他海外服务器  
@@ -90,5 +90,4 @@ napcat # 打开TUI-CLI图形界面配置(不过有些许bug)
 napcat help #查看帮助
 napcat start <QQ号>  # 启动某个QQ
 napcat stop [OPTIONAL: QQ号]  # 停止某个QQ的服务，<QQ>可选
-
 ```
