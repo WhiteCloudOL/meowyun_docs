@@ -183,7 +183,7 @@ docker stop napcat
 此部署方式需要你有一些Linux和Python基础，否则不建议用此方式部署  
 **零基础**建议选择[Docker一键部署](#docker一键部署)  
 :::
-1. 检查环境，确保为`Python3.10`以上. 
+1. 检查环境，确保为`Python3.12`以上. 
 ```bash
 python3 --version
 ```

@@ -5,16 +5,20 @@
 在此推荐使用linux来部署，有利于云服务器部署bot  
 :::  
 
-## Linux自动部署  
+## Linux原生自动部署  
 
 使用自动脚本一键部署与管理MaiBot，支持`Debian12/13`,`Ubuntu22.04/24.04+`  
 脚本功能**完善**，可一站式管理～
 
 ```bash  
-curl -s https://dl.meowyun.cn/bot/bash/maibot.sh > maibot.sh && bash maibot.sh
+# 国内下载
+curl -o maibot.sh https://dl.meowyun.cn/bot/bash/maibot.sh && bash maibot.sh
+
+# 海外下载
+curl -o maibot.sh https://raw.githubusercontent.com/WhiteCloudOL/Qbot-StartScripts/refs/heads/main/maibot.sh && bash maibot.sh
 ```  
 
-## Linux原生部署  
+## Linux原生手动部署  
 
 ::: tip  
 以下命令都使用root权限执行，如提示权限不足请在命令前添加`sudo`  
