@@ -75,7 +75,7 @@ Ctrl+X: 退出
 ```toml
 # 麦麦主程序配置
 HOST=127.0.0.1
-PORT=6200
+PORT=8000
 
 # WebUI 服务器配置
 WEBUI_HOST=0.0.0.0  # 这里本来是127.0.0.1，改为0.0.0.0
@@ -103,7 +103,7 @@ https://cloud.siliconflow.cn/i/ys2vPqSO
 
 在文件中的`api_key = "your-silicon-flow-api-key"`填入得到的硅基流动**API-KEY**密钥  
 ::: details 模型配置`config/model_config.toml`  
-```
+```toml
 [inner]
 version = "1.8.2"
 
@@ -175,7 +175,7 @@ python3 main.py
 ::: details `config.toml`  
 ```
 [inner]
-version = "0.1.2" # 版本号
+version = "0.1.3" # 版本号
 # 请勿修改版本号，除非你知道自己在做什么
 
 [nickname] # 现在没用
@@ -183,21 +183,24 @@ nickname = ""
 
 [napcat_server] # Napcat连接的ws服务设置
 host = "localhost"      # Napcat设定的主机地址
-port = 8095             # Napcat设定的端口 
+port = 8095             # Napcat设定的端口
 token = ""              # Napcat设定的访问令牌，若无则留空
 heartbeat_interval = 30 # 与Napcat设置的心跳相同（按秒计）
 
 [maibot_server] # 连接麦麦的ws服务设置
 host = "localhost" # 麦麦在.env文件中设置的主机地址，即HOST字段
-port = 8000        # 麦麦在.env文件中设置的端口，即PORT字段
+port = 8000             # Napcat设定的端口
+enable_api_server = false # 是否启用API-Server模式连接
+base_url = "ws://127.0.0.1:18095/ws"             # API-Server连接地址 (ws://ip:port/path)，仅在enable_api_server为true时使用
+api_key = "maibot"        # API Key (仅在enable_api_server为true时使用)
 
 [chat] # 黑白名单功能
 group_list_type = "whitelist" # 群组名单类型，可选为：whitelist, blacklist
-group_list = [12345678,2345678]               # 群组名单
+group_list = [123456789,123456]               # 群组名单
 # 当group_list_type为whitelist时，只有群组名单中的群组可以聊天
 # 当group_list_type为blacklist时，群组名单中的任何群组无法聊天
 private_list_type = "whitelist" # 私聊名单类型，可选为：whitelist, blacklist
-private_list = [12345678,2345678]               # 私聊名单
+private_list = [12345678,123456]               # 私聊名单
 # 当private_list_type为whitelist时，只有私聊名单中的用户可以聊天
 # 当private_list_type为blacklist时，私聊名单中的任何用户无法聊天
 ban_user_id = []   # 全局禁止名单（全局禁止名单中的用户无法进行任何聊天）
@@ -206,6 +209,9 @@ enable_poke = true # 是否启用戳一戳功能
 
 [voice] # 发送语音设置
 use_tts = false # 是否使用tts语音（请确保你配置了tts并有对应的adapter）
+
+[forward] # 转发消息处理设置
+image_threshold = 3 # 图片数量阈值：转发消息中图片数量超过此值时使用占位符(避免麦麦VLM处理卡死)
 
 [debug]
 level = "INFO" # 日志等级（DEBUG, INFO, WARNING, ERROR, CRITICAL）
