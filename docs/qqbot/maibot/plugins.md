@@ -41,14 +41,16 @@ root@RainYun-c3Srwn3w:~/test/MutePlugin#
 ```
 
 6. 安装插件依赖  
-a. 首先激活虚拟环境:  
+
+  a. 首先激活虚拟环境:  
 ```bash
 # 虚拟环境一般位于插件文件夹的上上级目录
 # tip: 使用 `cd ..` 可返回上级目录  
 # 当前所在 MaiBot/plugins/
 source ../../venv/bin/activate
 ```
-b. 安装插件依赖：  
+
+  b. 安装插件依赖：  
 大部分插件都存在一个`requirements.txt`依赖需求文件，我们需要安装这些依赖
 ```bash
 # 当前所在 MaiBot/plugins/

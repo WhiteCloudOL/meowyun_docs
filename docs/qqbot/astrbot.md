@@ -206,11 +206,11 @@ git clone https://github.com/AstrBotDevs/AstrBot.git # 从官方仓库下载
 
 # 若是国内网络环境，请通过githubproxy下载，以加速网络访问:https://github.akams.cn/，例如：
 # 全球/海外/港澳台
-git clone https://github.com/WhiteCloudOL/astrbot_plugin_mcqlink.git  
+git clone https://github.com/AstrBotDevs/AstrBot.git
 # 大陆地区#1
-git clone https://gh-proxy.com/https://github.com/WhiteCloudOL/astrbot_plugin_mcqlink.git
+git clone https://gh-proxy.com/https://github.com/AstrBotDevs/AstrBot.git
 # 大陆地区#2
-git clone https://cdn.gh-proxy.com/https://github.com/WhiteCloudOL/astrbot_plugin_mcqlink.git
+git clone https://cdn.gh-proxy.com/https://github.com/AstrBotDevs/AstrBot.git
 ```
 
 4. 创建并激活Python虚拟环境  
