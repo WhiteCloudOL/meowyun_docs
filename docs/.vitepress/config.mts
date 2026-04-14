@@ -39,7 +39,15 @@ export default defineConfig({
         text: 'QQ机器人',
         collapsed: false,
         items: [
-          { text: 'Astrbot', link: '/qqbot/astrbot' },
+          { text: 'Astrbot',
+            collapsed: true,
+            items: [
+              { text: '简介', link: '/qqbot/astrbot/intro' },
+              { text: 'Docker部署', link: '/qqbot/astrbot/docker' },
+              { text: 'Linux部署', link: '/qqbot/astrbot/linux' },
+              { text: 'Windows部署', link: '/qqbot/astrbot/windows' }
+            ]
+          },
           { text: 'MaiBot',
             collapsed: true,
             items: [
