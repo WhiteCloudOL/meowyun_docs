@@ -17,7 +17,13 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '主页', link: '/' },
-      { text: '文档', link: '/info/welcome' },
+      {
+        text: '文档',
+        items: [
+          { text: '国内站', link: 'https://docs.meowyun.cn/index.html'},
+          { text: 'CF站', link: 'https://docs.catyun.cyou/index.html' }
+        ]
+      },
       {
         text: '联系',
         items: [

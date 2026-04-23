@@ -17,7 +17,8 @@
 GitHub仓库：https://github.com/WhiteCloudOL/meowyun_docs  
 
 ## 关于本站  
-文档部署于[雨云](https://www.rainyun.com/qzyy_),采用 EdgeOne CDN加速  
+文档国内站部署于[雨云](https://www.rainyun.com/qzyy_),采用 EdgeOne CDN加速   
+CF站部署于`CloudFlare`，喵~
 
 ## 最新文档页  
 最新版跟随Github提交同步发布，但因为部署在CloudFlare可能连接比较缓慢，如无法访问请使用国内地址  
