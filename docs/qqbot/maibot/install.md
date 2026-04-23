@@ -20,10 +20,11 @@ curl -o maibot.sh https://raw.githubusercontent.com/WhiteCloudOL/Qbot-StartScrip
 
 ## Linux原生手动部署  
 
+
 ::: tip  
 以下命令都使用root权限执行，如提示权限不足请在命令前添加`sudo`  
 此外需确认系统python版本为`3.10+`  
-本文档支持部署的系统：`Ubuntu22.04/24.04`、`Debian12/13`  
+本文档支持部署的系统：`Ubuntu22.04/24.04`、`Debian12/13` 等  
 :::
 
 
@@ -32,10 +33,16 @@ curl -o maibot.sh https://raw.githubusercontent.com/WhiteCloudOL/Qbot-StartScrip
 # 更新软件源
 apt update
 # 下载所需软件包
-apt install -y python3-dev python3-venv python3-pip build-essential git nano vim
+apt install -y build-essential git nano vim
 ```
 
-2. 从麦麦仓库下载文件
+2. 安装UV  
+```bash
+# 使用官方独立安装程序一键安装  
+curl -LsSf https://astral.sh/uv/install.sh | sh  
+```
+
+3. 从麦麦仓库下载文件
 
 ```bash
 # 创建文件夹
@@ -43,32 +50,43 @@ mkdir maimai
 # 进入文件夹
 cd maimai
 
-# 使用git clone获取麦麦
-git clone https://github.com/MaiM-with-u/MaiBot.git
-git clone https://github.com/MaiM-with-u/MaiBot-Napcat-Adapter.git
+# 使用git clone MaiBot-Napcat-Adapter插件到麦麦
+git clone -b plugin https://github.com/MaiM-with-u/MaiBot-Napcat-Adapter.git
 
 # (与上方二选一)如果你使用上方git clone失败，请尝试以下加速地址：
 git clone https://gh-proxy.org/https://github.com/MaiM-with-u/MaiBot.git
-git clone https://gh-proxy.org/https://github.com/MaiM-with-u/MaiBot-Napcat-Adapter.git
+
 ```
 
+4. 安装MaiBot-Napcat-Adapter，用于连接QQ与MaiBot  
+```bash
+# 进入麦麦插件目录
+cd MaiBot/plugins
+# 使用git clone获取麦麦
+git clone https://github.com/MaiM-with-u/MaiBot.git
 
-3. 创建python虚拟环境  
+
+# (与上方二选一)如果你使用上方git clone失败，请尝试以下加速地址：
+# 进入麦麦插件目录
+cd MaiBot/plugins
+# 使用git clone MaiBot-Napcat-Adapter插件到麦麦
+git clone -b plugin https://gh-proxy.org/https://github.com/MaiM-with-u/MaiBot-Napcat-Adapter.git
+```
+完成后，返回MaiBot主目录  
+```bash
+cd ..
+```
+
+5. 创建python虚拟环境  
 ```bash  
-# 此时在maimai/目录下
+# 此时在maimai/MaiBot目录下
 
-# 创建名为venv的python虚拟环境
-python3 -m venv venv
+# 创建uv环境，指定为python3.14
+uv venv --python 3.14
 ```  
 
-4. 激活虚拟环境
-```bash
-# 此时在maimai/目录下
-
-source venv/bin/activate
-```
-5. 安装python环境包依赖  
-
+6. 安装python环境包依赖  
+  
 ::: tip
 
 如果你的云服务器位于国内，请用以下命令换源  
@@ -80,12 +98,8 @@ pip config set install.trusted-host mirrors.aliyun.com
 :::
 
 ```bash
-# 此时在maimai/目录下
-
-# 安装本体依赖
-pip install -r MaiBot/requirements.txt
-#安装Adapter依赖
-pip install -r MaiBot-Napcat-Adapter/requirements.txt
+# 此时在maimai/MaiBot/目录下
+uv sync
 ```
 
-6. 部署完成，请转到[配置与启动](conf.md)
+7. 部署完成，请转到[配置与启动](conf.md)
