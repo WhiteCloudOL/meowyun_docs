@@ -214,7 +214,7 @@ uv run bot.py
 ### 下载启动脚本  
 
 ::: warning 升级提示  
-脚本正在修改中，请等待更新完成后再使用脚本启动
+脚本已更新支持MaiBot `v1.0.0` 喵~
 :::
 
 GitHub开源地址：https://github.com/WhiteCloudOL/Qbot-StartScripts  
@@ -245,12 +245,13 @@ wget "https://hk.gh-proxy.org/https://raw.githubusercontent.com/WhiteCloudOL/Qbo
 # 运行脚本  
 bash MaiBot-Start-Script.sh  
 ```
-此时按下: `1`，即可帮助我们打开`MaiBot`和`Napcat-Adapter`  
+此时按下: `1`，即可帮助我们打开`MaiBot`  
+新版本MaiBot-Napcat-Adapter已集成于主程序插件中，无需另外启动喵~
 
 ## 访问WebUI
 
 ::: tip 无法访问WebUI?   
-请修改[配置](#配置webui网页控制台)~
+请修改[配置](#配置麦麦webui网页控制台)~
 :::  
 
 #### 1. 独立IP服务器  
