@@ -292,8 +292,9 @@ jq -r '.access_token' webui.json
 
 * 选择`网络配置`  
 * `新建`->`WebSocket 服务端`  
-* URL填入`ws://localhost:8095`  
-* Token改为你在`MaiBot/plugins/MaiBot-Napcat-Adapter/config.toml`里设置的`napcat_server`->`token`，默认为空，Napcat与Adapter两者token配置需要一致
+* Host填`127.0.0.1`或`0.0.0.0`  （如果为后者需要两端都设置token）  
+* Port填入`3001`（默认端口）  
+* Token改为你在`MaiBot/plugins/MaiBot-Napcat-Adapter/config.toml`里设置的`napcat_server`->`token`，默认为空，Napcat与Adapter两者token配置需要一致  
 * 勾选启用，并确定  
 
 ![](../../resources/images/qbot/mai-napcat.webp)  
