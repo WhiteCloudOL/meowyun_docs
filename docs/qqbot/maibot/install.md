@@ -50,8 +50,8 @@ mkdir maimai
 # 进入文件夹
 cd maimai
 
-# 使用git clone MaiBot-Napcat-Adapter插件到麦麦
-git clone -b plugin https://github.com/MaiM-with-u/MaiBot-Napcat-Adapter.git
+# 使用git clone获取麦麦
+git clone https://github.com/MaiM-with-u/MaiBot.git
 
 # (与上方二选一)如果你使用上方git clone失败，请尝试以下加速地址：
 git clone https://gh-proxy.org/https://github.com/MaiM-with-u/MaiBot.git
@@ -62,9 +62,9 @@ git clone https://gh-proxy.org/https://github.com/MaiM-with-u/MaiBot.git
 ```bash
 # 进入麦麦插件目录
 cd MaiBot/plugins
-# 使用git clone获取麦麦
-git clone https://github.com/MaiM-with-u/MaiBot.git
 
+# 使用git clone MaiBot-Napcat-Adapter插件到麦麦
+git clone -b plugin https://github.com/MaiM-with-u/MaiBot-Napcat-Adapter.git
 
 # (与上方二选一)如果你使用上方git clone失败，请尝试以下加速地址：
 # 进入麦麦插件目录
@@ -72,7 +72,9 @@ cd MaiBot/plugins
 # 使用git clone MaiBot-Napcat-Adapter插件到麦麦
 git clone -b plugin https://gh-proxy.org/https://github.com/MaiM-with-u/MaiBot-Napcat-Adapter.git
 ```
+
 完成后，返回MaiBot主目录  
+
 ```bash
 cd ..
 ```
@@ -91,9 +93,12 @@ uv venv --python 3.14
 
 如果你的云服务器位于国内，请用以下命令换源  
 ```bash
-# 切换阿里源
-pip config set global.index-url https://mirrors.aliyun.com/pypi/simple  
-pip config set install.trusted-host mirrors.aliyun.com
+# 临时切换UV为阿里源
+export UV_INDEX_URL="https://mirrors.aliyun.com/pypi/simple"
+
+# 永久生效，切换UV为阿里源(BASH)
+echo 'export UV_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"' >> ~/.bashrc
+source ~/.bashrc
 ```
 :::
 
