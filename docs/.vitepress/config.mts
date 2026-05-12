@@ -61,7 +61,8 @@ export default defineConfig({
               { text: '部署', link: '/qqbot/maibot/install'},
               { text: '配置与启动', link: '/qqbot/maibot/conf'},
               { text: '插件', link: '/qqbot/maibot/plugins'},
-              { text: '使用', link: '/qqbot/maibot/use'}
+              { text: '使用', link: '/qqbot/maibot/use'},
+              { text: '常用插件索引', link: '/qqbot/maibot/plugins_index'}
             ]
           },
           { text: 'Napcat协议端', link: '/qqbot/napcat' }

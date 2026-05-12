@@ -6,7 +6,16 @@ MaiBot的**插件安装目录**位于 `<你的麦麦安装目录>/MaiBot/plugins
 
 ## 如何安装插件
 
-### 方式一：手动安装(推荐)
+## 方式一：一键脚本安装(推荐)  
+1. (方式1) 在MaiBot网页控制台中找到`插件市场`，找到你心仪的插件，点击`查看详情`，跳转到`仓库: Github`  
+   (方式2) 打开[MaiBot插件市场](https://plugins.maibot.chat/)，找到你心仪的插件查看详情，并跳转到`Source Repo`  
+
+2. 找到`<> Code`->`HTTPS`->复制仓库Git地址（例如：`https://github.com/SengokuCola/MutePlugin.git`）  
+![](../../resources/images/qbot/mai-plugin-github.webp)  
+
+3. 运行脚本`bash maibot.sh`，选择`插件管理`->`安装插件`，填入插件仓库git地址，按照提示输入即可~  
+
+### 方式二：手动安装  
 1. (方式1) 在MaiBot网页控制台中找到`插件市场`，找到你心仪的插件，点击`查看详情`，跳转到`仓库: Github`  
    (方式2) 打开[MaiBot插件市场](https://plugins.maibot.chat/)，找到你心仪的插件查看详情，并跳转到`Source Repo`  
 2. 找到`<> Code`->`HTTPS`->复制仓库Git地址（例如：`https://github.com/SengokuCola/MutePlugin.git`）  
@@ -42,22 +51,14 @@ root@RainYun-c3Srwn3w:~/test/MutePlugin#
 
 6. 安装插件依赖  
 
-  a. 首先激活虚拟环境:  
-```bash
-# 虚拟环境一般位于插件文件夹的上上级目录
-# tip: 使用 `cd ..` 可返回上级目录  
-# 当前所在 MaiBot/plugins/
-source ../../venv/bin/activate
-```
+大部分插件都存在一个`requirements.txt`依赖需求文件，我们需要安装这些依赖  
 
-  b. 安装插件依赖：  
-大部分插件都存在一个`requirements.txt`依赖需求文件，我们需要安装这些依赖
 ```bash
-# 当前所在 MaiBot/plugins/
-pip install -r <某个具体的插件文件夹>/requirements.txt
+# 当前所在 MaiBot/
+uv pip install -r plugins/<某个具体的插件文件夹>/requirements.txt
 
 # 示例：
-pip install MutePlugin/requirements.txt
+uv pip install plugins/MutePlugin/requirements.txt
 ```
 
 ::: tip 不存在requirements.txt文件怎么办？  
@@ -69,14 +70,14 @@ pip install MutePlugin/requirements.txt
 7. 重新启动MaiBot本体，即可看到插件生成的`config.toml`配置文件  
 8. 使用`nano`或下载到本地来编辑插件配置文件  
 ```bash
-# 当前所在 MaiBot/plugins/
-nano <某个具体的插件文件夹>/config.toml
+# 当前所在 MaiBot/
+nano plugins/<某个具体的插件文件夹>/config.toml
 ```
 
 9. 重启MaiBot即可生效  
 
 
-### 方式二：WebUI安装(不推荐)  
+### 方式三：WebUI安装(不推荐)  
 
 在MaiBot网页控制台中找到`插件市场`，找到你心仪的插件即可完成安装  
 
