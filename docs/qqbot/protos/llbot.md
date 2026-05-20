@@ -202,7 +202,7 @@ LLBot 支持 OneBot 11、Satori、Milky 等协议方式。
 
 1. AstrBot创建`反向Websocket客户端`：`ws://127.0.0.1:6199/ws`  
 2. MaiBot创建`正向Websocket服务器`，其中：  
-Host: ``127.0.0.1`（若非同一台机器填0.0.0.0，此时需要填入token以免被攻击）  
+Host: `127.0.0.1`（若非同一台机器填0.0.0.0，此时需要填入token以免被攻击）  
 Port：`3001`（与MaiBot Napcat适配器的端口配置相同）  
 Token:`空`（或同MaiBot Napcat适配器的Token）  
 

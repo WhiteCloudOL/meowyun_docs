@@ -307,12 +307,13 @@ LLbot已由最新的MaiBot一键脚本支持安装，无需手动安装
 如需手动安装，请参考[此页](../protos/llbot.md)  
 :::  
 
-对接：创建`正向Websocket服务器`，其中：  
-Host: ``127.0.0.1`（若非同一台机器填0.0.0.0，此时需要填入token以免被攻击）  
+对接：  
+创建`正向Websocket服务器`，其中：  
+Host: `127.0.0.1`（若非同一台机器填0.0.0.0，此时需要填入token以免被攻击）  
 Port：`3001`（与MaiBot Napcat适配器的端口配置相同）  
 Token:`空`（或同MaiBot Napcat适配器的Token）  
 
-::: tip 没用LLbot适配器？  
+::: tip 不存在LLbot适配器？  
 MaiBot拥有Napcat适配器，这对于LLbot是通用的，直接下载`Napcat-Adapter`即可对接LLbot喵~  
 :::  
 
