@@ -18,6 +18,11 @@ curl -o maibot.sh https://dl.meowyun.cn/bot/bash/maibot.sh && bash maibot.sh
 curl -o maibot.sh https://raw.githubusercontent.com/WhiteCloudOL/Qbot-StartScripts/refs/heads/main/maibot.sh && bash maibot.sh
 ```  
 
+::: tip 后续如何运行脚本？  
+假设你在`~`(用户目录，比如`/root/`)目录下执行上方下载脚本，下面你只需运行`bash ~/maibot.sh`，即可唤起脚本，无需再次下载  
+如需更新一键脚本，在脚本下载目录下，重新执行上方下载命令即可  
+:::  
+
 ## Linux原生手动部署  
 
 

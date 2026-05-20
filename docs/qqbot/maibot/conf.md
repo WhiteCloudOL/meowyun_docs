@@ -281,10 +281,11 @@ jq -r '.access_token' webui.json
 ```
 直接得到`access_token`
 
-## 配置NapCat协议端  
+## 配置QQ协议端  
 
+### 对于Napcat：
 ::: tip 安装Napcat  
-按照[此步骤](../napcat.md#docker一键安装)安装  
+按照[此步骤](../protos/napcat.md#docker一键安装)安装  
 如提示未找到docker请执行步骤内上文的脚本安装docker  
 :::  
 
@@ -299,6 +300,22 @@ jq -r '.access_token' webui.json
 
 ![](../../resources/images/qbot/mai-napcat.webp)  
 
+### 对于LLbot：  
+::: tip 安装LLbot  
+LLBot具有更好的反检测能力，Bot被强制下线的概率更小  
+LLbot已由最新的MaiBot一键脚本支持安装，无需手动安装  
+如需手动安装，请参考[此页](../protos/llbot.md)  
+:::  
 
+对接：创建`正向Websocket服务器`，其中：  
+Host: ``127.0.0.1`（若非同一台机器填0.0.0.0，此时需要填入token以免被攻击）  
+Port：`3001`（与MaiBot Napcat适配器的端口配置相同）  
+Token:`空`（或同MaiBot Napcat适配器的Token）  
+
+::: tip 没用LLbot适配器？  
+MaiBot拥有Napcat适配器，这对于LLbot是通用的，直接下载`Napcat-Adapter`即可对接LLbot喵~  
+:::  
+
+### 完成对接
 为了防止部分bug，建议重启一次MaiBot  
 现在你就完成了Napcat的配置了！不出意外，你的Bot已经能够正确接收消息~  

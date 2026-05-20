@@ -65,7 +65,14 @@ export default defineConfig({
               { text: '常用插件索引', link: '/qqbot/maibot/plugins_index'}
             ]
           },
-          { text: 'Napcat协议端', link: '/qqbot/napcat' }
+          { text: '协议端',
+            collapsed: true,
+            items: [
+              { text: 'Napcat', link: '/qqbot/protos/napcat' },
+              { text: 'LLBot', link: '/qqbot/protos/llbot' }
+            ]
+          },
+          
         ]
       },
       {
