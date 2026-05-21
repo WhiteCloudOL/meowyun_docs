@@ -5,8 +5,44 @@
 在此推荐使用linux来部署，有利于云服务器部署bot  
 :::  
 
-## Linux原生自动部署  
+## Linux-TUI自动管理（新）  
+> 开源地址：https://github.com/WhiteCloudOL/MaiBot-Manager-TUI  
+> 许可证：AGPL-3.0  
 
+TUI程序基于Rust开发，支持一键部署与管理MaiBot，有更现代化的界面与操作逻辑，持续更新中...  
+操作逻辑与Bash版本一致，无需担心~  
+
+1. 使用安装脚本自动安装MaiBot-Manager-TUI
+```bash  
+# 国内安装  
+curl -fsSL https://dl.meowyun.cn/bot/mmtui/install.sh | bash
+
+# 海外安装  
+curl -fsSL https://raw.githubusercontent.com/WhiteCloudOL/MaiBot-Manager-TUI/main/scripts/install.sh | bash
+```  
+
+::: tip 想要手动安装管理程序？   
+前往仓库页查看:[链接](https://github.com/WhiteCloudOL/MaiBot-Manager-TUI)  
+:::  
+
+2. 打开程序管理MaiBot  
+```bash
+# 执行这个命令即可，无论你所在哪个目录
+maibot
+```
+
+3. 选择`安装/更新MaiBot`安装麦麦，根据提示选择  
+4. 安装完成后进入`管理MaiBot核心`，开启一次MaiBot（除此开启需要选择`启动并进入MaiBot窗口`）  
+5. 如果为云服务器，返回`主界面`，进入`配置与访问`，初始化MaiBot访问配置（这里会将MaiBot的WebUI绑定到`0.0.0.0`，以便其他网络能够访问到WebUI）  
+
+::: warning 警告  
+请不要将WebUI访问令牌设置为弱密码，否则有被入侵风险  
+:::
+
+6. 进入`管理MaiBot核心`，重新启动一次MaiBot，即完成安装  
+
+
+## Linux脚本自动部署  
 使用自动脚本一键部署与管理MaiBot，支持`Debian12/13`,`Ubuntu22.04/24.04+`  
 脚本功能**完善**，可一站式管理～
 
@@ -102,7 +138,7 @@ uv venv --python 3.14
 export UV_INDEX_URL="https://mirrors.aliyun.com/pypi/simple"
 
 # 永久生效，切换UV为阿里源(BASH)
-echo 'export UV_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"' >> ~/.bashrc
+echo 'export UV_INDEX_URL="https://mirrors.aliyun.com/pypi/simple"' >> ~/.bashrc
 source ~/.bashrc
 ```
 :::
