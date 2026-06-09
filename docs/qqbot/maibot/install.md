@@ -5,14 +5,20 @@
 在此推荐使用linux来部署，有利于云服务器部署bot  
 :::  
 
-## Linux-TUI自动管理（新）  
+## MaiBot Manager TUI自动管理（推荐）
 > 开源地址：https://github.com/WhiteCloudOL/MaiBot-Manager-TUI  
 > 许可证：AGPL-3.0  
 
-TUI程序基于Rust开发，支持一键部署与管理MaiBot，有更现代化的界面与操作逻辑，持续更新中...  
-操作逻辑与Bash版本一致，无需担心~  
+MaiBot Manager TUI 是面向 Linux、Windows 10/11 与 macOS 的一站式部署和运维工具。它可以完成 MaiBot 安装 / 更新、核心服务启停、协议端管理、访问配置和插件管理；安装后既可以进入图形化终端界面，也可以用 `maibot ...` 命令直接执行 CLI 操作。
 
-1. 使用安装脚本自动安装MaiBot-Manager-TUI
+::: tip 推荐使用 TUI
+如果你是第一次部署 MaiBot，建议优先使用这一方式。新版界面采用顶部标题、左侧导航、主内容区和底部状态栏的布局，所有快捷键都会统一显示在底部，不需要在旧式菜单里来回猜选项含义。
+:::
+
+### 1. 安装 MaiBot Manager TUI
+
+**Linux / macOS：**
+
 ```bash  
 # 国内安装  
 curl -fsSL https://dl.meowyun.cn/bot/mmtui/install.sh | bash
@@ -21,25 +27,88 @@ curl -fsSL https://dl.meowyun.cn/bot/mmtui/install.sh | bash
 curl -fsSL https://raw.githubusercontent.com/WhiteCloudOL/MaiBot-Manager-TUI/main/scripts/install.sh | bash
 ```  
 
-::: tip 想要手动安装管理程序？   
-前往仓库页查看:[链接](https://github.com/WhiteCloudOL/MaiBot-Manager-TUI)  
+**Windows 10/11：**
+
+```powershell
+# 国内安装
+irm https://dl.meowyun.cn/bot/mmtui/install.ps1 | iex
+
+# 海外安装
+irm https://raw.githubusercontent.com/WhiteCloudOL/MaiBot-Manager-TUI/main/scripts/install.ps1 | iex
+```
+
+::: tip 想要手动下载管理程序？
+可以前往 [MaiBot Manager TUI 仓库](https://github.com/WhiteCloudOL/MaiBot-Manager-TUI) 下载与系统架构匹配的 release 文件。
 :::  
 
-2. 打开程序管理MaiBot  
+安装完成后重启终端，或重新加载当前 shell 的环境变量，即可在任意目录执行 `maibot`。
+
+### 2. 打开 TUI 面板
+
 ```bash
 # 执行这个命令即可，无论你所在哪个目录
 maibot
+
+# 或显式进入 TUI
+maibot tui
 ```
 
-3. 选择`安装/更新MaiBot`安装麦麦，根据提示选择  
-4. 安装完成后进入`管理MaiBot核心`，开启一次MaiBot（除此开启需要选择`启动并进入MaiBot窗口`）  
-5. 如果为云服务器，返回`主界面`，进入`配置与访问`，初始化MaiBot访问配置（这里会将MaiBot的WebUI绑定到`0.0.0.0`，以便其他网络能够访问到WebUI）  
+进入后左侧侧边栏会显示这些入口：
+
+| 入口 | 用途 |
+| --- | --- |
+| `概览` | 查看 MaiBot、协议端和插件状态 |
+| `部署与更新` | 配置安装目录、分支、Python 环境、协议端并执行安装 / 更新 |
+| `核心服务管理` | 启动、停止、重启 MaiBot 核心，查看日志或进入交互终端 |
+| `协议端服务` | 管理 NapCatQQ / LuckyLilliaBot，macOS 会显示当前平台能力说明 |
+| `插件中心` | 安装、卸载插件并修复依赖 |
+| `设置` | 查看访问汇总、初始化 WebUI 访问配置和 Adapter 策略 |
+| `关于` | 查看版本、文档与运行环境信息 |
+
+底部状态栏会根据当前页面显示可用快捷键。常用按键如下：
+
+| 按键 | 功能 |
+| --- | --- |
+| `↑` / `↓` | 在当前列表、表格或配置选项中移动 |
+| `←` / `→` | 在部署页切换配置项；在弹窗中切换操作按钮 |
+| `Tab` / `Shift+Tab` | 在侧边栏与内容区之间切换 |
+| `Enter` | 打开当前项、确认弹窗操作，或编辑部署路径 |
+| `F5` | 在部署页开始安装 / 更新 |
+| `Ctrl+R` | 在部署页恢复推荐默认配置 |
+| `Ctrl+1` | 快速回到侧边栏 |
+| `Esc` | 返回上一级或关闭弹窗 |
+| `Ctrl+Q` / `Ctrl+C` | 退出 TUI 并恢复终端 |
+
+### 3. 推荐安装流程
+
+1. 进入 `部署与更新`。
+   使用 `←` / `→` 在安装目录、分支、安装模式、Python 环境、虚拟环境、GitHub 线路、PyPI 源和协议端之间切换；使用 `↑` / `↓` 调整当前配置项。
+   一般保持推荐默认值即可：安装目录为 `~/maimai`，Python 环境为 `uv`，Linux / Windows 默认安装 NapCatQQ；macOS 当前默认不安装协议端。
+
+2. 确认配置后按 `F5` 开始安装 / 更新。
+   如果网络较慢，程序会对 GitHub 官方线路和镜像源做测速，并自动选择更合适的线路。
+
+3. 安装完成后进入 `核心服务管理`，先启动一次 MaiBot。
+   首次启动如果需要确认 EULA，请选择交互终端方式完成确认；如果没有选择，程序会在倒计时后默认后台启动。
+
+4. 云服务器部署建议进入 `设置`，打开 `初始化访问配置`。
+   该操作会把 MaiBot WebUI 绑定到 `0.0.0.0`，方便从其他设备访问；访问地址和密钥可以通过 `访问汇总` 查看。新版 TUI 会直接在当前界面用居中弹窗展示访问汇总，不会跳到空白页或旧式回车返回页面。
+
+5. 回到 `核心服务管理`，重启一次 MaiBot，让访问配置完整生效。
 
 ::: warning 警告  
-请不要将WebUI访问令牌设置为弱密码，否则有被入侵风险  
+将 WebUI 绑定到 `0.0.0.0` 后，端口可能暴露到公网。请务必设置足够强的访问令牌，并配合服务器防火墙或安全组限制来源 IP。
 :::
 
-6. 进入`管理MaiBot核心`，重新启动一次MaiBot，即完成安装  
+### 4. 平台差异说明
+
+- **Linux**：MaiBot / LLBot 使用 `screen` 后台会话，NapCatQQ 使用 Docker 容器；适合云服务器长期运行。
+- **Windows**：MaiBot 会在独立窗口运行；NapCat Shell 和 LLBot Desktop 启动时可能请求管理员权限。缺少 Git / uv / Python 时，管理器会优先把便携工具放到 MaiBot 安装目录下，不污染系统环境。
+- **macOS**：当前支持 MaiBot 核心、访问配置和插件管理；NapCatQQ / LuckyLilliaBot 会保留清晰的说明入口，安装计划默认不安装协议端。
+
+::: tip 响应速度说明
+新版 TUI 在列表移动和普通弹窗打开时会使用缓存重绘，不会每次按键都重新探测服务状态。访问汇总只会在你明确打开时读取相关信息，公网 IP 也只在确实需要外部地址时查询。
+:::
 
 
 ## Linux脚本自动部署  
