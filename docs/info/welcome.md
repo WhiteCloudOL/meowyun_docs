@@ -1,31 +1,36 @@
-# 清蒸云鸭 - 文档  <Badge type="tip" text="v1.1.0" /> 
+# 清蒸云鸭の文档 <Badge type="tip" text="v1.1.0" />
 
-<div align="center">
+这里收录 QQ 机器人、Minecraft 服务器和雨云服务相关的部署、配置与运维指南。文档以可复现的操作步骤为核心，并持续跟随相关项目更新。
 
-![counter](https://count.getloli.com/@meowyun_doc?name=meowyun_doc&theme=miku&padding=8&offset=0&align=top&scale=1&pixelated=1&darkmode=auto)
-*文档访问量*
+<SiteCounter />
 
-</div>
+## 文档内容
 
-## 文档用于做什么？
-本文档的目的在于分享 `MC/QBot/雨云` 有关知识与软件搭建方式~
+本文档用于分享 Minecraft（MC）服务器、QQ 机器人（QBot）和雨云服务相关知识，包括环境准备、软件部署、配置说明、日常运维与故障排查。
+
+::: tip 阅读建议
+首次部署时，请按照页面顺序完成操作，并在执行命令前确认当前目录、系统版本和用户权限是否符合说明。
+:::
 
 ## 开源许可
-文档采用[AGPL-3.0 license](https://www.gnu.org/licenses/agpl-3.0.html)开源  
-欢迎各位补充文档，增加内容~  
-可在 Github 提交 **Issue/PR**  
-GitHub仓库：https://github.com/WhiteCloudOL/meowyun_docs  
+文档采用 [AGPL-3.0 License](https://www.gnu.org/licenses/agpl-3.0.html) 开源。欢迎补充文档或改进现有内容，可在 GitHub 仓库提交 **Issue** 或 **Pull Request**。
 
-## 关于本站  
-文档国内站部署于[雨云](https://www.rainyun.com/qzyy_),采用 EdgeOne CDN加速   
-CF站部署于`CloudFlare`，喵~
+- **GitHub 仓库：** <https://github.com/WhiteCloudOL/meowyun_docs>
 
-## 最新文档页  
-最新版跟随Github提交同步发布，但因为部署在CloudFlare可能连接比较缓慢，如无法访问请使用国内地址  
-**最新文档:** https://docs.catyun.cyou/  
-**国内稳定版:** https://docs.meowyun.cn/  
+## 站点部署
 
-## Links  
-1. [Meowyun导航页](https://index.meowyun.cn/)  
-2. [个人主页](https://meowyun.cn/)  
-3. [雨云](https://www.rainyun.com/qzyy_)  
+- 国内站部署于[雨云](https://www.rainyun.com/qzyy_)，并使用 EdgeOne CDN 加速。
+- Cloudflare 站点部署于 Cloudflare，用于同步发布最新文档。
+
+## 文档站点
+
+主站会跟随 GitHub 提交持续更新。Cloudflare 镜像用于同步发布文档，在部分网络环境下可能访问较慢，此时建议优先使用主站。
+
+- **文档主站：** <https://docs.meowyun.cn/>
+- **Cloudflare 镜像：** <https://docs.catyun.cyou/>
+
+## 相关链接
+
+1. [Meowyun 导航页](https://index.meowyun.cn/)
+2. [个人主页](https://meowyun.cn/)
+3. [雨云](https://www.rainyun.com/qzyy_)

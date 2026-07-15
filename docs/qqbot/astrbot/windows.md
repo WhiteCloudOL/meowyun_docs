@@ -1,8 +1,9 @@
 # Windows 部署
 
+本页介绍在 Windows 上通过 Python 虚拟环境部署 AstrBot 的完整流程，适合本地测试或桌面环境运行。
+
 ::: tip
-**本页部分文案参考官方文档使用AI生成**  
-本教程将指导您从零开始在 Windows 环境下部署 AstrBot，包含 Python 安装、源码获取以及启动的完整全过程。
+本页部分内容基于官方文档整理并使用 AI 辅助润色，涵盖 Python 安装、源码获取和程序启动。
 :::
 
 ## 1. 环境准备：安装 Python
@@ -10,12 +11,12 @@
 AstrBot 需要 Python 3.12 及以上版本才能运行。如果您尚未安装 Python，请按照以下步骤操作：
 
 1. 访问 [Python 官方下载页面](https://www.python.org/downloads/windows/)。
-2. 下载最新的 Python 3 版本的 Windows installer（比如`3.14.4`）。
+2. 下载适用于当前系统架构的 Python 3 Windows installer，例如 `3.14.4`。
 ::: tip Python3.14.4 For Windows x64
 下载地址：https://www.python.org/ftp/python/3.14.4/python-3.14.4-amd64.exe  
 :::
-1. **重要提示**：运行安装程序时，请务必勾选底部的 **"Add python.exe to PATH"** 选项。
-2. 点击 "Install Now" 完成安装。
+3. 运行安装程序时，务必勾选底部的 **Add python.exe to PATH**。
+4. 点击 **Install Now** 完成安装。
 
 验证安装是否成功：
 打开终端（按 `Win + R`，输入 `cmd` 后回车），输入以下命令：
@@ -52,13 +53,13 @@ cd AstrBot
 ```cmd
 python -m venv ./venv
 ```
-*(注意：有时可能是 `python3` 而不是 `python`)*
+> 如果系统无法识别 `python`，请尝试使用 `python3`。
 
 2. **激活虚拟环境**
 ```cmd
 venv\Scripts\activate
 ```
-*(激活成功后，您会在终端的命令行开头看到类似 `(venv)` 的标识)*
+> 激活成功后，命令行开头会出现类似 `(venv)` 的标识。
 
 3. **安装依赖文件**
 安装过程可能需要花费一些时间，这里使用清华镜像源加速下载：
@@ -71,20 +72,26 @@ python -m pip install -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.c
 python main.py
 ```
 
-## 🎉 大功告成！
+## 4. 完成部署
 
-如果一切顺利，您会在终端看到 AstrBot 打印出的日志。
-如果没有报错，您会看到一条日志显示类似 `🌈 管理面板已启动，可访问` 并附带了几条链接。
+如果一切顺利，终端会持续显示 AstrBot 运行日志。请保持该终端窗口开启；关闭窗口会同时终止 AstrBot 进程。
+
+启动完成后，日志中会出现类似 `🌈 管理面板已启动，可访问` 的提示，并附带一个或多个管理面板地址。打开其中适合当前网络环境的地址即可。
 
 ### 进入控制台
 
-打开浏览器，访问以下链接进入 AstrBot 管理面板：
-👉 **`http://localhost:6185`**
+在本机部署时，可以直接访问：
 
-::: info
-* 默认的用户名和密码均为 **`astrbot`**。
-* 登录后建议按要求修改密码以保证安全。
-* 如果您是在云服务器上部署，需要将 `localhost` 替换为服务器的公网 IP 地址。
+```text
+http://localhost:6185
+```
+
+::: tip 服务器部署
+如果 AstrBot 运行在服务器上，请将 `localhost` 替换为服务器公网 IP 或已解析的域名，并确认防火墙和安全组已放行实际使用的端口。
 :::
 
-接下来，您需要前往控制台配置大模型 API 并部署消息平台（例如使用 Napcat 接入 QQ），具体可参考控制台内的提示或前往 [AstrBot 官方文档](https://docs.astrbot.app/) 查看。
+::: warning 首次登录密码
+首次登录时，用户名通常为 `astrbot`，密码不是固定值。请在本次启动日志中查找 AstrBot 打印的**随机初始密码**，使用该密码登录，并在进入管理面板后立即修改。
+:::
+
+登录后，请配置大模型 API，并至少部署一个消息平台，才能在对应平台上使用 AstrBot。例如，可通过 NapCat 接入 QQ。具体步骤可参考控制台提示或 [AstrBot 官方文档](https://docs.astrbot.app/)。

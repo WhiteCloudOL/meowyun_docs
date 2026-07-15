@@ -1,14 +1,15 @@
-# MaiBot麦麦 
-> 文档 By 清蒸云鸭  
-> 基于bot版本`v1.0.0`  
-> 本文档反馈与交流Q群: 637174573  
+# MaiBot（麦麦）
 
-::: info  
-**官方文档:** https://docs.mai-mai.org/  
-**Github:** https://github.com/MaiM-with-u/MaiBot  
-**雨云部署：** https://www.rainyun.com/qzyy_ （首月优惠码5折）  
+本文由清蒸云鸭整理，基于 MaiBot `v1.0.0`。文档反馈与部署交流可加入 [云的小屋☁️（637174573）](https://qm.qq.com/q/GFJ6lOztK4)。
+
+::: info 项目资源
+- **官方文档：** <https://docs.mai-mai.org/>
+- **GitHub：** <https://github.com/MaiM-with-u/MaiBot>
+- **雨云部署：** <https://www.rainyun.com/qzyy_>（首月优惠码 5 折）
 :::  
 
-MaiBot 是一款开源的智能聊天机器人，专注于为群组聊天（如QQ群）提供**拟人化的交互体验**。她基于多模型协作架构，结合自然语言处理与仿生思考规划，旨在让对话更自然、更有温度。  
+MaiBot 是一款开源智能聊天机器人，专注于为 QQ 群等群组聊天场景提供**拟人化交互体验**。项目采用多模型协作架构，结合自然语言处理与仿生思考规划，使对话更加自然。
 
-* 文档现已支持新版本`v1.0.0`  
+::: tip 版本范围
+当前文档已适配 `v1.0.0`。如果所使用的版本更高，请同时参考官方发行说明核对配置字段和目录结构。
+:::

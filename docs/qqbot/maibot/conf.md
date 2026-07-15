@@ -1,322 +1,485 @@
-# MaiBot配置与启动  
+# MaiBot 配置与启动
 
-::: warning 文档升级提示  
-为适应新版本MaiBot,本页文档正在调整中，可能有不周到之处，感谢理解喵~  
-:::  
+<div class="conf-guide-hero">
+  <div class="conf-guide-hero__copy">
+    <span class="conf-guide-hero__eyebrow">MAIBOT SETUP MAP</span>
+    <p>从第一次启动到 QQ 正常收发消息，按一条清晰的路线完成 WebUI、模型、人格与适配器配置。</p>
+  </div>
+  <div class="conf-guide-hero__ports" aria-label="常用端口">
+    <span><b>8001</b> WebUI</span>
+    <span><b>3001</b> QQ WebSocket</span>
+  </div>
+</div>
 
-## MaiBot的架构图
-```
-# MaiBot文件分布图
+除首次开放 WebUI 或排查启动故障外，日常配置统一在 WebUI 中完成。本页仍保留关键文件路径，方便备份、迁移与故障定位。
+
+::: warning 版本适配说明
+MaiBot 仍在持续更新，不同版本的菜单名称和配置项可能略有差异。本文以当前插件版适配器为主；如页面说明与实际界面不一致，请以当前版本生成的配置和 WebUI 提示为准。
+:::
+
+## 推荐配置顺序
+
+<div class="conf-journey" role="list" aria-label="MaiBot 推荐配置顺序">
+  <div class="conf-journey__step" role="listitem"><span>01</span><strong>启动核心</strong><small>生成配置与数据目录</small></div>
+  <div class="conf-journey__step" role="listitem"><span>02</span><strong>进入 WebUI</strong><small>确认地址与访问密钥</small></div>
+  <div class="conf-journey__step" role="listitem"><span>03</span><strong>连接模型</strong><small>测试并分配核心任务</small></div>
+  <div class="conf-journey__step" role="listitem"><span>04</span><strong>塑造人格</strong><small>校准称呼、语气与行为</small></div>
+  <div class="conf-journey__step" role="listitem"><span>05</span><strong>接入 QQ</strong><small>连接适配器并测试消息</small></div>
+</div>
+
+## 文件路径速查
+
+除特别说明外，下表路径均相对于 `maimai/MaiBot`。模型、人格和插件设置仍优先在 WebUI 中修改，文件路径主要用于确认配置位置、备份和排错。
+
+| 路径 | 作用 | 建议操作 |
+| --- | --- | --- |
+| `bot.py` | MaiBot 启动入口 | 用于启动，不要直接修改 |
+| `config/bot_config.toml` | Bot 身份、人格、聊天、WebUI 与运行配置 | 日常使用 WebUI；仅在无法远程访问 WebUI 时手动调整网络设置 |
+| `config/model_config.toml` | API 提供商、模型列表与模型任务分配 | 使用 WebUI 管理；迁移或升级前备份 |
+| `data/webui.json` | WebUI 访问密钥与认证信息 | 可以读取或备份；重置密钥时需先停止 MaiBot |
+| `plugins/` | 已安装的插件和适配器 | 通过 WebUI 插件管理维护 |
+| `plugins/<插件目录>/config.toml` | 单个插件的连接参数与功能设置 | 使用 WebUI 插件配置；目录名称可能因安装方式不同而变化 |
+| `.venv/` | uv 创建的 Python 虚拟环境 | 不要手动移动或编辑其中的文件 |
+| `../start.sh` | 部分旧版部署脚本提供的启动入口 | 仅在当前部署方式确实生成该文件时使用 |
+
+## 目录与通信架构
+
+以下结构以默认安装目录 `maimai` 为例。不同部署工具可能会调整协议端目录名称，但 MaiBot 主目录中的 `config`、`data` 和 `plugins` 作用相同。
+
+```text
 maimai/
-│   ├── Napcat/
-│   │   ├── config/
-│   │   ├── docker-compose.yml
-│   │   └── ...
-│   ├── MaiBot/
-│   │   ├── .venv/ (UV虚拟环境)
-│   │   ├── bot.py
-│   │   ├── plugins/
-│   │   │   ├── MaiBot-Napcat-Adapter/
-│   │   │   └── ...
-│   │   └── ...
-│   ├── (可选)maimbot_tts_adapter/
-│   └── start.sh(下载的启动脚本)
-├── 
-└── ...
+├── MaiBot/
+│   ├── .venv/                         # uv 虚拟环境
+│   ├── bot.py                         # MaiBot 启动入口
+│   ├── config/
+│   │   ├── bot_config.toml            # Bot 与 WebUI 配置
+│   │   └── model_config.toml          # 模型配置
+│   ├── data/                          # WebUI、数据库与运行数据
+│   └── plugins/
+│       ├── MaiBot-Napcat-Adapter/     # NapCat / LLBot 适配器
+│       └── MaiBot-SnowLuma-Adapter/   # SnowLuma 适配器
+├── NapCat/                            # 可选：QQ 协议端
+├── maimbot_tts_adapter/               # 可选：语音适配器
+└── start.sh                           # 部分脚本部署方式提供
 ```
 
+当前推荐的插件版适配器直接运行在 MaiBot 进程中，消息链路如下：
+
+```text
+QQ
+↕
+NapCat / LLBot / SnowLuma（正向 WebSocket 服务端，常用端口 3001）
+↕
+对应 Adapter 插件（WebSocket 客户端，运行在 MaiBot 内部）
+↕
+MaiBot 核心
+└── WebUI（默认端口 8001）
 ```
-# MaiBot应用间通信图  
-MaiBot  
-↑↓ # default port:8000  
-(可选:MaiBotTTSAdapter)  
-↑↓
-MaiBot-NapCat-Adapter(Websocket Client)
-↑↓ # default port: 3001
-↑↓ # token: xxx (默认为空)
-NapCat(WebSocket Server)
-```
 
-<!-- ![架构图](../../resources/images/qbot/MaiBot_struct.webp) -->
+::: info 关于 8000 端口
+`maim_message` 的默认端口通常是 `8000`，主要供旧版或独立适配器使用。当前 NapCat 和 SnowLuma 插件版适配器不依赖这条连接，不要把它与协议端常用的 `3001` 端口混淆。
+:::
 
-## 初次启动
+## 首次启动
 
-首次启动MaiBot将会生成默认的配置文件  
+在 `maimai/MaiBot` 目录中执行：
 
 ```bash
-# 在maimai目录下执行  
+# 如果当前位于 maimai 目录，先进入 MaiBot
 cd MaiBot
 
-# 如果崩溃请重启，启动完成后需输入"confirm"或"同意"以同意用户协议
-uv run bot.py
+# 前台启动，便于查看完整日志
+uv run python bot.py
 ```
 
-## 配置麦麦WebUI网页控制台  
+首次启动时，请根据终端提示阅读并接受用户协议。不同版本要求输入的确认文本可能不同，请以终端显示的内容为准，不要直接关闭窗口。
 
-* 若你使用一键脚本，请前往脚本`配置与访问`->`初始化MaiBot访问配置`完成更改，无需手动配置  
+启动后，MaiBot 会自动生成默认配置并继续初始化 WebUI，无需为了生成配置再启动第二次。看到 WebUI 监听地址且日志中没有持续出现异常，即可继续配置。
 
-::: tip 如何编辑文件  
-方式一： FinalShell/Tabby或其他支持sftp的工具直接双击编辑  
-方式二： 使用nano或vim，新手推荐nano: `nano 文件名`  
-**nano如何保存与退出**:  
-Ctrl+S: 保存  
-Ctrl+X: 退出  
-:::  
-  
-MaiBot WebUI主机默认绑定在`127.0.0.1`即本机，无法通过外部访问  
-如果你无法访问MaiBot-WebUI，请找到以下`webui.host`改为`0.0.0.0`  
+::: tip 找不到配置文件？
+确认当前启动的是正确的 MaiBot 目录，并检查首次启动是否因依赖、用户协议或 TOML 语法错误提前退出。`config/bot_config.toml` 和 `config/model_config.toml` 只会在初始化成功后出现。
+:::
 
-::: details Bot配置`maimai/MaiBot/config/bot_config.toml`
+## 配置与访问 WebUI
+
+MaiBot WebUI 默认地址为 `http://127.0.0.1:8001`。`127.0.0.1` 只允许本机访问，因此服务器部署还需要初始化远程访问配置。
+
+### 使用管理器初始化（推荐）
+
+如果通过 MaiBot Manager TUI 部署，请打开 `设置` 或 `配置与访问`（名称可能因版本不同），选择 `初始化 MaiBot 访问配置`。管理器会调整 WebUI 监听地址，并在访问汇总中显示地址和密钥。
+
+完成后重启 MaiBot，使监听地址完整生效。
+
+### 手动开放远程访问
+
+仅在无法通过管理器初始化时，才需要编辑 `maimai/MaiBot/config/bot_config.toml`。示例中的网段应替换为实际管理设备所在网段。
+
+::: details WebUI 网络配置示例
 ```toml
 [webui]
-enabled = true # 是否启用WebUI
-host = "0.0.0.0" # <-- WebUI 绑定主机地址，这就是我们需要改的
-port = 8001 # WebUI 绑定端口
-mode = "production" # 运行模式：development(开发) 或 production(生产)
-anti_crawler_mode = "basic" # 防爬虫模式：false(禁用) / strict(严格) / loose(宽松) / basic(基础-只记录不阻止)
-allowed_ips = "127.0.0.1" # IP白名单（逗号分隔，支持精确IP、CIDR格式和通配符）
-trusted_proxies = "" # 信任的代理IP列表（逗号分隔），只有来自这些IP的X-Forwarded-For才被信任
-trust_xff = false # 是否启用X-Forwarded-For代理解析（默认false）
-secure_cookie = false # 是否启用安全Cookie（仅通过HTTPS传输，默认false）
-enable_paragraph_content = false # 是否在知识图谱中加载段落完整内容（需要加载embedding store，会占用额外内存）
-```  
+enabled = true
+host = "0.0.0.0"                         # 监听所有网卡
+port = 8001
+mode = "production"
+anti_crawler_mode = "basic"
+allowed_ips = "127.0.0.1,192.168.1.0/24" # 仅允许本机和指定网段
+trusted_proxies = ""
+trust_xff = false
+secure_cookie = false
+enable_paragraph_content = false
+```
 :::
 
+- `host = "0.0.0.0"` 只表示允许从其他设备建立连接，不等于已经放行防火墙。
+- `allowed_ips` 必须包含实际访问设备的 IP 或网段，否则即使端口开放也会被拒绝。
+- 仅在反向代理来源可信时启用 `trust_xff`，并填写 `trusted_proxies`。
+- 通过 HTTPS 反向代理访问时，可以启用 `secure_cookie`；直接使用 HTTP 时不要启用。
 
-## 配置模型提供商  
-
-### 添加模型提供商  
-麦麦兼容OpenAI与Google格式的不同服务提供商，WebUI内置了不同模板可切换，以下为推荐的API提供商  
-
-::: info (更强大的模型能力)配置云雾AI  
-通过这个链接注册：https://yunwu.ai/register?aff=6Fas  
-注册完成后：  
-1. 进入`控制台`->`API令牌`  
-2. 选择`添加令牌`  
-3. 输入任意名称，`分组优先级`选择下勾选你需要的渠道分组（推荐顺序`Codex专属`->`优质gemini`->`官转gemini`->`default`->`特价Claude Code`）  
-4. 设置`额度`，可选无限，确保不要泄露密钥  
-5. 确定并回到`API令牌`界面，复制创建的API密钥(格式为sk开头，例如`sk-4kLu**********TxC3`)  
-6. 回到MaiBot网页控制台->`AI模型厂商配置`  
-7. 选择`添加提供商`，提供商模板为`自定义`  
-8. 填入信息：
-```
-名称: YunwuAI  
-基础 URL: https://yunwu.ai/v1
-API Key: sk-***********
-```
-1. 保存  
-:::  
-
-具体设置参照：  
-::: details 云雾AI设置图  
-1. 分组设置  
-![](../../resources/images/qbot/mai-yunwu-dv.webp)  
-
-2. 麦麦配置
-![](../../resources/images/qbot/mai-yunwu-set.webp)  
-:::  
-
-::: info (稳定推荐，仅限国产模型)配置硅基流动API  
-你可以通过这个链接来注册：  
-https://cloud.siliconflow.cn/i/ys2vPqSO  
-注册完成后：
-1. 完成`实名认证`   
-2. 找到`API密钥`->`新建API密钥`  
-3. 填入描述信息（任意）->`复制密钥`   
-4. 得到**API-KEY**  
-5. 回到MaiBot网页控制台->`AI模型厂商配置`  
-6. 选择`添加提供商`，提供商模板为`硅基流动`  
-7. 填入信息：
-```
-名称: SiliconFlow  
-API Key: sk-***********
-```
-1. 保存  
-:::  
-
-* **手动配置**：编辑文件`maimai/MaiBot/config/model_config.toml`
+::: danger 不要直接暴露管理面板
+WebUI 包含配置、日志、插件和密钥等敏感信息。公网部署应设置强访问密钥，并通过云平台安全组、系统防火墙或带鉴权的反向代理限制来源地址。
 :::
 
-## 配置麦麦人格、表达设置  
-这里包含了一些人格设置  
+### 选择访问地址
 
-## 配置麦麦适配器(MaiBot-Napcat-Adapter)  
-::: info  
-新版本的适配器已经改为插件形式，不过原有独立形式获取也可以使用(?)  
-:::  
+#### 独立公网 IP 服务器
 
-下面跟着我配置吧！  
-1. 首先，需要处于`MaiBot`目录下，如果你在`maimai`目录，使用`cd MaiBot`进入MaiBot目录  
+在云平台安全组和系统防火墙中放行 `8001/TCP`，并尽量将来源限制为自己的公网 IP。访问地址：
 
-```bash
-# 如果你在`maimai`目录下请执行：
-cd MaiBot
-
-# 进入MaiBot-Napcat-Adapter目录，如果这里报错证明你没有安装MaiBot-Napcat-Adapter插件，请跳转到本文档MaiBot部署页安装
-cd plugins/MaiBot-Napcat-Adapter
+```text
+http://<服务器 IP>:8001
 ```
 
-2. 修改插件配置文件`maimai/MaiBot/plugins/MaiBot-Napcat-Adapter/config.toml`  
-::: tip 没有找到此文件？  
-请先启动一次MaiBot并同意用户许可协议  
-:::  
-使用nano编辑或下载到本地编辑：
-```bash  
-# 如果选择nano编辑，修改完成后按下Ctrl+S保存，按下Ctrl+X退出  
-nano config.toml
-```  
+不要为了访问 WebUI 直接关闭整机防火墙。
 
-3. 修改配置，启用适配器插件  
-在配置文件中找到:
+#### NAT 云服务器（共享 IP）
 
-```toml
-[plugin]
-enabled = false
+在服务商的 NAT 管理界面，将内网 `8001` 映射到一个可用的外网端口，然后访问：
+
+```text
+http://<服务器 IP>:<外网映射端口>
 ```
 
-将其中的`false`改为`true`，并保存  
+### 获取访问密钥
 
-4. 修改配置，添加白名单  
-在配置文件中找到:
-```toml
-[chat]
-enable_chat_list_filter = true
-show_dropped_chat_list_messages = false
-group_list_type = "whitelist"
-group_list = [13456890,123456789]
-private_list_type = "whitelist"
-private_list = [12345678,23456789]
-ban_user_id = []
-ban_qq_bot = false
-```
-修改其中的`group_list`与`private_list`，填入需要的群号与QQ号即可  
+访问密钥保存在 `maimai/MaiBot/data/webui.json`。可以在文件管理器中打开该文件，复制 `access_token` 的值：
 
-
-## 启动程序  
-::: warning  
-在正式启动麦麦之前，请先手动启动一次程序确保没有报错，再按Ctrl+C退出  
-:::  
-
-### 手动启动一次  
-分别到 `maimai/MaiBot` 和 `maimai/MaiBot-Napcat-Adapter` 目录下执行：  
-:::
-
-```bash
-# 启动本体  
-cd MaiBot/
-uv run bot.py
-# 这里启动完本体后需要同意用户协议，输入`同意`或`confirmed`即可
-```
-
-确认无误后，按下`Ctrl+C`退出，并转到下方，使用启动脚本来运行  
-脚本将会使用screen，**以免退出ssh后后端掉线**  
-
-### 下载启动脚本  
-
-::: warning 升级提示  
-脚本已更新支持MaiBot `v1.0.0` 喵~
-:::
-
-GitHub开源地址：https://github.com/WhiteCloudOL/Qbot-StartScripts  
-
-#### 手动下载  
-前往[github](https://github.com/WhiteCloudOL/Qbot-StartScripts)下载  
-如果无法访问可通过[夸克网盘](https://pan.quark.cn/s/2abd298d1fb6)下载  
-下载完成后上传到 `maimai/`文件夹下即可  
-
-#### 脚本下载
-请确认处于`maimai/`目录下  
-```bash
-# 请确保你在MaiBot和MaiBot-Napcat-Adapter文件夹的同级目录
-# 海外服务器直接下载
-wget https://raw.githubusercontent.com/WhiteCloudOL/Qbot-StartScripts/refs/heads/main/MaiBot-Start-Script.sh
-
-# 国内1加速下载
-wget "https://gh-proxy.org/https://raw.githubusercontent.com/WhiteCloudOL/Qbot-StartScripts/refs/heads/main/MaiBot-Start-Script.sh"
-
-# 国内2加速下载
-wget "https://hk.gh-proxy.org/https://raw.githubusercontent.com/WhiteCloudOL/Qbot-StartScripts/refs/heads/main/MaiBot-Start-Script.sh"
-```
-
-### 脚本启动麦麦  
-通过脚本启动不需要激活虚拟环境，直接运行脚本输入对应编号即可运行  
-请确认处于`maimai/`目录下  
-```bash  
-# 运行脚本  
-bash MaiBot-Start-Script.sh  
-```
-此时按下: `1`，即可帮助我们打开`MaiBot`  
-新版本MaiBot-Napcat-Adapter已集成于主程序插件中，无需另外启动喵~
-
-## 访问WebUI
-
-::: tip 无法访问WebUI?   
-请修改[配置](#配置麦麦webui网页控制台)~
-:::  
-
-#### 1. 独立IP服务器  
-确保先防火墙关闭（例如装有宝塔面板）  
-部分云服务商设有防火墙，需前往对应服务器管理界面开放`8001`(TCP)端口  
-直接访问：`http://<你的服务器IP>:8001`  
-
-#### 2. NAT云服务器（共享IP）  
-请在云服务器NAT管理界面转发`内网: 8001`到`外网: 任意端口`
-此时访问：`http://<你的服务器IP>:<外网端口>`即可访问  
-
-#### 获取访问密钥  
-FinalShell文件管理找到`MaiBot/data/webui.json`
-复制
 ```json
-"access_token":  "xxxxxxxxx"  
+{
+  "access_token": "xxxxxxxxx"
+}
 ```
-对应的`xxxxxxxxx`即可  
 
-或使用命令：
+也可以在 `maimai/MaiBot` 目录中执行：
+
 ```bash
-# 如果没有安装jq
+# Debian / Ubuntu 尚未安装 jq 时执行
 apt install -y jq
 
-# 在maimai/MaiBot/data 目录下
-jq -r '.access_token' webui.json
+# 输出 WebUI 访问密钥
+jq -r '.access_token' data/webui.json
 ```
-直接得到`access_token`
 
-## 配置QQ协议端  
+::: warning 忘记访问密钥
+先停止 MaiBot，备份并删除 `data/webui.json`，再重新启动。MaiBot 会生成新的 WebUI 认证信息，原访问密钥将立即失效。
+:::
 
-### 对于Napcat：
-::: tip 安装Napcat  
-按照[此步骤](../protos/napcat.md#docker一键安装)安装  
-如提示未找到docker请执行步骤内上文的脚本安装docker  
-:::  
+## 配置模型提供商
 
-安装完成NapCat后进入Napcat控制台  
+模型提供商、模型列表和任务分配均建议在 WebUI 中完成，不需要手动编辑本地模型配置文件。
 
-* 选择`网络配置`  
-* `新建`->`WebSocket 服务端`  
-* Host填`127.0.0.1`或`0.0.0.0`  （如果为后者需要两端都设置token）  
-* Port填入`3001`（默认端口）  
-* Token改为你在`MaiBot/plugins/MaiBot-Napcat-Adapter/config.toml`里设置的`napcat_server`->`token`，默认为空，Napcat与Adapter两者token配置需要一致  
-* 勾选启用，并确定  
+### 需要准备哪些模型
 
-![](../../resources/images/qbot/mai-napcat.webp)  
+| 模型类型 | 是否必需 | 用途 |
+| --- | --- | --- |
+| LLM | 必需 | 负责规划、回复和通用辅助任务 |
+| VLM | 必需 | 理解群聊中的图片与表情内容，模型必须支持视觉输入 |
+| Embedding | 推荐 | 为长期记忆提供向量化与语义检索 |
+| 语音识别模型 | 可选 | 将语音消息转换为文字 |
 
-### 对于LLbot：  
-::: tip 安装LLbot  
-LLBot具有更好的反检测能力，Bot被强制下线的概率更小  
-LLbot已由最新的MaiBot一键脚本支持安装，无需手动安装  
-如需手动安装，请参考[此页](../protos/llbot.md)  
-:::  
+完整运行至少需要一个可用的 API 提供商、LLM 和 VLM。应在模型任务配置中为 `replyer`、`planner`、`utils` 与 `vlm` 分配可用模型；长期记忆的语义检索还需要 Embedding 模型。
 
-对接：  
-创建`正向Websocket服务器`，其中：  
-Host: `127.0.0.1`（若非同一台机器填0.0.0.0，此时需要填入token以免被攻击）  
-Port：`3001`（与MaiBot Napcat适配器的端口配置相同）  
-Token:`空`（或同MaiBot Napcat适配器的Token）  
+### WebUI 配置流程
 
-::: tip 不存在LLbot适配器？  
-MaiBot拥有Napcat适配器，这对于LLbot是通用的，直接下载`Napcat-Adapter`即可对接LLbot喵~  
-:::  
+1. 登录 WebUI，进入 `AI 模型厂商配置`。
+2. 选择 `添加提供商`，优先使用与服务商匹配的内置模板；没有对应模板时选择 `自定义`。
+3. 填写提供商名称、基础 URL、API Key 和接口类型。
+4. 保存后添加模型，模型标识必须与服务商实际提供的名称一致。
+5. 进入模型任务配置，为 `replyer`、`planner` 和 `utils` 分配可用模型。
+6. 为 `vlm` 分配支持视觉输入的模型；如需长期记忆，再配置 `embedding` 任务。
+7. 使用 WebUI 的测试功能验证模型；保存后观察日志，确认没有鉴权、额度或模型不存在等错误。
 
-### 完成对接
-为了防止部分bug，建议重启一次MaiBot  
-现在你就完成了Napcat的配置了！不出意外，你的Bot已经能够正确接收消息~  
+### 下载完整配置模板 <Badge type="tip" text="群文件" />
+
+[云的小屋☁️（637174573）](https://qm.qq.com/q/GFJ6lOztK4)群文件的 `配置＋脚本分享` 目录提供多套可直接下载的完整 `model_config.toml` 模板，包含不同 API 服务商和价位组合。初次配置或需要多模型分工时，可以先下载最接近当前服务商的模板，再在 WebUI 中核对提供商、模型名称和任务分配。
+
+<figure class="conf-shot conf-shot--compact">
+  <img src="../../resources/images/qbot/maibot/conf/model-config-templates.webp" alt="云的小屋群文件中的 MaiBot 模型配置模板" loading="lazy">
+  <figcaption>群文件提供多种完整模型配置模板，可根据 API 服务商与预算选择</figcaption>
+</figure>
+
+::: warning 使用模板前请检查
+模板可能随 MaiBot 版本和服务商模型调整而变化。使用前请备份现有配置，不要直接沿用他人的 API Key，并确认 `replyer`、`planner`、`utils` 和 `vlm` 均已分配当前账号可调用的模型。
+:::
+
+::: tip 模型分配建议
+`planner` 负责决定回复时机和工具调用，适合使用推理与工具能力稳定的模型；`replyer` 更看重语言质量；`utils` 等辅助任务可以选择响应更快、成本更低的模型；`vlm` 必须选择明确支持图片输入的视觉模型。
+:::
+
+### 配置云雾 AI <Badge type="info" text="OpenAI 兼容" />
+
+通过[注册链接](https://yunwu.ai/register?aff=6Fas)创建账号：
+
+1. 进入云雾 AI 控制台的 `API 令牌` 页面，选择 `添加令牌`。
+2. 输入便于识别的名称，按实际需求选择渠道分组并设置额度。
+3. 复制生成的 API Key，并妥善保存。密钥通常以 `sk-` 开头。
+4. 返回 MaiBot WebUI，进入 `AI 模型厂商配置`，选择 `添加提供商` → `自定义`。
+5. 填写以下信息并保存：
+
+```text
+名称：YunwuAI
+基础 URL：https://yunwu.ai/v1
+API Key：sk-***********
+```
+
+6. 添加准备使用的模型，并完成核心模型任务分配。
+
+::: details 云雾 AI 设置参考图
+1. 渠道分组设置
+
+![](../../resources/images/qbot/mai-yunwu-dv.webp)
+
+2. MaiBot 提供商设置
+
+![](../../resources/images/qbot/mai-yunwu-set.webp)
+:::
+
+### 配置硅基流动 API <Badge type="tip" text="国产模型" />
+
+通过[注册链接](https://cloud.siliconflow.cn/i/ys2vPqSO)创建账号：
+
+1. 按服务商要求完成账号认证。
+2. 进入 `API 密钥`，选择 `新建 API 密钥`。
+3. 填写便于识别的描述，复制并妥善保存 API Key。
+4. 返回 MaiBot WebUI，进入 `AI 模型厂商配置`。
+5. 选择 `添加提供商`，提供商模板选择 `硅基流动`。
+6. 填写提供商名称和 API Key，保存后添加需要使用的模型。
+7. 为核心任务分配模型并完成连接测试。
+
+```text
+名称：SiliconFlow
+API Key：sk-***********
+```
+
+::: warning API Key 安全
+不要把完整密钥发送到群聊、Issue、日志截图或公开仓库。发生泄露后应立即在服务商控制台撤销旧密钥并重新创建。
+:::
+
+## 配置人格与表达
+
+人格、称呼、语言风格、回复行为和表达学习均通过 WebUI 修改。登录后进入 Bot 配置或对应的人格与表达页面，按当前版本显示的分类逐项设置。
+
+### 建议先完成的内容
+
+1. **身份信息**：设置机器人昵称、平台、QQ 账号和常用别名。
+2. **核心人格**：明确身份、性格、交流边界和不应主动声称的能力。
+3. **表达风格**：设置口吻、句子长度、常用语气和是否使用网络用语。
+4. **回复行为**：根据群聊活跃度调整回复频率、上下文范围和主动发言倾向。
+5. **学习与记忆**：按需启用表达学习、长期记忆和人物信息，并检查对应模型是否已经配置。
+6. **表情与视觉**：需要处理图片或表情包时，确认 VLM 任务可用。
+
+修改后先在测试群或私聊中进行多轮对话，重点检查称呼是否正确、回复是否过于频繁、人格是否稳定，以及图片和记忆功能是否产生异常。大部分配置支持热重载；模型服务或插件没有及时应用变化时，再重启 MaiBot。
+
+## 启动与运行检查
+
+### 前台启动
+
+首次配置或排查故障时，建议使用前台模式：
+
+```bash
+cd ~/maimai/MaiBot
+uv run python bot.py
+```
+
+启动后重点检查：
+
+- WebUI 是否成功监听 `8001` 或自定义端口。
+- 模型提供商是否通过鉴权，核心任务是否成功加载模型。
+- 插件是否正常加载，是否出现依赖缺失或配置版本错误。
+- 数据库、记忆和表情包目录是否具有读写权限。
+
+确认没有错误后按 `Ctrl+C` 安全退出。
+
+### 后台运行
+
+通过 MaiBot Manager TUI 部署时，进入 `核心服务管理` 启动、停止或重启 MaiBot，并在同一页面查看日志。使用旧版一键脚本时，应优先使用脚本自带的服务管理功能；不要同时启动多个 MaiBot 实例，否则可能造成端口冲突或数据库占用。
+
+::: tip 配置热重载
+MaiBot 支持大部分配置热重载，保存后通常无需重启。模型服务重新初始化、插件加载失败或网络监听地址变化时，建议执行一次完整重启。
+:::
+
+## 配置 QQ 协议端与适配器
+
+协议端负责登录 QQ，适配器负责把协议端消息交给 MaiBot。首次部署推荐使用 NapCat 插件版；SnowLuma 当前可用但仍处于测试阶段。三种接入方式均应在完成模型和人格配置后再操作。
+
+| 协议端 | MaiBot 适配器 | 建议场景 |
+| --- | --- | --- |
+| NapCat | MaiBot-Napcat-Adapter | 首次部署和常规 QQ 接入，推荐使用 |
+| LLBot | MaiBot-Napcat-Adapter | 已有 LLBot 环境或需要其特定能力 |
+| SnowLuma | MaiBot-SnowLuma-Adapter | 希望使用 SnowLuma，能够接受测试阶段的兼容性变化 |
+
+::: warning 不要混用三类密钥
+NapCat / LLBot / SnowLuma 的 WebSocket Token、协议端 WebUI 登录密钥、MaiBot WebUI 访问密钥彼此独立。适配器中填写的是协议端正向 WebSocket 服务的 Token。
+:::
+
+### 使用 NapCat <Badge type="tip" text="推荐" />
+
+#### 1. 确认机器人账号
+
+在 MaiBot WebUI 的 Bot 基础配置中，将平台设置为 QQ，并将 QQ 账号填写为 NapCat 实际登录的机器人账号。该值用于识别机器人自己的消息，填写错误可能导致消息判断异常。
+
+#### 2. 安装并启用适配器
+
+1. 进入 WebUI 的 `插件管理`，搜索 `NapCat Adapter` 并安装。
+2. 安装完成后手动启用插件。适配器默认可能处于禁用状态，只安装并不会建立连接。
+3. 找到 `连接属性`，准备填写 NapCat 的地址、端口和 WebSocket Token。
+
+#### 3. 配置 NapCat 正向 WebSocket
+
+按照 [NapCat Docker 部署](../protos/napcat.md#docker-部署)完成安装并登录机器人账号，然后在 NapCat WebUI 中：
+
+1. 进入 `网络配置`。
+2. 新建或启用 `正向 WebSocket` / `WebSocket 服务端`。
+3. 同机原生部署可监听 `127.0.0.1`；Docker 或跨设备部署通常需要监听 `0.0.0.0`，同时限制防火墙来源。
+4. 端口可使用 `3001`。
+5. 设置强 Token，并保存配置。
+
+![](../../resources/images/qbot/mai-napcat.webp)
+
+::: warning 连接方向
+NapCat 应提供正向 WebSocket 服务端，MaiBot NapCat Adapter 作为客户端连接它。不要为插件版适配器创建反向 WebSocket。
+:::
+
+#### 4. 配置 NapCat Adapter
+
+在 MaiBot WebUI 的插件配置中填写：
+
+| 配置项 | 填写说明 |
+| --- | --- |
+| Host | 同机原生部署填写 `127.0.0.1`；Docker Compose 中填写 NapCat 服务名；跨设备填写协议端内网地址 |
+| Port | 与 NapCat 正向 WebSocket 端口一致，常用 `3001` |
+| Token | 与 NapCat 正向 WebSocket Token 完全一致 |
+
+如果 MaiBot 和 NapCat 位于不同容器，`127.0.0.1` 只指向 MaiBot 容器自身，不能用来访问 NapCat；应使用 Compose 服务名或同一容器网络中的地址。
+
+#### 5. 配置聊天过滤
+
+适配器默认可能启用群聊与私聊白名单。进入 `聊天过滤`：
+
+- 测试阶段可以暂时关闭名单过滤，确认消息链路正常。
+- 正式使用建议开启白名单，并在群聊名单中添加允许使用机器人的群号。
+- 需要私聊时，将允许的 QQ 号加入私聊名单。
+- 不在白名单中的消息会在进入 MaiBot 前被丢弃，因此“连接成功但不回复”时应首先检查这里。
+
+### 使用 LLBot <Badge type="info" text="OneBot" />
+
+LLBot 可以通过 OneBot 正向 WebSocket 与 MaiBot NapCat Adapter 对接。安装方式请参阅 [LLBot 文档](../protos/llbot.md)。任何非官方 QQ 协议端都无法完全避免账号风控，建议使用专用账号并遵守平台规则。
+
+1. 在 LLBot 中创建并启用 `正向 WebSocket 服务器`。
+2. 同机部署监听 `127.0.0.1`；跨设备部署监听可访问的网卡地址，并通过防火墙限制来源。
+3. 端口可设置为 `3001`，Token 应使用随机强字符串。
+4. 在 MaiBot WebUI 中安装并启用 `NapCat Adapter`。
+5. 将适配器的 Host、Port 和 Token 设置为 LLBot 对应参数。
+6. 配置群聊与私聊白名单，然后发送测试消息。
+
+::: tip 未找到 LLBot 专用适配器？
+当前可直接使用 `MaiBot-Napcat-Adapter` 对接 LLBot 的 OneBot 正向 WebSocket，不需要额外运行旧版独立适配器。
+:::
+
+### 使用 SnowLuma <Badge type="warning" text="测试中" />
+
+SnowLuma Adapter 仅提供插件模式，直接运行在 MaiBot 内部。SnowLuma 可按系统选择部署教程：
+
+- [Linux / Docker 部署](https://snowluma.github.io/guide/deploy/docker.html)
+- [Windows 部署](https://snowluma.github.io/guide/deploy/windows.html)
+
+#### 1. 安装并启用适配器
+
+1. 进入 MaiBot WebUI 的 `插件管理`。
+2. 搜索 `SnowLuma Adapter` 并安装。
+3. 安装后手动启用插件；该插件默认可能处于禁用状态。
+
+#### 2. 创建 SnowLuma WebSocket 服务端
+
+进入 SnowLuma 控制台的 `节点配置`，选择当前登录的 QQ 节点，然后切换到 `WS 服务端`。新建一个 WebSocket 服务端，或编辑已有节点。
+
+<figure class="conf-shot">
+  <img src="../../resources/images/qbot/maibot/conf/snowluma-websocket-overview.webp" alt="SnowLuma 控制台的节点配置与 WS 服务端页面" loading="lazy">
+  <figcaption>SnowLuma 控制台：在「节点配置」中打开并启用 WS 服务端</figcaption>
+</figure>
+
+建议按以下方式填写：
+
+| 配置项 | 建议值 | 说明 |
+| --- | --- | --- |
+| 主机 | `127.0.0.1` 或 `0.0.0.0` | 仅同机访问可使用 `127.0.0.1`；需要跨设备或容器访问时使用 `0.0.0.0` |
+| 端口 | `3001` | 可以使用其他空闲端口，但必须与适配器保持一致 |
+| 路径 | `/` | 适配器连接地址的一部分，通常保持默认 |
+| 角色 | `Universal` | 保持通用 OneBot 角色 |
+| Token | 随机强字符串 | 与 MaiBot Adapter 中的访问令牌完全一致 |
+| 消息格式 | `数组` | 按当前适配器支持方式设置 |
+| 上报自身消息 | 关闭 | 避免机器人重复处理自己发送的消息 |
+
+<figure class="conf-shot conf-shot--compact">
+  <img src="../../resources/images/qbot/maibot/conf/snowluma-websocket-settings.webp" alt="SnowLuma WebSocket 服务端参数设置" loading="lazy">
+  <figcaption>WebSocket 服务端参数示例；截图中的授权 Token 已隐藏</figcaption>
+</figure>
+
+保存后确认节点开关处于启用状态。跨设备连接时，还需要检查 SnowLuma 所在设备的监听地址、防火墙和网络可达性。
+
+#### 3. 配置 SnowLuma Adapter
+
+在插件配置的 `连接属性` 中填写：
+
+| 配置项 | 填写说明 |
+| --- | --- |
+| Server | 同机部署填写 `127.0.0.1`；跨设备填写 SnowLuma 所在设备的内网地址 |
+| Port | 与 SnowLuma 正向 WebSocket 服务一致，默认可使用 `3001` |
+| Token | 与 SnowLuma WebSocket Token 完全一致 |
+| Connection ID | 多实例时用于区分连接，单实例可以留空 |
+
+<figure class="conf-shot">
+  <img src="../../resources/images/qbot/maibot/conf/snowluma-adapter-connection.webp" alt="MaiBot WebUI 中的 SnowLuma Adapter 连接配置" loading="lazy">
+  <figcaption>MaiBot WebUI：填写 SnowLuma 地址、端口和访问令牌；截图中的令牌已隐藏</figcaption>
+</figure>
+
+保存后启用适配器。SnowLuma 监听地址、端口和 Token 必须与这里完全一致；日志出现 `SnowLuma WebSocket 已连接` 后，才表示连接层已经配置成功。
+
+#### 4. 配置聊天过滤
+
+SnowLuma Adapter 默认启用聊天名单过滤，群聊通常采用白名单模式。请在插件配置中添加允许使用机器人的群号和 QQ 号；测试时也可以暂时关闭名单过滤。
+
+<figure class="conf-shot">
+  <img src="../../resources/images/qbot/maibot/conf/snowluma-adapter-chat-filter.webp" alt="SnowLuma Adapter 的群聊与私聊名单过滤配置" loading="lazy">
+  <figcaption>聊天过滤配置：分别设置群聊和私聊名单；截图中的账号与群号已隐藏</figcaption>
+</figure>
+
+如果日志显示连接成功但群内没有响应，应首先确认：
+
+- 插件已经启用，而不是仅完成安装。
+- 群号已经加入群聊白名单。
+- SnowLuma 自身能够收到 QQ 消息。
+- 机器人账号没有被禁言，并具有正常发言权限。
+
+### 完成对接与排错
+
+保存配置后，适配器通常会自动重连；如果热重载没有生效，再重启 MaiBot。随后在测试群中 @机器人，或发送一条私聊消息，并按消息路径逐步检查：
+
+| 检查位置 | 正常表现 | 异常时重点检查 |
+| --- | --- | --- |
+| QQ 协议端 | 已登录并收到测试消息 | 登录状态、账号风控、群权限 |
+| Adapter 插件 | 日志显示已启用且 WebSocket 已连接 | Host、Port、Token、连接方向 |
+| 聊天过滤 | 测试消息进入 MaiBot 日志 | 群聊/私聊白名单、屏蔽用户列表 |
+| 模型服务 | 能完成规划与回复调用 | API Key、模型名称、额度、任务分配 |
+| 消息发送 | QQ 中收到最终回复 | 协议端发送权限、超时与网络状态 |
+
+第一个没有出现预期日志的环节，通常就是故障所在位置。不要同时大范围修改多个配置项；每次只调整一处并重新测试，更容易定位问题。

@@ -1,28 +1,35 @@
-# 配置修改
+# 修改服务器配置
 
-### 找到配置文件
-`MCSM面板` -> `文件管理` -> `server.properties`   
+`server.properties` 控制 Minecraft 服务端的端口、验证模式、游戏规则和性能相关选项。修改前建议停止服务端并备份原文件。
 
-### 必须修改项
-1. `server-port`：服务器端口  
-   改为：**雨云面板**->**NAT端口映射管理**->**对外地址:端口** 对应的 **端口**（数字）  
-2. `online-mode`：在线模式  
-   如果有离线玩家请改为`false`，否则离线玩家无法进入服务器  
+## 找到配置文件
+依次进入 `MCSM 面板` → `文件管理` → `server.properties`。
 
-::: details 服务器配置`server.properties`  
+## 需要确认的配置项
+
+1. **`server-port`：服务器端口**
+   修改为**雨云面板** → **NAT 端口映射管理** → **对外地址:端口**对应的端口数字。
+2. **`online-mode`：在线模式**
+   如果需要允许离线账号进入，请设置为 `false`；否则离线玩家无法加入。仅有正版玩家时建议保持 `true`。
+
+::: warning 保存与重启
+修改完成后必须保存文件并重启服务端。直接修改运行中的配置可能在服务端退出时被覆盖。
+:::
+
+::: details `server.properties` 配置参考
 ```properties{3,4,10,11,12,13,21,22,24,25,34,35,39,40,44,45,47,48,53,54,65-70,77-80}
 #Minecraft server properties
 accepts-transfers=false
-# 允许飞行，为了避免bug建议开启
+# 是否允许飞行；部分 Mod 或插件需要开启
 allow-flight=false  
-# 开启地狱
+# 是否启用下界
 allow-nether=true
 broadcast-console-to-ops=true
 broadcast-rcon-to-ops=true
 bug-report-link=
-# 游戏难度 peaceful/easy/normal/hard
+# 游戏难度：peaceful / easy / normal / hard
 difficulty=easy
-# 启用命令方块，如果开游戏地图必须开启  
+# 是否启用命令方块；部分地图玩法必须开启
 enable-command-block=false
 enable-jmx-monitoring=false
 enable-query=false
@@ -42,7 +49,7 @@ hardcore=false
 hide-online-players=false
 initial-disabled-packs=
 initial-enabled-packs=vanilla
-# 地图名称（不建议修改）
+# 世界目录名称；不熟悉目录结构时不建议修改
 level-name=world
 # 地图种子
 level-seed=
@@ -51,13 +58,13 @@ log-ips=true
 max-chained-neighbor-updates=1000000
 # 最大人数
 max-players=20
-# 最长tick时间，如果你频繁因watchdog崩服，延迟该项可减缓崩溃概率，但你还是需要考虑升级服务器了！
+# 单个 Tick 的最长允许时间；频繁触发 Watchdog 时应先排查负载、实体和 Mod，并考虑升级服务器
 max-tick-time=60000
 max-world-size=29999984
-# 显示在多人游戏列表内的介绍信息可使用颜色代码 §
+# 多人游戏列表中的服务器描述，可使用颜色代码 §
 motd=A Minecraft Server
 network-compression-threshold=256
-# *正版验证(如果有离线玩家必须关闭)
+# 正版验证；如需允许离线玩家进入则必须关闭
 online-mode=true
 op-permission-level=4
 pause-when-empty-seconds=60
@@ -75,11 +82,11 @@ resource-pack=
 resource-pack-id=
 resource-pack-prompt=
 resource-pack-sha1=
-# 服务器IP留空绑定到所有IP
+# 服务器 IP；留空时绑定所有可用地址
 server-ip=
-# 服务器端口，必须修改为 雨云面板->NAT端口映射管理->对外地址:端口 对应的端口（数字） 
+# 服务器端口；应与雨云面板 NAT 端口映射中的目标端口一致
 server-port=25565
-# 模拟距离（CPU不好建议降低！）
+# 模拟距离；CPU 性能不足时可适当降低
 simulation-distance=10 
 spawn-monsters=true
 spawn-protection=16
@@ -87,9 +94,9 @@ sync-chunk-writes=true
 text-filtering-config=
 text-filtering-version=0
 use-native-transport=true
-# 可视距离（CPU不好建议降低！建议>6，过低影响游戏观感体验）
+# 可视距离；CPU 性能不足时可降低，建议大于 6，过低会影响游玩体验
 view-distance=10
-# 白名单 (必须同时开启正版验证)
+# 白名单；建议同时开启正版验证
 white-list=false
 ```
 :::

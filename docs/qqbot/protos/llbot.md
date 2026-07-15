@@ -1,15 +1,14 @@
 # LuckyLilliaBot
 
-> 用于连接 QQ 与各 Bot 端  
-> By 清蒸云鸭
+LuckyLilliaBot（LLBot）是用于连接 QQ 与机器人框架的协议端。本页由清蒸云鸭整理，覆盖 Linux CLI、Docker Compose 与 Windows Desktop 三种部署方式。
 
-::: info 官方文档  
-**介绍**: https://www.llonebot.com/guide/introduction  
-**快速安装**: https://www.llonebot.com/guide/choice_install  
-**配置**: https://www.llonebot.com/guide/config  
-**对接**: https://www.llonebot.com/guide/config_framework  
-**常见问题**: https://www.llonebot.com/guide/faq  
-:::  
+::: info 官方资料
+- [项目介绍](https://www.llonebot.com/guide/introduction)
+- [快速安装](https://www.llonebot.com/guide/choice_install)
+- [配置说明](https://www.llonebot.com/guide/config)
+- [框架对接](https://www.llonebot.com/guide/config_framework)
+- [常见问题](https://www.llonebot.com/guide/faq)
+:::
 
 ## 简介
 
@@ -81,8 +80,8 @@ http://localhost:3080
 
 如果部署在云服务器上，需要先配置 WebUI 监听地址，见下方“WebUI 配置”。
 
-::: tip 持久化运行  
-如需持久化运行LLBot-CLI，你可以使用screen窗口运行~  
+::: tip 持久化运行
+如需在 SSH 断开后继续运行 LLBot CLI，可以使用 screen 创建后台会话。退出当前会话时按 `Ctrl+A`，再按 `D`。
 :::
 
 ## Docker Compose 安装
@@ -200,13 +199,13 @@ LLBot 支持 OneBot 11、Satori、Milky 等协议方式。
 
 ### AstrBot / MaiBot
 
-1. AstrBot创建`反向Websocket客户端`：`ws://127.0.0.1:6199/ws`  
-2. MaiBot创建`正向Websocket服务器`，其中：  
-Host: `127.0.0.1`（若非同一台机器填0.0.0.0，此时需要填入token以免被攻击）  
-Port：`3001`（与MaiBot Napcat适配器的端口配置相同）  
-Token:`空`（或同MaiBot Napcat适配器的Token）  
+1. AstrBot 创建 `反向 WebSocket 客户端`：`ws://127.0.0.1:6199/ws`。
+2. MaiBot 创建 `正向 WebSocket 服务器`：
+   - Host：同机部署填写 `127.0.0.1`；跨设备连接填写 `0.0.0.0`，并设置强 Token。
+   - Port：`3001`，与 MaiBot NapCat 适配器端口保持一致。
+   - Token：本机隔离环境可以留空；其他环境应与 MaiBot NapCat 适配器的 Token 保持一致。
 
-如果框架与 LLBot 在同一台服务器上，直接使用 `127.0.0.1` 即可，否则填入`0.0.0.0`。对接时请按实际网络环境填写服务器 IP，并务必设置 token。  
+如果框架与 LLBot 位于同一台服务器，优先使用 `127.0.0.1`。跨设备连接时，请根据实际网络填写监听地址，并务必设置 Token、限制端口来源。
 
 ### NoneBot / Koishi
 

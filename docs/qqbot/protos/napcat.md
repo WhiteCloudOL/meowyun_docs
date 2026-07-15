@@ -1,29 +1,26 @@
-# NapcatQQ  
+# NapCatQQ
 
-> 用于连接QQ与各Bot端  
-> By 清蒸云鸭  
+NapCatQQ 是用于连接 QQ 与机器人框架的 OneBot 协议端。本文由清蒸云鸭整理，包含 Docker 和 Linux Shell 两种部署方式。
 
-::: info  
-**官方文档**: https://napneko.github.io/  
+::: info 官方文档
+<https://napneko.github.io/>
 :::  
 
-## Docker一键安装  
+## Docker 部署
 
 ::: tip
-推荐使用香港/日本 或其他海外服务器  
-如果你系统中不存在docker，请使用以下命令安装  
-**安装Docker：** 使用LinuxMirros脚本一键安装~  
+海外服务器或网络连接较稳定的区域通常更适合直接拉取容器镜像。如果系统中尚未安装 Docker，可使用 LinuxMirrors 脚本安装：
 ```bash
 bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 ```
-**无法连接到linux-mirrors?**   
-* 手动前往 https://linuxmirrors.cn/docker.sh 下载（如果看到的是网页，可右键网页，另存为文件），再上传到服务器执行 `bash docker.sh`  
+如果无法连接 LinuxMirrors，可手动打开 <https://linuxmirrors.cn/docker.sh> 下载脚本；浏览器显示脚本文本时可另存为文件，然后上传至服务器执行 `bash docker.sh`。
 :::
 
-在Bot文件夹（例如AstrBot）内新建Compose文件  
-此编排使用`host`网络，可直接访问本机项目/端口  
-如果是AstrBot建议放在AstrBot data同级目录下，并取消``# - ./data:/AstrBot/data`的注释（删除#，并对齐）  
-::: details Napcat Docker Compose `napcat.yml`  
+在机器人框架目录（例如 AstrBot）中创建 Compose 文件。以下编排使用 `host` 网络，可直接访问宿主机上的项目和端口。
+
+如果与 AstrBot 配合使用，建议将 Compose 文件放在 AstrBot `data` 目录的同级位置，并取消 `# - ./data:/AstrBot/data` 的注释，注意保持 YAML 缩进一致。
+
+::: details NapCat Docker Compose：`napcat.yml`
 ```yml
 services:
   napcat:
@@ -44,36 +41,45 @@ services:
 ```
 :::
 
-完成后使用 `docker compose -f napcat.yml up -d`  
-即可自动拉取Napcat镜像，完成后访问 `[IP]:6099` 即可访问WebUI  
-如果是NAT云服务器，请创建6099的端口映射，访问**映射后**端口  
+保存后执行 `docker compose -f napcat.yml up -d`，Docker 会自动拉取 NapCat 镜像并启动容器。完成后访问 `http://<服务器 IP>:6099` 打开 WebUI。
 
-### 如何重启/关闭/重构/更新？
-如果bot掉线，需要通过以下命令重启，再通过WebUI登录
+使用 NAT 云服务器时，需要为 `6099` 创建端口映射，并通过映射后的外部端口访问。
+
+::: danger WebUI 安全
+不要将 NapCat WebUI 直接暴露到公网。请设置强密码，并通过防火墙、安全组或带鉴权的反向代理限制访问来源。
+:::
+
+### 容器管理与更新
+
+机器人掉线时，可重启容器后重新通过 WebUI 登录。
 ```bash
-# 重启/关闭/打开 napcat
-docker restart/stop/start napcat  
+# 重启 NapCat
+docker restart napcat
+
+# 停止或启动 NapCat
+docker stop napcat
+docker start napcat
 
 # 移除napcat容器
 docker compose -f napcat.yml down
 
-# 构建napcat容器
+# 重新创建 NapCat 容器
 docker compose -f napcat.yml up -d
 
-# 更新（拉取最新版，需要先移除容器）
+# 拉取最新镜像；更新前应先停止并移除旧容器
 docker pull mlikiowa/napcat-docker:latest
 ```
 
 
-## Linux安装  
+## Linux Shell 部署
 
 ::: warning  
-Shell是直接部署于云服务器本机的，可直接访问本机服务  
-但容易出现各种bug，不推荐小白使用  
+Shell 方式会直接部署到云服务器宿主机，可直接访问本机服务，但更容易受到系统依赖和桌面环境影响，不建议缺少 Linux 运维经验的用户使用。
 :::  
 
-### NapCat.Shell一键安装脚本(支持Ubuntu 20+/Debian 10+/Centos9)
-使用以下官方脚本一键安装Napcat.Shell+TUI-CLI  
+### NapCat.Shell 一键安装脚本
+
+该脚本支持 Ubuntu 20+、Debian 10+ 和 CentOS 9，可安装 NapCat.Shell 与 TUI CLI：
 ```bash
 curl -o \
 napcat.sh \
@@ -83,11 +89,11 @@ https://nclatest.znin.net/NapNeko/NapCat-Installer/main/script/install.sh \
 --cli y
 ```
 
-完成安装后，你可以使用以下命令管理napcat  
+安装完成后，可使用以下命令管理 NapCat：
 ```bash
-napcat # 打开TUI-CLI图形界面配置(不过有些许bug)
+napcat # 打开 TUI CLI 配置界面
 
-napcat help #查看帮助
-napcat start <QQ号>  # 启动某个QQ
-napcat stop [OPTIONAL: QQ号]  # 停止某个QQ的服务，<QQ>可选
+napcat help # 查看帮助
+napcat start <QQ号> # 启动指定 QQ
+napcat stop [QQ号] # 停止指定 QQ；QQ 号可省略
 ```

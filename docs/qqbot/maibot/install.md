@@ -1,21 +1,22 @@
-# MaiBot部署  
+# MaiBot 部署
 
-::: tip  
-由于linux天生占用资源更少，napcat也更不容易风控  
-在此推荐使用linux来部署，有利于云服务器部署bot  
-:::  
+::: tip 部署平台建议
+Linux 通常占用更少的系统资源，也更适合云服务器长期运行 MaiBot 与 QQ 协议端。无论选择哪种平台，都应使用专用 QQ 账号并遵守平台规则；部署方式本身不能完全消除账号风控风险。
+:::
 
-## MaiBot Manager TUI自动管理（推荐）
+## MaiBot Manager TUI 自动管理（推荐）
 > 开源地址：https://github.com/WhiteCloudOL/MaiBot-Manager-TUI  
 > 许可证：AGPL-3.0  
 
 MaiBot Manager TUI 是面向 Linux、Windows 10/11 与 macOS 的一站式部署和运维工具。它可以完成 MaiBot 安装 / 更新、核心服务启停、协议端管理、访问配置和插件管理；安装后既可以进入图形化终端界面，也可以用 `maibot ...` 命令直接执行 CLI 操作。
 
-::: tip 推荐使用 TUI
+::: info 推荐使用 TUI
 如果你是第一次部署 MaiBot，建议优先使用这一方式。新版界面采用顶部标题、左侧导航、主内容区和底部状态栏的布局，所有快捷键都会统一显示在底部，不需要在旧式菜单里来回猜选项含义。
 :::
 
 ### 1. 安装 MaiBot Manager TUI
+
+如您为 Linux 云服务器安装，请使用 `Linux / macOS` 安装方式：
 
 **Linux / macOS：**
 
@@ -111,9 +112,13 @@ maibot tui
 :::
 
 
-## Linux脚本自动部署  
-使用自动脚本一键部署与管理MaiBot，支持`Debian12/13`,`Ubuntu22.04/24.04+`  
-脚本功能**完善**，可一站式管理～
+## Linux 脚本自动部署
+
+::: danger 注意
+自动脚本目前**消极维护**，请优先使用上述 `MaiBot Manager TUI` 自动部署。
+:::
+
+自动脚本支持 Debian 12/13、Ubuntu 22.04/24.04 及更高兼容版本，可集中完成 MaiBot 的部署与常用管理操作。
 
 ```bash  
 # 国内下载
@@ -123,22 +128,19 @@ curl -o maibot.sh https://dl.meowyun.cn/bot/bash/maibot.sh && bash maibot.sh
 curl -o maibot.sh https://raw.githubusercontent.com/WhiteCloudOL/Qbot-StartScripts/refs/heads/main/maibot.sh && bash maibot.sh
 ```  
 
-::: tip 后续如何运行脚本？  
-假设你在`~`(用户目录，比如`/root/`)目录下执行上方下载脚本，下面你只需运行`bash ~/maibot.sh`，即可唤起脚本，无需再次下载  
-如需更新一键脚本，在脚本下载目录下，重新执行上方下载命令即可  
-:::  
+::: tip 后续运行与更新
+如果首次下载时位于 `~`（例如 `/root/`），后续执行 `bash ~/maibot.sh` 即可再次打开脚本，无需重复下载。需要更新脚本时，请在原下载目录重新执行上方对应的下载命令。
+:::
 
-## Linux原生手动部署  
+## Linux 原生手动部署
 
 
-::: tip  
-以下命令都使用root权限执行，如提示权限不足请在命令前添加`sudo`  
-此外需确认系统python版本为`3.10+`  
-本文档支持部署的系统：`Ubuntu22.04/24.04`、`Debian12/13` 等  
+::: tip 环境要求
+以下命令按具有 root 权限的环境编写；普通用户遇到权限不足时，请在相应命令前添加 `sudo`。开始前请确认系统 Python 版本不低于 3.10。本节适用于 Ubuntu 22.04/24.04、Debian 12/13 及其兼容版本。
 :::
 
 
-1. 下载系统依赖(支持Debian12/13+，Ubuntu22/24+)
+1. 安装系统依赖（支持 Debian 12/13+、Ubuntu 22.04/24.04+）。
 ```bash
 # 更新软件源
 apt update
@@ -146,13 +148,13 @@ apt update
 apt install -y build-essential git nano vim
 ```
 
-2. 安装UV  
+2. 安装 uv。
 ```bash
 # 使用官方独立安装程序一键安装  
 curl -LsSf https://astral.sh/uv/install.sh | sh  
 ```
 
-3. 从麦麦仓库下载文件
+3. 从 MaiBot 仓库获取源码。
 
 ```bash
 # 创建文件夹
@@ -160,61 +162,46 @@ mkdir maimai
 # 进入文件夹
 cd maimai
 
-# 使用git clone获取麦麦
+# 从官方仓库克隆 MaiBot
 git clone https://github.com/MaiM-with-u/MaiBot.git
 
-# (与上方二选一)如果你使用上方git clone失败，请尝试以下加速地址：
+# 与上方命令二选一；官方线路不可用时可尝试镜像线路
 git clone https://gh-proxy.org/https://github.com/MaiM-with-u/MaiBot.git
 
 ```
 
-4. 安装MaiBot-Napcat-Adapter，用于连接QQ与MaiBot  
-```bash
-# 进入麦麦插件目录
-cd MaiBot/plugins
-
-# 使用git clone MaiBot-Napcat-Adapter插件到麦麦
-git clone -b plugin https://github.com/MaiM-with-u/MaiBot-Napcat-Adapter.git
-
-# (与上方二选一)如果你使用上方git clone失败，请尝试以下加速地址：
-# 进入麦麦插件目录
-cd MaiBot/plugins
-# 使用git clone MaiBot-Napcat-Adapter插件到麦麦
-git clone -b plugin https://gh-proxy.org/https://github.com/MaiM-with-u/MaiBot-Napcat-Adapter.git
-```
-
-完成后，返回MaiBot主目录  
+完成后返回 MaiBot 主目录。
 
 ```bash
 cd ..
 ```
 
-5. 创建python虚拟环境  
+4. 创建 Python 虚拟环境。
 ```bash  
-# 此时在maimai/MaiBot目录下
+# 确保当前位于 maimai/MaiBot 目录
 
-# 创建uv环境，指定为python3.14
-uv venv --python 3.14
+# 创建 uv 虚拟环境
+uv venv
 ```  
 
-6. 安装python环境包依赖  
+5. 安装 Python 项目依赖。
   
 ::: tip
 
-如果你的云服务器位于国内，请用以下命令换源  
+如果服务器访问默认 PyPI 源较慢，可按需切换至阿里云镜像。
 ```bash
-# 临时切换UV为阿里源
+# 仅对当前 shell 临时生效
 export UV_INDEX_URL="https://mirrors.aliyun.com/pypi/simple"
 
-# 永久生效，切换UV为阿里源(BASH)
+# 写入 Bash 配置并长期生效
 echo 'export UV_INDEX_URL="https://mirrors.aliyun.com/pypi/simple"' >> ~/.bashrc
 source ~/.bashrc
 ```
 :::
 
 ```bash
-# 此时在maimai/MaiBot/目录下
+# 确保当前位于 maimai/MaiBot 目录
 uv sync
 ```
 
-7. 部署完成，请转到[配置与启动](conf.md)
+6. 依赖安装完成后，继续阅读[配置与启动](conf.md)。

@@ -1,43 +1,46 @@
-# Docker一键部署  
+# Docker 一键部署
 
-### 什么是Docker？  
-[Docker](https://www.docker.com/) 是一个真正实现**一次构建，到处运行**的工具  
+本页介绍如何使用 Docker Compose 部署 AstrBot，并根据需要同时运行 NapCat。该方式便于隔离依赖、持久化数据和执行后续更新。
+
+## 什么是 Docker？
+[Docker](https://www.docker.com/) 是容器化运行平台，可为 AstrBot 提供一致、隔离且便于迁移的运行环境。
 
 ::: tip  
-**安装Docker：** 使用LinuxMirros脚本一键安装~  
+如果系统中尚未安装 Docker，可使用 LinuxMirrors 脚本安装：
 ```bash
 bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 ```
 :::
 
-### 开始安装   
+## 开始安装
 
-确定安装方式：  
-(一) 与NapCat一起部署+隔离网络模式   
-**优点**：一键配置，隔离的网络只暴露`6185`、`6099`端口  
-**缺点**: 配置好的NapCat连接其他服务不方便，需要手动开启端口或将其他服务连接到同一网络  
-(二) 独立安装+host网络模式：  
-**优点**：直接与宿主机网络相连接，连接其他服务方便  
-**缺点**：直接与宿主机网络相连接，容易造成端口冲突，`6199`端口建议设置密钥否则可能被入侵  
-  
-  下面介绍方式一的部署方式，如果是方式二只需要更换一下docker-compose.yml文件即可
+部署前请选择一种网络模式：
 
-#### 开始部署
-1. SSH连接到服务器，新建一个文件夹，例如`AstrBot`
+1. **与 NapCat 一同部署并使用隔离网络**
+   - 优点：可一次完成配置，默认只暴露 `6185` 和 `6099` 端口。
+   - 缺点：已配置的 NapCat 不便直接连接其他服务，需要额外开放端口，或将其他服务加入同一 Docker 网络。
+2. **独立安装并使用 host 网络**
+   - 优点：容器直接使用宿主机网络，连接其他本机服务更方便。
+   - 缺点：更容易发生端口冲突；`6199` 端口应设置访问密钥，避免未授权访问。
+
+下文以方式一为主。选择方式二时，只需替换对应的 `docker-compose.yml` 内容。
+
+### 创建部署目录
+
+1. 通过 SSH 连接服务器，新建一个目录，例如 `AstrBot`。
 ```bash  
-# root@RainYun-c3Srwn3w:~# mkdir AstrBot
-# 我当前在/root目录下新建AstrBot文件夹
+# 在当前用户目录中新建 AstrBot 文件夹
 mkdir AstrBot
 ```  
 
-1. 创建`docker-compose.yml`文件  
+2. 创建 `docker-compose.yml` 文件。
 ```bash
 nano docker-compose.yml
 ```
-在打开的窗口内输入以下内容:  
+在编辑器中填写以下内容：
 
 ::: tip  
-如果使用`finalShell`粘贴乱码，可以在本地编辑好compose文件后上传到相应目录  
+如果使用 FinalShell 粘贴时出现乱码，可在本地编辑 Compose 文件后上传到对应目录。
 :::
 
 ::: details 方式一/隔离+NapCat：`docker-compose.yml`
@@ -99,35 +102,39 @@ services:
 ```
 :::
 
-3. 运行**docker compose**  
+3. 启动 Docker Compose 服务。
 ```bash
-# 请在你创建compose文件的文件夹内执行命令
+# 在 docker-compose.yml 所在目录执行
 docker compose up -d
 ```
-此时，docker会自动拉取镜像，等待拉取完成后即部署完成~  
+Docker 会自动拉取所需镜像并创建容器。命令执行完成后，可以通过 `docker compose ps` 检查服务状态。
 
-::: info 进入控制台  
-**打开AstrBot控制台**：`http://[你的服务器IP]:[端口]`  
-*你的服务器IP*：填服务器公网IP或域名  
-*端口*：独立IP机型填`6185`，Nat机型需要映射6185到相应端口  
-*默认用户名密码均为`astrbot`*  
-**打开NapCat控制台**：`http://[你的服务器IP]:[端口]`  
-*你的服务器IP*：填服务器公网IP或域名  
-*端口*：独立IP机型填`6099`，Nat机型需要**映射**6099到相应端口   
-*默认token见下方获取Napcat登录密钥*  
-:::  
+随后查看 AstrBot 启动日志：
 
-::: details 获取Napcat登录密钥 `./napcat/config/webui.json` 
+```bash
+docker compose logs -f astrbot
+```
 
-1. 进入你创建的文件夹内  
+启动完成后，日志中会出现类似 `🌈 管理面板已启动，可访问` 的提示，并打印管理面板地址和首次登录所需的随机初始密码。按 `Ctrl+C` 可以退出日志查看，不会停止后台容器。
+
+::: info 访问管理控制台
+- **AstrBot**：访问 `http://<服务器 IP 或域名>:6185`。用户名通常为 `astrbot`，首次登录密码请从启动日志中获取；登录后应立即修改。
+- **NapCat**：访问 `http://<服务器 IP 或域名>:6099`，登录 Token 的获取方式见下文。
+
+NAT 机型需要先把容器端口映射到可用的外网端口；独立 IP 机型也应在防火墙或安全组中仅放行必要端口，并尽量限制来源 IP。
+:::
+
+::: details 获取 NapCat 登录密钥：`./napcat/config/webui.json`
+
+1. 进入部署目录。
 ```bash
 cd /root/AstrBot
 ```
-2. 查看webui配置文件
+2. 查看 WebUI 配置文件。
 ```bash  
 cat ./napcat/config/webui.json 
 ```
-此时我们会得到一长串的内容，拉到**顶部**，即可获取Napcat密钥
+在输出内容顶部找到 `token` 字段：
 ```json
 {
     "host": "0.0.0.0",
@@ -137,24 +144,26 @@ cat ./napcat/config/webui.json
     "autoLoginAccount": "",
 }
 ```
-其中`"token": "xFSM7wZA3w7pE8TG"`就是我们登录NapCat控制台所需的密钥  
+其中 `xFSM7wZA3w7pE8TG` 仅为示例；实际 `token` 值即为当前 NapCat 控制台的登录密钥。
 :::  
 
-### 重启/关闭的方式  
-此命令在任意目录下均可执行
+## 服务管理
+
+以下命令可在任意目录执行：
 ```bash  
-# 重启AstrBot
+# 重启 AstrBot
 docker restart astrbot
-# 重启napcat
+# 重启 NapCat
 docker restart napcat
 
-# 关闭AstrBot
+# 停止 AstrBot
 docker stop astrbot
-# 关闭napcat
+# 停止 NapCat
 docker stop napcat
 ```  
 
-### :tada: 大功告成！
-::: info  
-接下来请探索AstrBot吧~  
+## 部署完成
+
+::: info 后续步骤
+登录 AstrBot 管理面板后，请先修改随机初始密码，再配置模型服务商，并至少部署一个消息平台。完成后发送一条测试消息，同时检查 AstrBot 与 NapCat 日志，确认消息链路正常。
 :::

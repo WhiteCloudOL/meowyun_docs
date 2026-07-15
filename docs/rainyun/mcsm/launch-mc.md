@@ -1,20 +1,27 @@
-# 启动MC服务器  
+# 启动 Minecraft 服务器
+
+完成服务端文件上传、环境安装和启动脚本配置后，可按照本页流程完成首次启动。
 
 ## 初次启动
 
-::: tip  
-请先配置好[启动脚本](install-mc.md#编辑启动脚本)哦~
+::: tip 前置条件
+请先完成[启动脚本配置](install-mc.md#编辑启动脚本)。
 :::  
 
-此时进入`MCSM面板`，在主界面终端的右上角即可启动服务器，如果出现提示如  
+进入`MCSM 面板`，在主界面终端右上角点击启动。如果终端出现以下提示，说明尚未接受 Minecraft 最终用户许可协议（EULA）：
 
-```
+```text
 You need to agree to the EULA in order to run the server. Go to eula.txt for more info.
 ```
 
-此时，你需要前往 `MCSM面板` -> `文件管理` -> `eula.txt`  
-设置 `eula = true` (注意*true*不要打错)  
+前往 `MCSM 面板` → `文件管理` → `eula.txt`，将配置修改为：
+
+```properties
+eula=true
+```
+
+请确认 `true` 拼写正确。保存文件即表示你已阅读并同意 Minecraft EULA。
 
 ## 正式启动
-再次尝试启动，现在你已经能够成功运行服务器了！！  
-此时你还不能进入服务器，需要进行服务端配置！  
+
+再次启动服务端，并观察终端是否出现正常启动完成的信息。服务端成功运行后，还需要继续完成端口、在线模式等[服务器配置](configure-mc.md)，才能从客户端正确连接。
