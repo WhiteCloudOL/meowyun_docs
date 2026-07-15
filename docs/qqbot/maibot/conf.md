@@ -225,6 +225,51 @@ jq -r '.access_token' data/webui.json
 `planner` 负责决定回复时机和工具调用，适合使用推理与工具能力稳定的模型；`replyer` 更看重语言质量；`utils` 等辅助任务可以选择响应更快、成本更低的模型；`vlm` 必须选择明确支持图片输入的视觉模型。
 :::
 
+### 配置 DeepSeek 官方 API <Badge type="tip" text="OpenAI 兼容" />
+
+DeepSeek 可用于 `replyer`、`planner` 和 `utils` 等文本任务，但**不能替代 VLM**。完成 DeepSeek 配置后，仍需另外添加一个明确支持图片输入的视觉模型，并分配给 `vlm` 任务。
+
+#### 1. 注册并完成实名认证
+
+1. 打开 [DeepSeek 开放平台](https://platform.deepseek.com/)，注册并登录账号。
+2. 按控制台提示完成个人或企业实名认证。请根据账号的实际使用主体选择认证类型。
+3. 根据预计用量充值或确认当前可用余额；API 调用按实际 Token 用量计费。
+
+#### 2. 创建 API Key
+
+1. 进入开放平台的 [API Keys](https://platform.deepseek.com/api_keys) 页面。
+2. 选择创建 API Key，并填写便于区分用途的名称，例如 `MaiBot`。
+3. 立即复制并妥善保存以 `sk-` 开头的密钥。不要把完整密钥发送到群聊、提交到 Git，或保留在公开截图中。
+
+#### 3. 在 MaiBot WebUI 中添加提供商
+
+进入 `AI 模型厂商配置`，选择 `添加提供商`。如果当前版本没有 DeepSeek 内置模板，选择 `自定义`，并按 OpenAI 兼容接口填写：
+
+```text
+名称：DeepSeek
+接口类型：OpenAI 兼容
+基础 URL：https://api.deepseek.com
+API Key：sk-***********
+```
+
+保存提供商后添加模型。模型标识必须从 [DeepSeek 官方模型文档](https://api-docs.deepseek.com/zh-cn/) 复制，不要把网页产品名称当作 API 模型 ID。当前可优先选择官方仍在维护的模型，例如：
+
+```text
+deepseek-v4-flash
+deepseek-v4-pro
+```
+
+::: warning 避免继续新增旧模型名
+DeepSeek 官方已公告 `deepseek-chat` 与 `deepseek-reasoner` 将于 2026 年 7 月 24 日停止作为独立模型名使用。新配置请优先采用官方当前模型 ID；已有配置也应在停用日期前完成迁移。
+:::
+
+#### 4. 分配模型并测试
+
+1. 将可用的 DeepSeek 模型分配给 `replyer`、`planner` 和 `utils`；可按质量、速度与成本选择不同型号。
+2. 另行配置支持视觉输入的模型，并分配给 `vlm`。这是完整运行所需的必备项。
+3. 使用 WebUI 的测试功能发起一次请求，确认没有 `401` 鉴权失败、`402` 余额不足或模型不存在错误。
+4. 保存后观察 MaiBot 日志，再到测试群完成一轮纯文本与图片消息验证。
+
 ### 配置云雾 AI <Badge type="info" text="OpenAI 兼容" />
 
 通过[注册链接](https://yunwu.ai/register?aff=6Fas)创建账号：
@@ -289,11 +334,25 @@ API Key：sk-***********
 
 修改后先在测试群或私聊中进行多轮对话，重点检查称呼是否正确、回复是否过于频繁、人格是否稳定，以及图片和记忆功能是否产生异常。大部分配置支持热重载；模型服务或插件没有及时应用变化时，再重启 MaiBot。
 
-## 启动与运行检查
+## 启动、重启与运行检查
 
-### 前台启动
+### 使用 MaiBot Manager TUI 一键管理 <Badge type="tip" text="推荐" />
 
-首次配置或排查故障时，建议使用前台模式：
+通过 MaiBot Manager TUI 部署后，无需长期手动输入启动命令。执行 `maibot` 打开管理界面，进入 `核心服务管理`，即可一键完成 MaiBot 的**启动、停止和重启**，并在同一页面查看运行状态与日志。
+
+```bash
+maibot
+```
+
+修改 WebUI 监听地址、模型运行环境或插件依赖后需要完整重启时，直接在 `核心服务管理` 选择 `重启` 即可。若操作失败，先打开日志查看具体报错，再使用下面的前台命令排查。
+
+::: tip 推荐顺序
+日常运维优先使用 MaiBot Manager TUI；首次接受用户协议、检查完整启动日志或定位异常时，再使用手动前台启动。
+:::
+
+### 手动前台启动 <Badge type="info" text="排错备用" />
+
+首次配置或排查故障时，可在 MaiBot 目录使用前台模式：
 
 ```bash
 cd ~/maimai/MaiBot
@@ -309,9 +368,9 @@ uv run python bot.py
 
 确认没有错误后按 `Ctrl+C` 安全退出。
 
-### 后台运行
+### 其他后台运行方式
 
-通过 MaiBot Manager TUI 部署时，进入 `核心服务管理` 启动、停止或重启 MaiBot，并在同一页面查看日志。使用旧版一键脚本时，应优先使用脚本自带的服务管理功能；不要同时启动多个 MaiBot 实例，否则可能造成端口冲突或数据库占用。
+使用旧版一键脚本时，应优先使用脚本自带的服务管理功能。自行配置 systemd、screen 或其他进程管理器时，应确保工作目录、Python 环境和启动命令与前台测试一致。不要同时启动多个 MaiBot 实例，否则可能造成端口冲突或数据库占用。
 
 ::: tip 配置热重载
 MaiBot 支持大部分配置热重载，保存后通常无需重启。模型服务重新初始化、插件加载失败或网络监听地址变化时，建议执行一次完整重启。
