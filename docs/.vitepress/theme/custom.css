@@ -1359,6 +1359,179 @@ body {
   }
 }
 
+/* SnowLuma：用真实的首次登录信号链表达 6081 → QQ → 5099 */
+.vp-doc .snowluma-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+  margin: -12px 0 30px;
+  padding: 27px 28px;
+  border: 1px solid rgba(142, 205, 242, 0.28);
+  border-radius: var(--duck-radius-lg);
+  background:
+    radial-gradient(circle at 92% 7%, rgba(142, 205, 242, 0.42), transparent 34%),
+    radial-gradient(circle at 8% 100%, rgba(255, 183, 197, 0.24), transparent 36%),
+    linear-gradient(118deg, rgba(255, 255, 255, 0.98), rgba(245, 251, 255, 0.96));
+  box-shadow: 0 13px 36px rgba(88, 158, 204, 0.11);
+}
+
+.vp-doc .snowluma-hero__copy,
+.vp-doc .snowluma-signal {
+  position: relative;
+  z-index: 1;
+}
+
+.vp-doc .snowluma-hero__eyebrow {
+  color: #4c9dcc;
+  font-family: var(--duck-font-code);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+}
+
+.vp-doc .snowluma-hero__copy p {
+  max-width: 62ch;
+  margin: 8px 0 0;
+  color: var(--vp-c-text-1);
+  font-family: var(--duck-font-rounded);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.72;
+}
+
+.vp-doc .snowluma-signal {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.vp-doc .snowluma-signal span {
+  display: grid;
+  min-width: 0;
+  min-height: 78px;
+  place-content: center;
+  padding: 12px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.74);
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(71, 143, 189, 0.09);
+  backdrop-filter: blur(8px);
+}
+
+.vp-doc .snowluma-signal b {
+  color: #367fa9;
+  font-family: var(--duck-font-code);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.vp-doc .snowluma-signal small {
+  margin-top: 4px;
+  color: var(--vp-c-text-2);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.vp-doc .snowluma-signal i {
+  color: color-mix(in srgb, var(--duck-pink-strong) 62%, #62a9d3);
+  font-family: var(--duck-font-code);
+  font-size: 15px;
+  font-style: normal;
+}
+
+.vp-doc .snowluma-shot {
+  margin: 24px 0 30px;
+  padding: 9px 9px 11px;
+  border: 1px solid rgba(142, 205, 242, 0.26);
+  border-radius: var(--duck-radius-md);
+  background: color-mix(in srgb, var(--duck-surface) 95%, var(--duck-blue) 5%);
+  box-shadow: 0 12px 34px rgba(88, 158, 204, 0.11);
+}
+
+.vp-doc .snowluma-shot img {
+  display: block;
+  width: 100%;
+  margin: 0;
+  border-radius: calc(var(--duck-radius-md) - 5px);
+  box-shadow: none;
+}
+
+.vp-doc .snowluma-shot img:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.vp-doc .snowluma-shot figcaption {
+  padding: 10px 8px 1px;
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.dark .vp-doc .snowluma-hero {
+  border-color: rgba(142, 197, 233, 0.14);
+  background:
+    radial-gradient(circle at 92% 7%, rgba(68, 130, 168, 0.25), transparent 36%),
+    radial-gradient(circle at 8% 100%, rgba(255, 143, 163, 0.11), transparent 38%),
+    linear-gradient(118deg, rgba(42, 38, 49, 0.98), rgba(38, 47, 56, 0.95));
+}
+
+.dark .vp-doc .snowluma-hero__eyebrow,
+.dark .vp-doc .snowluma-signal b {
+  color: #8ec5e9;
+}
+
+.dark .vp-doc .snowluma-signal span {
+  border-color: rgba(255, 255, 255, 0.06);
+  background: rgba(38, 35, 43, 0.72);
+}
+
+@media (max-width: 767px) {
+  .vp-doc .snowluma-hero {
+    margin-top: -6px;
+    padding: 21px 19px;
+  }
+
+  .vp-doc .snowluma-hero__copy p {
+    font-size: 15px;
+  }
+
+  .vp-doc .snowluma-signal {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .vp-doc .snowluma-signal span {
+    grid-template-columns: 74px 1fr;
+    min-height: 0;
+    align-items: center;
+    padding: 10px 13px;
+    text-align: left;
+  }
+
+  .vp-doc .snowluma-signal small {
+    margin: 0;
+  }
+
+  .vp-doc .snowluma-signal i {
+    justify-self: center;
+    line-height: 1;
+    transform: rotate(90deg);
+  }
+
+  .vp-doc .snowluma-shot {
+    margin: 20px 0 24px;
+    padding: 6px 6px 9px;
+    border-radius: 15px;
+  }
+}
+
 /* AstrBot：以部署路线与运行事实为核心，保持技术文档的清晰度 */
 .vp-doc .astrbot-hero {
   position: relative;

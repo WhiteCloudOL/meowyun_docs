@@ -102,7 +102,7 @@ uv run python bot.py
 
 ## 配置与访问 WebUI
 
-MaiBot WebUI 默认地址为 `http://127.0.0.1:8001`。`127.0.0.1` 只允许本机访问，因此服务器部署还需要初始化远程访问配置。
+MaiBot WebUI 默认使用 `host = ["127.0.0.1"]` 和端口 `8001`，因此本机通常可通过 `http://127.0.0.1:8001` 访问。服务器部署时，需要将监听地址改为 `host = ["0.0.0.0"]`，并同步配置访问白名单与防火墙；缺少任意一项都可能导致远程设备无法打开页面。
 
 ### 使用管理器初始化（推荐）
 
@@ -112,28 +112,31 @@ MaiBot WebUI 默认地址为 `http://127.0.0.1:8001`。`127.0.0.1` 只允许本�
 
 ### 手动开放远程访问
 
-仅在无法通过管理器初始化时，才需要编辑 `maimai/MaiBot/config/bot_config.toml`。示例中的网段应替换为实际管理设备所在网段。
+仅在无法通过管理器初始化时，才需要编辑 `maimai/MaiBot/config/bot_config.toml`。新版 `host` 是**字符串列表**；即使只监听一个地址，也必须保留方括号和引号。默认的 `host = ["127.0.0.1"]` 只接受本机连接，下面的示例用于开放远程访问。
 
 ::: details WebUI 网络配置示例
 ```toml
 [webui]
-enabled = true
-host = "0.0.0.0"                         # 监听所有网卡
-port = 8001
-mode = "production"
-anti_crawler_mode = "basic"
-allowed_ips = "127.0.0.1,192.168.1.0/24" # 仅允许本机和指定网段
-trusted_proxies = ""
-trust_xff = false
-secure_cookie = false
-enable_paragraph_content = false
+enabled = true                         # 是否启动 WebUI 管理界面
+host = ["0.0.0.0"]                    # 远程访问；默认值为 ["127.0.0.1"]
+port = 8001                            # WebUI 默认访问端口
+mode = "production"                   # 普通使用保持 production
+webui_style = 1                        # 0 为旧风格，1 为未来复古风格
+anti_crawler_mode = "basic"           # basic 以记录为主
+allowed_ips = "127.0.0.1"             # 允许访问的 IP，多个地址使用英文逗号分隔
+trusted_proxies = ""                   # 可信反向代理 IP
+trust_xff = false                      # 是否信任 X-Forwarded-For
+secure_cookie = false                  # 仅在 HTTPS 下设为 true
+enforce_public_outbound_url = true     # 阻止 WebUI 访问受限的内网 URL
+enable_paragraph_content = false       # 不加载知识图谱段落全文，减少内存占用
 ```
 :::
 
-- `host = "0.0.0.0"` 只表示允许从其他设备建立连接，不等于已经放行防火墙。
-- `allowed_ips` 必须包含实际访问设备的 IP 或网段，否则即使端口开放也会被拒绝。
+- `host = ["127.0.0.1"]` 是默认值，只允许本机访问；改为 `host = ["0.0.0.0"]` 后会监听全部 IPv4 网卡。需要同时监听 IPv6 时可写为 `host = ["0.0.0.0", "::"]`。监听地址只负责接收连接，不等于已经放行防火墙。
+- `allowed_ips` 必须包含实际访问设备的 IP，否则即使端口开放也会被拒绝。例如管理电脑的地址是 `192.168.1.100`，可写为 `allowed_ips = "127.0.0.1,192.168.1.100"`。
 - 仅在反向代理来源可信时启用 `trust_xff`，并填写 `trusted_proxies`。
 - 通过 HTTPS 反向代理访问时，可以启用 `secure_cookie`；直接使用 HTTP 时不要启用。
+- 建议保持 `enforce_public_outbound_url = true`，避免 WebUI 被利用来访问不应暴露的内网地址。
 
 ::: danger 不要直接暴露管理面板
 WebUI 包含配置、日志、插件和密钥等敏感信息。公网部署应设置强访问密钥，并通过云平台安全组、系统防火墙或带鉴权的反向代理限制来源地址。
@@ -143,7 +146,7 @@ WebUI 包含配置、日志、插件和密钥等敏感信息。公网部署应�
 
 #### 独立公网 IP 服务器
 
-在云平台安全组和系统防火墙中放行 `8001/TCP`，并尽量将来源限制为自己的公网 IP。访问地址：
+在云平台安全组和系统防火墙中放行 `8001/TCP`，并尽量将来源限制为自己的公网 IP；同时将管理设备的公网 IP 加入 `allowed_ips`。访问地址：
 
 ```text
 http://<服务器 IP>:8001
