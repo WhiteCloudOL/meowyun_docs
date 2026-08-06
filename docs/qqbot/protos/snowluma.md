@@ -3,7 +3,7 @@
 <div class="snowluma-hero">
   <div class="snowluma-hero__copy">
     <span class="snowluma-hero__eyebrow">ONEBOT · FIRST LOGIN</span>
-    <p>先让 QQ 真正登录，再进入 SnowLuma 管理面板。顺序正确，后续的进程注入和 OneBot 连接才有意义。</p>
+    <p>先登录 QQ ，再进入 SnowLuma 管理面板，依次完成~</p>
   </div>
   <div class="snowluma-signal" aria-label="SnowLuma 首次配置顺序">
     <span><b>6081</b><small>Docker 远程桌面</small></span>
@@ -49,35 +49,38 @@ nano docker-compose.yml
 ```yaml
 services:
   snowluma:
-    image: motricseven7/snowluma:latest
-    container_name: snowluma
+    image: ${SNOWLUMA_IMAGE:-motricseven7/snowluma:latest}
+    container_name: ${SNOWLUMA_CONTAINER:-snowluma}
     restart: unless-stopped
     shm_size: 1gb
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     cap_add:
       - SYS_PTRACE
     security_opt:
       - seccomp=unconfined
     environment:
-      VNC_PASSWD: ${VNC_PASSWD:?请先在 .env 文件中设置 VNC_PASSWD}
-      SNOWLUMA_WEBUI_PORT: 5099
-      SNOWLUMA_HOOK_AUTOLOAD: 1
+      VNC_PASSWD: ${VNC_PASSWD:-vncpasswd}
+      SNOWLUMA_UID: ${SNOWLUMA_UID:-1000}
+      SNOWLUMA_GID: ${SNOWLUMA_GID:-1000}
+      SNOWLUMA_WEBUI_HOST: ${SNOWLUMA_WEBUI_HOST:-0.0.0.0}
+      SNOWLUMA_WEBUI_PORT: ${SNOWLUMA_WEBUI_PORT:-5099}
+      SNOWLUMA_LOG_LEVEL: ${SNOWLUMA_LOG_LEVEL:-info}
+      SNOWLUMA_SCREEN: ${SNOWLUMA_SCREEN:-1920x1080x24}
+      SNOWLUMA_HOOK_AUTOLOAD: ${SNOWLUMA_HOOK_AUTOLOAD:-1}
+      SNOWLUMA_EXTRA_QQ_HOMES: "${SNOWLUMA_EXTRA_QQ_HOMES:-}"
+      SNOWLUMA_QQ_FLAGS: "${SNOWLUMA_QQ_FLAGS:---disable-gpu --disable-software-rasterizer --disable-gpu-compositing}"
     ports:
-      - "6081:6081"
-      - "5099:5099"
-      - "3000:3000"
-      - "3001:3001"
+      - "${VNC_PORT:-5900}:5900"
+      - "${NOVNC_PORT:-6081}:6081"
+      - "${SNOWLUMA_WEBUI_HOST_PORT:-5099}:${SNOWLUMA_WEBUI_PORT:-5099}"
+      - "${ONEBOT_HTTP_PORT:-3000}:3000"
+      - "${ONEBOT_WS_PORT:-3001}:3001"
     volumes:
-      - snowluma-data:/app/snowluma-data
-      - snowluma-qq-config:/app/.config
-      - snowluma-qq-data:/app/.local/share
-
-volumes:
-  snowluma-data:
-  snowluma-qq-config:
-  snowluma-qq-data:
+      - ./snowluma-data:/app/snowluma-data
+      - ./snowluma-qq-config:/app/.config
+      - ./snowluma-qq-data:/app/.local/share
 ```
-
-`SYS_PTRACE`、`seccomp=unconfined` 与 `shm_size: 1gb` 是 QQ 注入和稳定运行所需的关键配置，不要删除。三个数据卷用于保存 SnowLuma 配置与 QQ 登录状态，更新容器时也不要删除。
 
 ### 2. 设置 VNC 密码 <Badge type="tip" text="必须修改" />
 
@@ -99,7 +102,7 @@ VNC_PASSWD=请替换为你自己的强密码
 将这一行：
 
 ```yaml
-VNC_PASSWD: ${VNC_PASSWD:?请先在 .env 文件中设置 VNC_PASSWD}
+VNC_PASSWD: ${VNC_PASSWD:-vncpasswd}
 ```
 
 改成：
@@ -131,9 +134,15 @@ docker logs -f snowluma
 
 按 `Ctrl+C` 只会退出日志查看，不会停止容器。
 
-### 4. 先从 6081 登录 QQ
+### 4. 登录 QQ
 
-在自己的电脑浏览器中打开：
+#### 本机部署
+
+直接打开QQ，登录Bot的QQ，并在SnowLuma控制台，注入对应进程
+
+#### Docker 部署
+
+确保服务器已开放`6081`端口， TCP 协议的防火墙，在自己的电脑浏览器中打开：  
 
 ```text
 http://<服务器 IP>:6081/
@@ -176,9 +185,7 @@ QQ 登录完成后，再打开：
 http://<服务器 IP>:5099/
 ```
 
-使用日志中打印的用户名和临时密码登录（用户名通常为 `admin`，以实际日志为准）。进入 WebUI 后，前往 `系统设置` 中的账号或安全设置，立即更换为仅自己知道的强密码。
-
-建议密码至少 12 位，并混合大小写字母、数字与符号；不要与 VNC 密码、QQ 密码或 OneBot Token 共用。
+使用日志中打印的临时密码登录。进入 WebUI 后，按照提示修改为强密码。
 
 ## Windows 部署
 

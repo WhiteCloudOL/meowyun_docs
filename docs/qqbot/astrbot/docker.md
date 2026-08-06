@@ -62,7 +62,7 @@ services:
       - TZ=Asia/Shanghai
     ports:
       - "6185:6185"
-      # 协议端不在同一 Docker 网络时再启用：
+      # Bot程序与协议端不在同一 Docker 网络时再启用：
       # - "6199:6199"
     volumes:
       - ./data:/AstrBot/data
@@ -80,7 +80,7 @@ networks:
 NAPCAT_UID=$(id -u) NAPCAT_GID=$(id -g) docker compose up -d
 ```
 
-### 方案 B：仅运行 AstrBot
+### 方案 B：仅运行 AstrBot（Host网络）
 
 ```yaml
 services:
@@ -88,12 +88,9 @@ services:
     image: soulter/astrbot:latest
     container_name: astrbot
     restart: unless-stopped
+    network_mode: host
     environment:
       - TZ=Asia/Shanghai
-    ports:
-      - "6185:6185"
-      # 使用宿主机上的 OneBot v11 协议端时取消下一行注释：
-      # - "6199:6199"
     volumes:
       - ./data:/AstrBot/data
 ```
@@ -101,10 +98,6 @@ services:
 ```bash
 docker compose up -d
 ```
-
-::: warning 不要默认挂载 Docker Socket
-普通部署不需要把 `/var/run/docker.sock` 挂载进 AstrBot 容器。该接口拥有很高的宿主机权限；只有明确使用 Agent 沙箱并理解风险时，才应按照 AstrBot 官方的专用沙箱方案配置。
-:::
 
 ## 2. 检查启动状态
 
@@ -153,8 +146,9 @@ cat ./napcat/config/webui.json
 1. 在 AstrBot WebUI 中进入 `机器人`，新建并启用 `OneBot v11` 实例。
 2. 反向 WebSocket 主机通常填写 `0.0.0.0`，端口填写 `6199`；如设置 Token，NapCat 端必须保持一致。
 3. 在 NapCat WebUI 新建 `WebSockets 客户端`：
-   - 同一 Compose：填写 `ws://astrbot:6199/ws`。
-   - NapCat 位于宿主机或其他设备：填写 `ws://<AstrBot 地址>:6199/ws`，并确保端口仅对可信来源开放。
+   - 使用方案A-同一 Compose：填写 `ws://astrbot:6199/ws`。
+   - 使用方案B-Host网络：填写 `ws://localhost:6199/ws`
+   - NapCat 位于宿主机或其他设备：填写 `ws://<AstrBot 所在网络地址>:6199/ws`，并确保端口仅对可信来源开放。
 4. 保存并启用连接，在 AstrBot 控制台确认出现 `aiocqhttp(OneBot v11) 适配器已连接` 日志。
 
 ## 5. 日常维护
