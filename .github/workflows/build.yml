@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_NAME: 'meowyundocs'
+  PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT }}
+  DOCS_DOMAIN: ${{ vars.DOCS_DOMAIN }}
   NODE_VERSION: '24'
 
 jobs:
@@ -39,13 +40,13 @@ jobs:
         run: |
           echo "🚀 Deploying to Cloudflare Pages..."
           npx wrangler pages deploy docs/.vitepress/dist \
-            --project-name="${{ env.PROJECT_NAME }}" \
+            --project-name="${{ env.PAGES_PROJECT }}" \
             --branch=main \
             --commit-hash="${{ github.sha }}" \
             --commit-message="自动部署: ${{ github.event.head_commit.message || github.sha }}"
           
           echo "✅ Deployment submitted successfully!"
-          echo "production_url=https://${{ env.PROJECT_NAME }}.pages.dev" >> $GITHUB_OUTPUT
+          echo "production_url=https://${{ env.DOCS_DOMAIN }}" >> $GITHUB_OUTPUT
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}

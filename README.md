@@ -10,7 +10,7 @@
 [![VitePress](https://img.shields.io/badge/Built%20with-VitePress-646cff?style=flat-square&logo=vitepress&logoColor=white)](https://vitepress.dev/zh/)
 [![License](https://img.shields.io/badge/License-AGPL--3.0-blue?style=flat-square)](LICENSE)
 
-[在线文档](https://docs.meowyun.cn/) · [备用站点](https://docs.catyun.cyou/) · [问题反馈](https://github.com/WhiteCloudOL/meowyun_docs/issues)
+[在线文档](https://docs.meowyun.cn/) · [备用站点](https://docs.thecatyun.top/) · [问题反馈](https://github.com/WhiteCloudOL/meowyun_docs/issues)
 
 </div>
 
@@ -32,7 +32,7 @@
 | 站点 | 地址 | 说明 |
 | --- | --- | --- |
 | 主站 | [docs.meowyun.cn](https://docs.meowyun.cn/) | 国内访问入口 |
-| 备用站 | [docs.catyun.cyou](https://docs.catyun.cyou/) | Cloudflare Pages 镜像 |
+| 备用站 | [docs.thecatyun.top](https://docs.thecatyun.top/) | Cloudflare Pages 镜像 |
 
 ## 本地开发
 

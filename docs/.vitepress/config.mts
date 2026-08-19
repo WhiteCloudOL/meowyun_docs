@@ -28,7 +28,7 @@ export default defineConfig({
         text: '文档站点',
         items: [
           { text: '文档主站', link: 'https://docs.meowyun.cn/' },
-          { text: 'Cloudflare 镜像', link: 'https://docs.catyun.cyou/' },
+          { text: 'Cloudflare 镜像', link: 'https://docs.thecatyun.top/' },
         ],
       },
       {

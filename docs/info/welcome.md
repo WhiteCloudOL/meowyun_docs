@@ -27,7 +27,7 @@
 主站会跟随 GitHub 提交持续更新。Cloudflare 镜像用于同步发布文档，在部分网络环境下可能访问较慢，此时建议优先使用主站。
 
 - **文档主站：** <https://docs.meowyun.cn/>
-- **Cloudflare 镜像：** <https://docs.catyun.cyou/>
+- **Cloudflare 镜像：** <https://docs.thecatyun.top/>
 
 ## 相关链接
 

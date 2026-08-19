@@ -55,7 +55,7 @@ const topics = [
             开始阅读
             <span aria-hidden="true">→</span>
           </a>
-          <a class="toy-button toy-button--secondary" href="https://index.meowyun.cn/">
+          <a class="toy-button toy-button--secondary" href="https://meowyun.cn/navigation">
             打开导航
           </a>
         </div>
