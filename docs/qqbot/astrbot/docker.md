@@ -80,7 +80,72 @@ networks:
 NAPCAT_UID=$(id -u) NAPCAT_GID=$(id -g) docker compose up -d
 ```
 
-### 方案 B：仅运行 AstrBot（Host网络）
+### 方案 A：AstrBot + SnowLuma
+
+该方案让两个容器加入同一个隔离网络。SnowLuma 可通过 `ws://astrbot:6199/ws` 访问 AstrBot，无需把 `6199` 暴露到公网。  
+为了安全考虑，部署前请务必修改：`VNC_PASSWD: ${VNC_PASSWD:-vncpasswd}`选项，修改`vncpasswd`为高强度密码，例如`VNC_PASSWD: WfasRF62dR%f+s2s`  
+
+```yaml
+services:
+  astrbot:
+    image: soulter/astrbot:latest
+    container_name: astrbot
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data:/AstrBot/data
+    ports:
+      - "6185:6185"   # AstrBot 开放端口
+    networks:
+      - astrbot-network
+
+  snowluma:
+    image: ${SNOWLUMA_IMAGE:-motricseven7/snowluma:latest}
+    container_name: ${SNOWLUMA_CONTAINER:-snowluma}
+    restart: unless-stopped
+    shm_size: 1gb
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp=unconfined
+    environment:
+      VNC_PASSWD: ${VNC_PASSWD:-vncpasswd}
+      SNOWLUMA_UID: ${SNOWLUMA_UID:-1000}
+      SNOWLUMA_GID: ${SNOWLUMA_GID:-1000}
+      SNOWLUMA_WEBUI_HOST: ${SNOWLUMA_WEBUI_HOST:-0.0.0.0}
+      SNOWLUMA_WEBUI_PORT: ${SNOWLUMA_WEBUI_PORT:-5099}
+      SNOWLUMA_LOG_LEVEL: ${SNOWLUMA_LOG_LEVEL:-info}
+      SNOWLUMA_SCREEN: ${SNOWLUMA_SCREEN:-1920x1080x24}
+      SNOWLUMA_HOOK_AUTOLOAD: ${SNOWLUMA_HOOK_AUTOLOAD:-1}
+      SNOWLUMA_EXTRA_QQ_HOMES: "${SNOWLUMA_EXTRA_QQ_HOMES:-}"
+      SNOWLUMA_QQ_FLAGS: "${SNOWLUMA_QQ_FLAGS:---disable-gpu --disable-software-rasterizer --disable-gpu-compositing}"
+    ports:
+      - "${VNC_PORT:-5900}:5900"
+      - "${NOVNC_PORT:-6081}:6081"
+      - "${SNOWLUMA_WEBUI_HOST_PORT:-5099}:${SNOWLUMA_WEBUI_PORT:-5099}"
+      - "${ONEBOT_HTTP_PORT:-3000}:3000"
+      - "${ONEBOT_WS_PORT:-3001}:3001"
+    volumes:
+      - ./snowluma-data:/app/data
+      - ./snowluma-qq-config:/app/.config
+      - ./snowluma-qq-data:/app/.local/share
+    networks:
+      - astrbot-network
+
+networks:
+  astrbot-network:
+    driver: bridge
+```
+
+执行：  
+```bash
+docker compose up -d
+```
+
+### 方案 C：仅运行 AstrBot（Host网络）
 
 ```yaml
 services:

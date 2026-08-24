@@ -77,7 +77,7 @@ services:
       - "${ONEBOT_HTTP_PORT:-3000}:3000"
       - "${ONEBOT_WS_PORT:-3001}:3001"
     volumes:
-      - ./snowluma-data:/app/snowluma-data
+      - ./snowluma-data:/app/data
       - ./snowluma-qq-config:/app/.config
       - ./snowluma-qq-data:/app/.local/share
 ```
