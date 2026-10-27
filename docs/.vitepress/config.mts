@@ -1,3 +1,5 @@
+import { copyFile, mkdir } from 'node:fs/promises'
+import { join } from 'node:path'
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
@@ -5,6 +7,22 @@ export default defineConfig({
   title: '清蒸云鸭の文档',
   description: '以云为翼，栖无界之地；以码为砖，筑万相世界。',
   cleanUrls: true,
+  async buildEnd({ outDir, pages, rewrites }) {
+    // Ordinary static hosts serve /guide/ via index.html, but may not map /guide to guide.html.
+    // Keep both entries so direct visits receive the HTML required by VitePress hydration.
+    const outputPages = new Set(pages.map((page) => rewrites.map[page] ?? page))
+
+    for (const page of outputPages) {
+      if (/(^|\/)(index|404)\.md$/.test(page)) continue
+
+      const route = page.slice(0, -3)
+      if (outputPages.has(`${route}/index.md`)) continue
+
+      const directory = join(outDir, route)
+      await mkdir(directory, { recursive: true })
+      await copyFile(join(outDir, `${route}.html`), join(directory, 'index.html'))
+    }
+  },
   lastUpdated: true,
   markdown: {
     lineNumbers: true,

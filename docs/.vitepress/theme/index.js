@@ -4,6 +4,7 @@ import { useRoute } from 'vitepress'
 import mediumZoom from 'medium-zoom'
 import vitepressBackToTop from 'vitepress-plugin-back-to-top'
 import HomePage from './HomePage.vue'
+import Layout from './Layout.vue'
 import SiteCounter from './SiteCounter.vue'
 import { createCounterUrl, shouldTrackVisit } from './site-counter'
 import '@fontsource/nunito/400.css'
@@ -16,6 +17,7 @@ import './custom.css'
 
 export default {
   ...DefaultTheme,
+  Layout,
 
   enhanceApp(context) {
     DefaultTheme.enhanceApp?.(context)

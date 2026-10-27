@@ -80,10 +80,10 @@ networks:
 NAPCAT_UID=$(id -u) NAPCAT_GID=$(id -g) docker compose up -d
 ```
 
-### 方案 A：AstrBot + SnowLuma
+### 方案 B：AstrBot + SnowLuma
 
 该方案让两个容器加入同一个隔离网络。SnowLuma 可通过 `ws://astrbot:6199/ws` 访问 AstrBot，无需把 `6199` 暴露到公网。  
-为了安全考虑，部署前请务必修改：`VNC_PASSWD: ${VNC_PASSWD:-vncpasswd}`选项，修改`vncpasswd`为高强度密码，例如`VNC_PASSWD: WfasRF62dR%f+s2s`  
+为了安全考虑，部署前请务必修改：`VNC_PASSWD: ${VNC_PASSWD:-vncpasswd}`选项，修改`vncpasswd`为高强度密码，例如`VNC_PASSWD: "WfasRF62dR%f+s2s"`  
 
 ```yaml
 services:

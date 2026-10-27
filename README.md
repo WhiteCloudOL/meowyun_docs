@@ -62,6 +62,20 @@ npm run docs:dev
 
 生产构建默认输出至 `docs/.vitepress/dist/`。
 
+### 静态服务器与 EdgeOne
+
+本站启用了 `cleanUrls`。构建会同时生成 `mcs/remote.html` 和 `mcs/remote/index.html`，让支持目录索引的静态服务器也能在直接访问、刷新或分享无后缀链接时返回完整正文。请部署完整构建目录，包括新增的目录入口。
+
+Nginx / OpenResty 可在站点配置中使用以下规则，让无后缀地址直接返回对应的 HTML：
+
+```nginx
+location / {
+    try_files $uri $uri.html $uri/ =404;
+}
+```
+
+不要把所有文档路径回退到首页或空的 `404.html`：VitePress 首次加载依赖当前页面预渲染的正文，返回其他页面的 HTML 会导致正文空白。如果 EdgeOne 已缓存旧的 404 响应，部署后需刷新对应路径的缓存。HTML 页面和 `hashmap.json` 应及时更新，带内容哈希的 `/assets/` 文件可长期缓存。
+
 ## 目录结构
 
 ```text

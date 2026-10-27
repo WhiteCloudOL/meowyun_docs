@@ -1,4 +1,6 @@
 <script setup>
+import TencentCloudPromo from './TencentCloudPromo.vue'
+
 const topics = [
   {
     eyebrow: 'SERVER & MODS',
@@ -115,6 +117,8 @@ const topics = [
         </span>
       </a>
     </section>
+
+    <TencentCloudPromo placement="home" />
   </main>
 </template>
 
