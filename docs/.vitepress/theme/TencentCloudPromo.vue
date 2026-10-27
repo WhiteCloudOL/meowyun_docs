@@ -1,7 +1,7 @@
 <script setup>
-import asideImage from '../../resources/images/tencentcloud/300_250.webp'
-import inlineImage from '../../resources/images/tencentcloud/560_300.webp'
-import wideImage from '../../resources/images/tencentcloud/728_90.webp'
+import asideImage from '../../resources/images/tencentcloud/cloud-products-sidebar.webp'
+import inlineImage from '../../resources/images/tencentcloud/cloud-products-card.webp'
+import wideImage from '../../resources/images/tencentcloud/cloud-products-wide.webp'
 
 defineProps({
   placement: {
