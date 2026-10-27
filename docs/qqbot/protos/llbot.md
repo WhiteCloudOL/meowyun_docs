@@ -202,8 +202,10 @@ LLBot 支持 OneBot 11、Satori、Milky 等协议方式。
 1. AstrBot 创建 `反向 WebSocket 客户端`：`ws://127.0.0.1:6199/ws`。
 2. MaiBot 创建 `正向 WebSocket 服务器`：
    - Host：同机部署填写 `127.0.0.1`；跨设备连接填写 `0.0.0.0`，并设置强 Token。
-   - Port：`3001`，与 MaiBot NapCat 适配器端口保持一致。
-   - Token：本机隔离环境可以留空；其他环境应与 MaiBot NapCat 适配器的 Token 保持一致。
+   - Port：`3001`，与 MaiBot 统一的 SnowLuma Adapter 端口保持一致。
+   - Token：本机隔离环境可以留空；其他环境应与 SnowLuma Adapter 的 Token 保持一致。
+
+MaiBot 对接 NapCat、LLBot、SnowLuma 时均使用统一的 SnowLuma Adapter。连接参数从 `适配器设置` 中修改，名单过滤从 `黑白名单规则` 标签中配置，详见[MaiBot 配置与启动](../maibot/conf#配置-qq-协议端与适配器)。
 
 如果框架与 LLBot 位于同一台服务器，优先使用 `127.0.0.1`。跨设备连接时，请根据实际网络填写监听地址，并务必设置 Token、限制端口来源。
 

@@ -10,8 +10,7 @@
 
 | 使用需求 | 推荐插件 | 主要用途 |
 | --- | --- | --- |
-| 使用 NapCat 连接 QQ | NapCat Adapter | 在 MaiBot 与 NapCat 之间传递消息和协议事件 |
-| 使用 SnowLuma 连接 QQ | SnowLuma Adapter | 接入 SnowLuma，并提供相关消息与主动私聊能力 |
+| 使用 NapCat、LLBot 或 SnowLuma 连接 QQ | SnowLuma Adapter | 统一接入 QQ 协议端，管理连接参数与黑白名单规则 |
 | 增加更自然的戳一戳互动 | 智能戳一戳 | 按概率执行回戳、文字回复、表情回复或保持沉默 |
 | 让 MaiBot 联网检索信息 | Search 插件 | 聚合多个搜索引擎，并提取网页内容供模型总结 |
 | 让 MaiBot 生成或编辑图片 | 麦麦绘图 | 接入多家图片模型，提供文生图与图生图工具 |
@@ -19,25 +18,19 @@
 | 自动解析群聊分享链接 | 多平台链接解析 | 解析抖音、小红书和小黑盒的图文或视频内容 |
 | 监控 QQ 协议端运行状态 | 麦麦掉线通知 | 协议端掉线或恢复时向管理员推送通知 |
 
-> 本表仅用于快速定位插件，并不代表功能排名。协议适配器应与实际使用的 QQ 协议端保持一致。
+> 本表仅用于快速定位插件，并不代表功能排名。NapCat、LLBot 与 SnowLuma 共用统一适配器，连接参数应与实际使用的协议端保持一致。
 
 ## 协议适配器
 
-### NapCat Adapter <Badge type="tip" text="NapCat" />
-
-- **仓库地址：** [Mai-with-u/MaiBot-Napcat-Adapter](https://github.com/Mai-with-u/MaiBot-Napcat-Adapter)
-- **作者：** [MaiBot Team](https://github.com/Mai-with-u)
-- **插件简介：** 连接 MaiBot 与 NapCat 的协议适配器，覆盖消息、群管理、账号与文件等能力，并提供强类型封装和 NapCat Action 透传接口。
-
-适合已经使用 NapCat 作为 QQ 协议端的部署环境。安装后需要确保适配器与 NapCat 的 WebSocket 地址、端口和 Token 配置一致。
-
-### SnowLuma Adapter <Badge type="info" text="SnowLuma" />
+### SnowLuma Adapter <Badge type="tip" text="统一适配器" />
 
 - **仓库地址：** [Mai-with-u/MaiBot-SnowLuma-Adapter](https://github.com/Mai-with-u/MaiBot-SnowLuma-Adapter/)
 - **作者：** [MaiBot Team](https://github.com/Mai-with-u)
-- **插件简介：** 面向 SnowLuma 的 MaiBot 适配器插件，负责协议端消息接入，并可选启用主动私聊工具，支持按消息 ID 定位用户后发起会话。
+- **插件简介：** NapCat、LLBot 与 SnowLuma 共用的 MaiBot 适配器插件，负责协议端消息接入，并可选启用主动私聊工具。
 
-该项目仅作为 Adapter 插件由 MaiBot 加载。启用主动私聊能力前，请阅读仓库中的配置说明，并合理设置聊天名单与全局屏蔽规则。
+旧的 NapCat 适配器与 SnowLuma 适配器已合并到该项目。安装后，在 WebUI 的 `适配器设置` 中填写所选协议端的连接参数，并在 `黑白名单规则` 标签中配置群聊与私聊名单。具体步骤见[配置 QQ 协议端与适配器](./conf#配置-qq-协议端与适配器)。
+
+该项目作为 Adapter 插件由 MaiBot 加载。启用主动私聊能力前，请阅读仓库中的配置说明，并合理设置聊天名单与全局屏蔽规则。
 
 ## 功能增强插件
 
