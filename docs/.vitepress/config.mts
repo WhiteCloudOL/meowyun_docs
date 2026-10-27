@@ -112,6 +112,17 @@ export default defineConfig({
               { text: '常见问题', link: '/rainyun/mcsm/question' },
             ],
           },
+          {
+            text: '幻兽帕鲁',
+            collapsed: true,
+            items: [
+              { text: '选购与准备', link: '/rainyun/palworld/intro' },
+              { text: '安装运行环境', link: '/rainyun/palworld/install-env' },
+              { text: '安装与启动服务端', link: '/rainyun/palworld/install-server' },
+              { text: '端口映射与联机', link: '/rainyun/palworld/network' },
+              { text: '安装 Mod', link: '/rainyun/palworld/mods' },
+            ],
+          },
         ],
       },
     ],
