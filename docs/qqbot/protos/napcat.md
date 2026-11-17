@@ -1,3 +1,8 @@
+---
+title: NapCatQQ 安装与配置教程
+description: 安装 NapCatQQ 并登录普通 QQ 账号，配置 OneBot 连接，为 AstrBot、MaiBot 等机器人接入 QQ。
+---
+
 # NapCatQQ
 
 NapCatQQ 是用于连接 QQ 与机器人框架的 OneBot 协议端。本文由清蒸云鸭整理，包含 Docker 和 Linux Shell 两种部署方式。

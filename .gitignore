@@ -8,3 +8,7 @@ node_modules/
 
 # macOS 系统文件
 .DS_Store
+
+# Local deployment tools, configuration, packages, and logs
+/.local-deploy/
+/一键部署文档.cmd

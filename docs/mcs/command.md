@@ -1,3 +1,8 @@
+---
+title: Minecraft 服务器常用命令
+description: 查阅 Minecraft 服务器管理命令，涵盖玩家权限、游戏规则、世界设置、白名单和日常运维操作。
+---
+
 # Minecraft 服务器常用命令
 
 本文整理 Minecraft Java 版服务器的常用管理命令，适用于控制台或具有相应权限的游戏内管理员。文档作者：清蒸云鸭。

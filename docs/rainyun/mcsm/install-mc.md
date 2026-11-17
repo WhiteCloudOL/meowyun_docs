@@ -1,7 +1,7 @@
 ---
-title: 安装 Minecraft 服务端
+title: 雨云面板安装 Minecraft 服务端教程
+description: 通过雨云 MCSManager 面板上传和解压 Minecraft 整合包，配置 Forge、NeoForge 等服务端的启动脚本。
 editLink: false
-
 ---
 
 # 安装 Minecraft 服务端

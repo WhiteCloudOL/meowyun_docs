@@ -517,7 +517,8 @@ body {
 
 .vp-doc strong {
   color: var(--vp-c-text-1);
-  font-weight: 600;
+  font-weight: 700;
+  font-synthesis: weight style;
 }
 
 .vp-doc a {

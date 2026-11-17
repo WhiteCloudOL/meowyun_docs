@@ -1,3 +1,8 @@
+---
+title: SnowLuma 安装与配置指南
+description: 安装和配置 SnowLuma，完成 QQ 登录、协议端设置和机器人连接，查找使用中的常见问题。
+---
+
 # SnowLuma 配置指南
 
 <div class="snowluma-hero">
@@ -242,7 +247,7 @@ QQ 节点正常后，进入 `节点配置`，选择对应 QQ，再根据机器�
 
 使用 WebSocket 时，建议设置独立的强 Token，并在 SnowLuma 与机器人框架中填写完全相同的地址、端口和 Token。
 
-- MaiBot 可继续阅读本站的 [SnowLuma Adapter 配置](../maibot/conf#使用-snowluma)。
+- MaiBot 可继续阅读本站的 [SnowLuma Adapter 配置](/qqbot/maibot/adapters/onebot)。
 - 其他框架或高级网络设置请参考 [SnowLuma 官方配置文档](https://snowluma.github.io/guide/configuration.html)。
 
 ## 常见问题

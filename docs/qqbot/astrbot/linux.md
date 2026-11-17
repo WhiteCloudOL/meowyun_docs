@@ -1,3 +1,8 @@
+---
+title: AstrBot Linux 部署教程
+description: 在 Linux 中安装并运行 AstrBot，完成环境准备、服务启动和终端会话管理。
+---
+
 # Linux 部署
 
 <div class="astrbot-page-lead">

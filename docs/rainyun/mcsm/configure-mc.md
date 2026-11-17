@@ -1,3 +1,8 @@
+---
+title: Minecraft server.properties 配置教程
+description: 通过雨云面板修改 Minecraft 服务端配置，了解游戏模式、人数、白名单、正版验证、视距和端口设置。
+---
+
 # 修改服务器配置
 
 `server.properties` 控制 Minecraft 服务端的端口、验证模式、游戏规则和性能相关选项。修改前建议停止服务端并备份原文件。

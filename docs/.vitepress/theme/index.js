@@ -6,6 +6,8 @@ import vitepressBackToTop from 'vitepress-plugin-back-to-top'
 import HomePage from './HomePage.vue'
 import Layout from './Layout.vue'
 import SiteCounter from './SiteCounter.vue'
+import DocTag from './DocTag.vue'
+import PluginCard from './PluginCard.vue'
 import { createCounterUrl, shouldTrackVisit } from './site-counter'
 import '@fontsource/nunito/400.css'
 import '@fontsource/nunito/500.css'
@@ -23,6 +25,8 @@ export default {
     DefaultTheme.enhanceApp?.(context)
     context.app.component('HomePage', HomePage)
     context.app.component('SiteCounter', SiteCounter)
+    context.app.component('Tag', DocTag)
+    context.app.component('PluginCard', PluginCard)
     vitepressBackToTop({ threshold: 360 })
   },
 

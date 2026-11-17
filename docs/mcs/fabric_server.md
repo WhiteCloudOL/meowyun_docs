@@ -1,3 +1,9 @@
+---
+title: Minecraft Fabric 服务端
+noindex: true
+description: Fabric 服务端教程编写中，可先查阅通用的运行环境、文件上传和服务端启动配置说明。
+---
+
 # Fabric 服务端
 
 本页用于整理 Fabric 服务端的安装、启动与维护流程，目前内容仍在编写中。

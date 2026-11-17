@@ -1,3 +1,8 @@
+---
+title: AstrBot Docker 部署教程
+description: 使用 Docker 部署 AstrBot，完成容器启动、管理页面访问、QQ 协议端连接和日常更新维护。
+---
+
 # Docker 部署
 
 <div class="astrbot-page-lead">

@@ -1,3 +1,8 @@
+---
+title: Minecraft 服务器与 VPS 远程管理教程
+description: 学习远程连接和管理 Minecraft 服务器与 VPS，了解 SSH、终端及文件传输的基本操作，为服务端部署做好准备。
+---
+
 # 远程管理服务器
 
 本文分别介绍 Windows 与 Linux 服务器的远程连接方式。文档作者：清蒸云鸭。

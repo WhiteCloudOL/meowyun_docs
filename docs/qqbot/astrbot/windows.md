@@ -1,3 +1,8 @@
+---
+title: AstrBot Windows 部署教程
+description: 在 Windows 中安装 AstrBot，按步骤准备运行环境、启动服务并进入管理页面。
+---
+
 # Windows 部署
 
 <div class="astrbot-page-lead">

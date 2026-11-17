@@ -1,3 +1,8 @@
+---
+title: 雨云 MCSManager 游戏云面板介绍
+description: 认识雨云 MCSManager 游戏云面板，了解实例管理、文件上传、控制台和 Minecraft 服务端部署流程。
+---
+
 # 雨云 MCSManager 面板
 
 本系列文档介绍如何使用雨云游戏云和 MCSManager（下文简称 MCSM）面板部署并管理游戏服务端。

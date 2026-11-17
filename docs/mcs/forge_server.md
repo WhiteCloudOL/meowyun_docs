@@ -1,3 +1,9 @@
+---
+title: Minecraft Forge 服务端
+noindex: true
+description: Forge 服务端教程编写中，可先查阅通用的安装流程，以及新版 Forge、NeoForge 与旧版 Forge 启动脚本说明。
+---
+
 # Forge 服务端
 
 本页用于整理 Forge 服务端的安装、启动与维护流程，目前内容仍在编写中。

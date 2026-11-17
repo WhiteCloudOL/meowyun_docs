@@ -1,12 +1,21 @@
 import { copyFile, mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { defineConfig } from 'vitepress'
+import { addPageSeo, isIndexable, siteDescription, siteUrl, writeLegacyRedirects } from './seo'
 
 export default defineConfig({
   lang: 'zh-CN',
   title: '清蒸云鸭の文档',
-  description: '以云为翼，栖无界之地；以码为砖，筑万相世界。',
+  description: siteDescription,
   cleanUrls: true,
+  sitemap: {
+    hostname: siteUrl,
+    transformItems: (items) => items.filter((item) => isIndexable(item.url)),
+  },
+  transformPageData: addPageSeo,
+  transformHead: ({ page }) => page === '404.md'
+    ? [['meta', { name: 'robots', content: 'noindex, follow' }]]
+    : [],
   async buildEnd({ outDir, pages, rewrites }) {
     // Ordinary static hosts serve /guide/ via index.html, but may not map /guide to guide.html.
     // Keep both entries so direct visits receive the HTML required by VitePress hydration.
@@ -22,6 +31,7 @@ export default defineConfig({
       await mkdir(directory, { recursive: true })
       await copyFile(join(outDir, `${route}.html`), join(directory, 'index.html'))
     }
+    await writeLegacyRedirects(outDir)
   },
   lastUpdated: true,
   markdown: {
@@ -86,10 +96,39 @@ export default defineConfig({
             items: [
               { text: '简介', link: '/qqbot/maibot/intro' },
               { text: '安装与部署', link: '/qqbot/maibot/install' },
-              { text: '配置与启动', link: '/qqbot/maibot/conf' },
-              { text: '插件管理', link: '/qqbot/maibot/plugins' },
-              { text: '使用指南', link: '/qqbot/maibot/use' },
-              { text: '常用插件索引', link: '/qqbot/maibot/plugins_index' },
+              {
+                text: '基础配置',
+                collapsed: false,
+                items: [
+                  { text: '配置概览', link: '/qqbot/maibot/config/conf' },
+                  { text: 'WebUI 访问与登录', link: '/qqbot/maibot/config/webui' },
+                  { text: '模型配置', link: '/qqbot/maibot/config/models' },
+                  { text: '人格与回复设置', link: '/qqbot/maibot/config/personality' },
+                  { text: '配置文件与目录', link: '/qqbot/maibot/config/configuration-files' },
+                ],
+              },
+              {
+                text: '平台接入',
+                collapsed: false,
+                items: [
+                  { text: '接入概览', link: '/qqbot/maibot/adapters/adapters' },
+                  { text: 'OneBot 适配器', link: '/qqbot/maibot/adapters/onebot' },
+                  { text: 'QQ 官方机器人', link: '/qqbot/maibot/adapters/qq-official' },
+                  { text: '群聊与私聊规则', link: '/qqbot/maibot/adapters/adapter-policy' },
+                  { text: 'QQ 身份绑定与同步', link: '/qqbot/maibot/adapters/qq-identity' },
+                ],
+              },
+              {
+                text: '使用与维护',
+                collapsed: false,
+                items: [
+                  { text: 'WebUI 使用指南', link: '/qqbot/maibot/usage/use' },
+                  { text: '插件安装与配置', link: '/qqbot/maibot/usage/plugins' },
+                  { text: '常用插件索引', link: '/qqbot/maibot/usage/plugins_index' },
+                  { text: '备份与更新', link: '/qqbot/maibot/usage/maintenance' },
+                  { text: '故障排查', link: '/qqbot/maibot/usage/troubleshooting' },
+                ],
+              },
             ],
           },
           {

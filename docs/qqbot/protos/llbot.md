@@ -1,3 +1,8 @@
+---
+title: LLBot（LuckyLilliaBot）安装与配置教程
+description: 了解 LLBot 的安装与 QQ 登录步骤，配置连接信息并接入 AstrBot、MaiBot 等机器人。
+---
+
 # LuckyLilliaBot
 
 LuckyLilliaBot（LLBot）是用于连接 QQ 与机器人框架的协议端。本页由清蒸云鸭整理，覆盖 Linux CLI、Docker Compose 与 Windows Desktop 三种部署方式。
@@ -205,7 +210,7 @@ LLBot 支持 OneBot 11、Satori、Milky 等协议方式。
    - Port：`3001`，与 MaiBot 统一的 SnowLuma Adapter 端口保持一致。
    - Token：本机隔离环境可以留空；其他环境应与 SnowLuma Adapter 的 Token 保持一致。
 
-MaiBot 对接 NapCat、LLBot、SnowLuma 时均使用统一的 SnowLuma Adapter。连接参数从 `适配器设置` 中修改，名单过滤从 `黑白名单规则` 标签中配置，详见[MaiBot 配置与启动](../maibot/conf#配置-qq-协议端与适配器)。
+MaiBot 对接 NapCat、LLBot、SnowLuma 时均使用统一的 SnowLuma Adapter。连接参数从 `适配器设置` 中修改，接收范围在同页的 `黑白名单规则` 区域配置，详见[MaiBot 配置与启动](/qqbot/maibot/adapters/onebot)。
 
 如果框架与 LLBot 位于同一台服务器，优先使用 `127.0.0.1`。跨设备连接时，请根据实际网络填写监听地址，并务必设置 Token、限制端口来源。
 
