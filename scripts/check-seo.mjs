@@ -42,6 +42,8 @@ for (const file of files) {
   const title = html.match(/<title>(.*?)<\/title>/)?.[1]
   if (route === '/') assert.equal(title, '清蒸云鸭の文档', 'Homepage must use only the site name')
   else assert.ok(title && title !== '清蒸云鸭の文档', `Missing page title: ${file}`)
+  const pageTitle = title.replace(/ \| 清蒸云鸭の文档$/, '')
+  assert.ok(pageTitle.length <= 24, `Page title is too long: ${file}`)
   assert.ok(!titles.has(title), `Duplicate title: ${title}`)
   titles.add(title)
   const description = meta(html, 'name', 'description')

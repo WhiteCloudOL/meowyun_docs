@@ -1,5 +1,5 @@
 ---
-title: LLBot（LuckyLilliaBot）安装与配置教程
+title: LLBot 安装与配置
 description: 了解 LLBot 的安装与 QQ 登录步骤，配置连接信息并接入 AstrBot、MaiBot 等机器人。
 ---
 

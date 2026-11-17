@@ -1,5 +1,5 @@
 ---
-title: 雨云面板启动 Minecraft 服务器教程
+title: Minecraft 服务端启动
 description: 在雨云游戏云面板中启动 Minecraft 服务端，查看控制台日志并完成首次运行与连接准备。
 ---
 

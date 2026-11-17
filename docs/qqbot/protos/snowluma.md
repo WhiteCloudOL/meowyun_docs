@@ -1,5 +1,5 @@
 ---
-title: SnowLuma 安装与配置指南
+title: SnowLuma 配置
 description: 安装和配置 SnowLuma，完成 QQ 登录、协议端设置和机器人连接，查找使用中的常见问题。
 ---
 

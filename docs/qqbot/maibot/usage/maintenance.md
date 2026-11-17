@@ -1,5 +1,5 @@
 ---
-title: MaiBot 备份、迁移与更新教程
+title: MaiBot 备份与更新
 description: 备份 MaiBot 配置、插件和数据，了解工作区迁移、程序更新与恢复时需要保存的目录。
 ---
 

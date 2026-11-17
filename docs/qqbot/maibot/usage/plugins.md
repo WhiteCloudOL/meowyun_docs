@@ -1,5 +1,5 @@
 ---
-title: MaiBot 插件安装与配置教程
+title: MaiBot 插件安装
 description: 通过 WebUI 插件市场、MaiBot Manager TUI 或手动方式安装插件，了解配置入口、插件目录与更新方法。
 ---
 

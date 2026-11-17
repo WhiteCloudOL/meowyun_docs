@@ -1,5 +1,5 @@
 ---
-title: MaiBot 安装与部署教程
+title: MaiBot 安装与部署
 description: 通过 MaiBot Manager TUI 或手动方式部署 MaiBot，完成环境准备、程序安装和首次启动。
 ---
 

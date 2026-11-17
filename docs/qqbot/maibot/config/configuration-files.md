@@ -1,5 +1,5 @@
 ---
-title: MaiBot 配置文件与目录说明
+title: MaiBot 配置文件与目录
 description: 查找 MaiBot 工作区、机器人目录、网络配置、WebUI 登录信息和插件配置，了解新版配置位置与迁移关系。
 ---
 

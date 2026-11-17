@@ -1,5 +1,5 @@
 ---
-title: 幻兽帕鲁服务器 Mod 安装教程
+title: 幻兽帕鲁 Mod 安装
 description: 为幻兽帕鲁服务器安装 Mod，了解文件上传、加载设置与安装后的检查步骤。
 editLink: false
 ---

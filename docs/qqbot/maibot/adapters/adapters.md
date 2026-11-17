@@ -1,5 +1,5 @@
 ---
-title: MaiBot QQ 平台接入方案
+title: MaiBot 平台接入
 description: 比较 MaiBot 普通 QQ 账号和 QQ 官方机器人接入方式，选择 OneBot 或官方适配器并配置聊天范围。
 ---
 

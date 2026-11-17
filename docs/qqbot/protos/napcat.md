@@ -1,5 +1,5 @@
 ---
-title: NapCatQQ 安装与配置教程
+title: NapCat 安装与配置
 description: 安装 NapCatQQ 并登录普通 QQ 账号，配置 OneBot 连接，为 AstrBot、MaiBot 等机器人接入 QQ。
 ---
 

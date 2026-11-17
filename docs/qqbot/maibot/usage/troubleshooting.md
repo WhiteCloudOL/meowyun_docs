@@ -1,5 +1,5 @@
 ---
-title: MaiBot 常见问题与故障排查
+title: MaiBot 故障排查
 description: 排查 MaiBot WebUI 访问、登录、模型调用、QQ 连接及插件加载问题，通过日志定位常见错误。
 ---
 

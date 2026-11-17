@@ -1,5 +1,5 @@
 ---
-title: AstrBot 简介与部署指南
+title: AstrBot 简介
 description: 了解 AstrBot 的功能、部署方式和 QQ 接入方案，按运行环境选择 Docker、Linux 或 Windows 安装教程。
 ---
 

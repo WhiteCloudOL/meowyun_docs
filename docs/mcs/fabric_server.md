@@ -1,5 +1,5 @@
 ---
-title: Minecraft Fabric 服务端
+title: Fabric 服务端
 noindex: true
 description: Fabric 服务端教程编写中，可先查阅通用的运行环境、文件上传和服务端启动配置说明。
 ---

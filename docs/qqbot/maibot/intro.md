@@ -1,5 +1,5 @@
 ---
-title: MaiBot（麦麦）简介与入门指南
+title: MaiBot 简介
 description: 了解 MaiBot 的部署流程、模型与人格配置、普通 QQ 和 QQ 官方机器人接入方案，以及文档与人设市场入口。
 ---
 

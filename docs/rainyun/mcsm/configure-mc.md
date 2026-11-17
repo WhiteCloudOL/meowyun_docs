@@ -1,5 +1,5 @@
 ---
-title: Minecraft server.properties 配置教程
+title: Minecraft 服务器配置
 description: 通过雨云面板修改 Minecraft 服务端配置，了解游戏模式、人数、白名单、正版验证、视距和端口设置。
 ---
 

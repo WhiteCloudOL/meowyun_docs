@@ -1,5 +1,5 @@
 ---
-title: 雨云 Minecraft 服务器进阶管理
+title: Minecraft 进阶管理
 description: 使用雨云游戏云面板管理 Minecraft 服务器，了解日常维护与进阶配置操作。
 ---
 

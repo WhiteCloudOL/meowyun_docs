@@ -1,5 +1,5 @@
 ---
-title: 雨云 Minecraft 服务器运行环境配置
+title: Minecraft 环境准备
 description: 在雨云游戏云面板中准备 Minecraft 服务端运行环境，选择与服务端版本匹配的 Java。
 ---
 

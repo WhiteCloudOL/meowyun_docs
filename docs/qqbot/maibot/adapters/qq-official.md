@@ -1,5 +1,5 @@
 ---
-title: MaiBot QQ 官方机器人配置教程
+title: MaiBot QQ 官方机器人
 description: 配置 Mai-with-u.qq-adapter，通过扫码或 AppID、AppSecret 接入 QQ 官方机器人，设置聊天名单与身份绑定。
 ---
 

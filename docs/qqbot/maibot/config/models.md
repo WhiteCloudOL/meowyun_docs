@@ -1,5 +1,5 @@
 ---
-title: MaiBot AI 模型配置教程
+title: MaiBot 模型配置
 description: 为 MaiBot 添加模型服务商、API Key 和可用模型，分配回复、规划、工具、识图与嵌入任务并测试连接。
 ---
 

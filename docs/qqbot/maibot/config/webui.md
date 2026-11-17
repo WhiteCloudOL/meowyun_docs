@@ -1,5 +1,5 @@
 ---
-title: MaiBot WebUI 访问与登录教程
+title: MaiBot WebUI 登录
 description: 启动 MaiBot 并访问 WebUI，了解默认端口、登录密码、本机访问、服务器远程访问和监听地址设置。
 ---
 

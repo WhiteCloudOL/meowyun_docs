@@ -1,5 +1,5 @@
 ---
-title: 联系方式与问题反馈
+title: 联系方式
 noindex: true
 description: 通过云的小屋 QQ 群反馈文档问题，交流 QQ 机器人部署、Minecraft 服务器运维和雨云服务使用经验。
 ---

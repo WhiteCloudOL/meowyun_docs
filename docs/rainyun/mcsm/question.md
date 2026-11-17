@@ -1,5 +1,5 @@
 ---
-title: 雨云 Minecraft 服务器常见问题
+title: Minecraft 常见问题
 description: 查找雨云游戏云面板部署 Minecraft 服务器时的常见问题，了解启动、配置和连接异常的排查方法。
 ---
 

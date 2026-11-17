@@ -1,5 +1,5 @@
 ---
-title: MaiBot 基础配置与启动指南
+title: MaiBot 配置概览
 description: 按顺序完成 MaiBot WebUI 登录、AI 模型配置、人格设置、QQ 平台接入与群聊私聊规则配置。
 ---
 

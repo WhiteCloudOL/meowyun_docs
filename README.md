@@ -85,12 +85,12 @@ location / {
 
 ```yaml
 ---
-title: MaiBot AI 模型配置教程
+title: MaiBot 模型配置
 description: 为 MaiBot 添加模型服务商与可用模型，分配回复、规划和识图任务并测试连接。
 ---
 ```
 
-`description` 简要说明本页能解决的问题，不必堆叠关键词。页面会自动生成 canonical、Open Graph、Twitter 分享信息和 WebSite / WebPage 结构化数据，分享图片使用站点 Logo。
+标题优先采用“软件名＋页面主题”，避免重复添加“教程”“指南”等修饰，正文主题部分控制在 24 个字符以内。首页只显示站点名称；其他页面自动附加站点名称。`description` 简要说明本页能解决的问题，不必堆叠关键词。页面会自动生成 canonical、Open Graph、Twitter 分享信息和 WebSite / WebPage 结构化数据，分享图片使用站点 Logo。
 
 内容仍在编写或不希望被收录的页面，可在同一处添加 `noindex: true`。构建时会输出 `noindex, follow` 并从站点地图排除。联系方式页保留不收录设置；Fabric、Forge 专页完善后可移除该设置，同时更新 `scripts/check-seo.mjs` 中的排除列表。
 

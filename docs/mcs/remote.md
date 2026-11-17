@@ -1,5 +1,5 @@
 ---
-title: Minecraft 服务器与 VPS 远程管理教程
+title: 服务器远程管理
 description: 学习远程连接和管理 Minecraft 服务器与 VPS，了解 SSH、终端及文件传输的基本操作，为服务端部署做好准备。
 ---
 

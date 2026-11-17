@@ -1,5 +1,5 @@
 ---
-title: MaiBot 群聊、私聊与黑白名单规则
+title: MaiBot 群聊与私聊规则
 description: 设置 MaiBot 允许参与的群聊和私聊，理解规则分组、黑白名单及适配器消息接收范围。
 ---
 

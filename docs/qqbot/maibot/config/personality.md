@@ -1,5 +1,5 @@
 ---
-title: MaiBot 人格、人设与回复设置
+title: MaiBot 人格与回复
 description: 设置 MaiBot 昵称、人格、行为与表达风格，调整群聊私聊回复频率，并从麦麦提示词库选择人设。
 ---
 

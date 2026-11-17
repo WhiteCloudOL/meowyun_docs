@@ -1,5 +1,5 @@
 ---
-title: Minecraft 服务端资源与教程合集
+title: Minecraft 资源合集
 description: 汇总 Minecraft 服务端部署与运维的站内资源，查找常用命令、远程管理、服务端安装、配置和故障排查教程。
 ---
 

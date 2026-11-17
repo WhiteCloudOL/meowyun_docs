@@ -1,5 +1,5 @@
 ---
-title: MaiBot WebUI 使用指南
+title: MaiBot WebUI 使用
 description: 了解 MaiBot 管理界面的常用入口，查看聊天、日志、学习内容和运行状态，完成日常管理。
 ---
 

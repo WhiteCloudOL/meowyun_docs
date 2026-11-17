@@ -1,5 +1,5 @@
 ---
-title: MaiBot 常用插件推荐与配置索引
+title: MaiBot 常用插件
 description: 按分类查找 MaiBot 语音、绘图、视频理解、群聊日报、生活陪伴和实用插件，查看作者、仓库、配置要点与兼容要求。
 ---
 

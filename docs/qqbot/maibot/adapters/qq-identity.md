@@ -1,5 +1,5 @@
 ---
-title: MaiBot QQ 身份绑定与同步
+title: MaiBot QQ 身份绑定
 description: 为 MaiBot QQ 官方机器人绑定群与成员的 QQ 身份，了解身份映射、同步和相关设置入口。
 ---
 

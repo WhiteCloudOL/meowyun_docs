@@ -1,5 +1,5 @@
 ---
-title: MaiBot OneBot 适配器配置教程
+title: MaiBot OneBot 配置
 description: 连接 MaiBot 与 NapCat、LLBot、SnowLuma，设置 OneBot 连接参数、访问令牌和群聊私聊规则。
 ---
 
