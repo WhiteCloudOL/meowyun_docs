@@ -40,7 +40,8 @@ for (const file of files) {
   const url = `${origin}${route}`
   const html = await readFile(join(outDir, file.replace(/\.md$/, '.html')), 'utf8')
   const title = html.match(/<title>(.*?)<\/title>/)?.[1]
-  assert.ok(title && title !== '清蒸云鸭の文档', `Missing page title: ${file}`)
+  if (route === '/') assert.equal(title, '清蒸云鸭の文档', 'Homepage must use only the site name')
+  else assert.ok(title && title !== '清蒸云鸭の文档', `Missing page title: ${file}`)
   assert.ok(!titles.has(title), `Duplicate title: ${title}`)
   titles.add(title)
   const description = meta(html, 'name', 'description')
